@@ -1,18 +1,20 @@
 package acceptancetests;
 
 import com.googlecode.yatspec.junit.SpecRunner;
+import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.hanfak.airport.Airport;
 import com.hanfak.airport.Plane;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static com.hanfak.airport.PlaneId.planeId;
+import static com.hanfak.airport.PlaneStatus.FLYING;
+import static com.hanfak.airport.PlaneStatus.LANDED;
+
 
 @RunWith(SpecRunner.class)
-public class FeaturesTest implements WithAssertions {
-
-  private Airport airport;
-  private Plane plane;
+public class FeaturesTest extends TestState implements WithAssertions {
 
   @Test
   public void aPlaneCanLand() {
@@ -25,9 +27,9 @@ public class FeaturesTest implements WithAssertions {
     andThePlaneIsNotFlying();
   }
 
-
   private void givenAPlaneIsFlying() {
-    plane = new Plane();
+    plane = new Plane(planeId("A0001"), FLYING);
+    interestingGivens.add("plane", plane);
   }
 
   private void andAnAirportHasCapacity() {
@@ -35,14 +37,18 @@ public class FeaturesTest implements WithAssertions {
   }
 
   private void whenAPlaneIsInstructedToLand() {
-    airport.instructPlaneToLand(plane);
+    actionDone = airport.instructPlaneToLand(plane);
   }
 
   private void thenthePlaneIsInTheAirport() {
-    assertThat(airport.hanger).contains(plane);
+    assertThat(actionDone).isTrue();
   }
 
   private void andThePlaneIsNotFlying() {
-    assertThat(plane.isFlying()).isFalse();
+    assertThat(airport.hanger.get(0).planeStatus).isEqualTo(LANDED);
   }
+
+  private Airport airport;
+  private Plane plane;
+  private boolean actionDone;     // better variable name
 }
