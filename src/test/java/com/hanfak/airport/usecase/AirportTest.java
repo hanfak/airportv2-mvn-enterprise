@@ -23,6 +23,14 @@ public class AirportTest implements WithAssertions {
     assertThat(airport.hanger.get(0).planeId).isEqualTo(landedPlane.planeId);
   }
 
+  @Test
+  public void planeIsConfirmedAsLandedWhenPlaneIsNotFlying() {
+    airport.instructPlaneToLand(landedPlane);
+
+    assertThat(airport.hanger.get(0).planeId).isEqualTo(planeId("A0001"));
+    assertThat(airport.hanger.get(0).planeStatus).isEqualTo(LANDED);
+  }
+
   private final Airport airport = new Airport();
   private final Plane flyingPlane = new Plane(planeId("A0001"), FLYING);
   private final Plane landedPlane = new Plane(planeId("A0001"), LANDED);
