@@ -1,12 +1,13 @@
-package com.hanfak.airport;
+package com.hanfak.airport.usecase;
 
 
+import com.hanfak.airport.domain.Plane;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
-import static com.hanfak.airport.PlaneId.planeId;
-import static com.hanfak.airport.PlaneStatus.FLYING;
-import static com.hanfak.airport.PlaneStatus.LANDED;
+import static com.hanfak.airport.domain.PlaneId.planeId;
+import static com.hanfak.airport.domain.PlaneStatus.FLYING;
+import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 
 public class AirportTest implements WithAssertions {
 

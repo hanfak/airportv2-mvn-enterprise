@@ -1,9 +1,11 @@
-package com.hanfak.airport;
+package com.hanfak.airport.usecase;
+
+import com.hanfak.airport.domain.Plane;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.hanfak.airport.PlaneStatus.LANDED;
+import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 
 // Usecase
 public class Airport {
