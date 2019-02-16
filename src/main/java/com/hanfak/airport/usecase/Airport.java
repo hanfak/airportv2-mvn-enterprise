@@ -2,19 +2,23 @@ package com.hanfak.airport.usecase;
 
 import com.hanfak.airport.domain.Plane;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 
 // Usecase
 public class Airport {
 
-  public final List<Plane> hanger = new ArrayList<>(); // separate service
+  private final HangerService hangerService;
 
-  // What to return???
+  public Airport(HangerService hangerService) {
+    this.hangerService = hangerService;
+  }
+
+  // What to return for application output, specific type
   public boolean instructPlaneToLand(Plane plane) {
-    hanger.add(new Plane(plane.planeId, LANDED));
-    return true;
+    Plane landedPlane = new Plane(plane.planeId, LANDED);
+    if (plane.planeStatus.equals(LANDED)) {
+      return false;
+    }
+    return !hangerService.planeInventory().contains(landedPlane) && hangerService.addPlane(landedPlane);
   }
 }
