@@ -40,6 +40,8 @@ TODO:
 - Add db, object pooling, property file
 - use stub for database in test
 - Use third party weather service, use wire mock for stub, http client to talk wiht it
+    - https://fcc-weather-api.glitch.me/api/current?lat=51.4700&lon=0.4543
+    - https://www.metaweather.com/api/
 - log incoming and outgoing requests
 - cqrs and event sourcing
 - find bugs SA

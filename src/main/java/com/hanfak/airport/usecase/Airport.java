@@ -15,10 +15,9 @@ public class Airport {
 
   // What to return for application output, specific type
   public boolean instructPlaneToLand(Plane plane) {
-    Plane landedPlane = new Plane(plane.planeId, LANDED);
     if (plane.planeStatus.equals(LANDED)) {
       return false;
     }
-    return !hangerService.planeInventory().contains(landedPlane) && hangerService.addPlane(landedPlane);
+    return hangerService.addPlane(new Plane(plane.planeId, LANDED));
   }
 }

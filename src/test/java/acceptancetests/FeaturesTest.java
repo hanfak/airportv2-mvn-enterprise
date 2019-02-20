@@ -51,7 +51,6 @@ public class FeaturesTest extends TestState implements WithAssertions {
     assertThat(hangerService.planeInventory().get(0).planeStatus).isEqualTo(LANDED);
   }
 
-
   private Airport airport;
   private Plane plane;
   private boolean actionDone;     // better variable name

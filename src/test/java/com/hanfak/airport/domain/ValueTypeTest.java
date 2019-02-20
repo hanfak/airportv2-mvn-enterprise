@@ -41,14 +41,14 @@ public class ValueTypeTest {
 
   @SuppressWarnings("unused")
   private class Example extends ValueType {
-    private final String someField;
-    private final List<String> moreComplicatedField;
-    private final int primitiveField;
+      private final String someField;
+      private final List<String> moreComplicatedField;
+      private final int primitiveField;
 
-    private Example(String someField, List<String> moreComplicatedField, int primitiveField) {
-      this.someField = someField;
-      this.moreComplicatedField = moreComplicatedField;
-      this.primitiveField = primitiveField;
-    }
+      private Example(String someField, List<String> moreComplicatedField, int primitiveField) {
+        this.someField = someField;
+        this.moreComplicatedField = moreComplicatedField;
+        this.primitiveField = primitiveField;
+      }
   }
 }
