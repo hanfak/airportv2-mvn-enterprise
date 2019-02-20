@@ -16,7 +16,7 @@ import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 
 
 @RunWith(SpecRunner.class)
-public class FeaturesTest extends TestState implements WithAssertions {
+public class LandingTest extends TestState implements WithAssertions {
 
   @Test
   public void aPlaneCanLand() {
@@ -47,7 +47,6 @@ public class FeaturesTest extends TestState implements WithAssertions {
   }
 
   private void andThePlaneIsNotFlying() {
-    System.out.println(hangerService.planeInventory());
     assertThat(hangerService.planeInventory().get(0).planeStatus).isEqualTo(LANDED);
   }
 

@@ -20,4 +20,9 @@ public class Airport {
     }
     return hangerService.addPlane(new Plane(plane.planeId, LANDED));
   }
+
+  // What to return???
+  public boolean instructPlaneToTakeOff(Plane plane) {
+    return false;
+  }
 }
