@@ -9,36 +9,42 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 import static com.hanfak.airport.domain.PlaneId.planeId;
+import static com.hanfak.airport.domain.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 
 public class TakeOffTest extends TestState implements WithAssertions {
+
   @Test
   public void aPlaneCanTakeOff() {
     givenAPlaneIsLanded();
+    andPlaneIsStoredInTheAirport();
 
     whenAPlaneIsInstructedToTakeOff();
 
     thenthePlaneHasLeftTheAirport();
-    andThePlaneIsNotLanded();
   }
 
-  private void andThePlaneIsNotLanded() {
-    //assert that plane that has left is flying
+  private void givenAPlaneIsLanded() {
+    airport = new Airport(hangerService);
+    plane = new Plane(planeId("A0001"), FLYING);
+    interestingGivens.add("plane", plane);
+  }
+
+  private void andPlaneIsStoredInTheAirport() {
+    airport.instructPlaneToLand(plane);
+  }
+
+  private void whenAPlaneIsInstructedToTakeOff() {
+    actionDone = airport.instructPlaneToTakeOff(new Plane(planeId("A0001"), LANDED));
   }
 
   private void thenthePlaneHasLeftTheAirport() {
     assertThat(actionDone).isTrue();
-    assertThat(hangerService.planeInventory()).doesNotContain(plane);
+    assertThat(hangerService.planeInventory()).doesNotContain(new Plane(planeId("A0001"), LANDED));
   }
 
-  private void whenAPlaneIsInstructedToTakeOff() {
-    airport = new Airport(hangerService);
-    actionDone = airport.instructPlaneToTakeOff(plane);
-  }
-
-  private void givenAPlaneIsLanded() {
-    plane = new Plane(planeId("A0001"), LANDED);
-    interestingGivens.add("plane", plane);
+  private void andThePlaneIsNotFlying() {
+    //assert that plane that has left is flying
   }
 
   private Airport airport;

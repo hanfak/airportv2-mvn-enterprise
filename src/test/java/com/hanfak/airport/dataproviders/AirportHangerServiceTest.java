@@ -41,9 +41,24 @@ public class AirportHangerServiceTest {
     AirportHangerService airportHangerService = new AirportHangerService();
     Plane plane = new Plane(PlaneId.planeId("A0001"), PlaneStatus.LANDED);
     Plane plane2 = new Plane(PlaneId.planeId("A0001"), PlaneStatus.LANDED);
+
     airportHangerService.addPlane(plane);
 
     assertThat(airportHangerService.addPlane(plane2)).isFalse();
+    System.out.println(airportHangerService.planeInventory());
+
     assertThat(airportHangerService.planeInventory().size()).isEqualTo(1);
+  }
+
+  @Test
+  public void removesPlaneFromHanger() {
+    AirportHangerService airportHangerService = new AirportHangerService();
+    Plane plane = new Plane(PlaneId.planeId("A0001"), PlaneStatus.LANDED);
+    airportHangerService.addPlane(plane);
+
+    boolean actionUnderTest = airportHangerService.removePlane(plane);
+
+    assertThat(airportHangerService.planeInventory()).doesNotContain(plane);
+    assertThat(actionUnderTest).isTrue();
   }
 }

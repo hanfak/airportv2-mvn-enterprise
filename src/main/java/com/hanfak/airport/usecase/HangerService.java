@@ -7,4 +7,5 @@ import java.util.List;
 public interface HangerService {
   List<Plane> planeInventory();
   boolean addPlane(Plane plane);
+  boolean removePlane(Plane plane);
 }

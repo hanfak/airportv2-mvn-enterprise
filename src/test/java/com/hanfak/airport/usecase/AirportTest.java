@@ -9,6 +9,7 @@ import static com.hanfak.airport.domain.PlaneId.planeId;
 import static com.hanfak.airport.domain.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,8 +30,19 @@ public class AirportTest implements WithAssertions {
     boolean actionUnderTest = airport.instructPlaneToLand(landedPlane);
 
     assertThat(actionUnderTest).isFalse();
+  }
 
+  @Test
+  public void removesPlaneFromAirportWhenInstructToTakeOff() {
+    when(hangerService.removePlane(landedPlane)).thenReturn(true);
+    boolean actionUnderTest = airport.instructPlaneToTakeOff(landedPlane);
 
+    verify(hangerService, only()).removePlane(landedPlane);
+    assertThat(actionUnderTest).isTrue();
+  }
+
+  @Test
+  public void changesStatusOfPlaneAfterBeingRemovedFromHangerToFlying() {
   }
 
   private final HangerService hangerService = mock(HangerService.class);

@@ -23,6 +23,11 @@ public class AirportHangerService implements HangerService {
     return !hanger.contains(plane) && addLandedPlaneToHanger(plane);
   }
 
+  @Override
+  public boolean removePlane(Plane plane) { // Should param be plane or planeId?
+    return hanger.remove(plane);
+  }
+
   private boolean addLandedPlaneToHanger(Plane plane) {
     // Throw exception if plane is still flying
     return LANDED.equals(plane.planeStatus) && hanger.add(plane);

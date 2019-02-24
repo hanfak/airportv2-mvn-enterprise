@@ -37,6 +37,7 @@ TODO:
 - Add Exceptions, then try catch them and add logs with stack trace
 - Add Jetty server, split up usecase into several classes
     - respond with json
+    - acceptance tests are run via server then docker container
 - Add db, object pooling, property file
 - use stub for database in test
 - Use third party weather service, use wire mock for stub, http client to talk wiht it
@@ -46,3 +47,7 @@ TODO:
 - cqrs and event sourcing
 - find bugs SA
 - scheduler to check weather, and store in cache (Db)
+- status page, check db & weather service is up, scheduled job every minute
+- dockerise
+- jenkins ci build
+- metrics end point, prometheues

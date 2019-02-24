@@ -3,6 +3,8 @@ package com.hanfak.airport.usecase;
 import com.hanfak.airport.domain.Plane;
 
 import static com.hanfak.airport.domain.PlaneStatus.LANDED;
+// New Usecase for airport controller to use, to assess the state of the plane by accessing the
+// AirportHangerService using the planeId to get the its flight status
 
 // Usecase
 public class Airport {
@@ -20,9 +22,9 @@ public class Airport {
     }
     return hangerService.addPlane(new Plane(plane.planeId, LANDED));
   }
-
+// Split into different classes
   // What to return???
   public boolean instructPlaneToTakeOff(Plane plane) {
-    return false;
+    return hangerService.removePlane(plane);
   }
 }
