@@ -16,13 +16,14 @@ public class AirportHangerService implements HangerService {
   public List<Plane> planeInventory() {
     return hanger; // Use copy or turn into immodifiable  list
   }
-
+  // This is a command, and should not return something and act as a query, thus have multiple responsibilities ie CQRS
   @Override
   public boolean addPlane(Plane plane) {
     // Throw exception if plane is in hanger
     return !hanger.contains(plane) && addLandedPlaneToHanger(plane);
   }
 
+  // This is a command, and should not return something and act as a query, thus have multiple responsibilities ie CQRS
   @Override
   public boolean removePlane(Plane plane) { // Should param be plane or planeId?
     return hanger.remove(plane);
