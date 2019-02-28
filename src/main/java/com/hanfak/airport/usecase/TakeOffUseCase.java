@@ -4,6 +4,8 @@ import com.hanfak.airport.domain.AirportStatus;
 import com.hanfak.airport.domain.Plane;
 import com.hanfak.airport.domain.PlaneTakeOffStatus;
 
+import static com.hanfak.airport.domain.PlaneTakeOffStatus.planeTakeOffStatus;
+
 public class TakeOffUseCase {
 
   private final PlaneInventoryService planeInventoryService;
@@ -19,9 +21,9 @@ public class TakeOffUseCase {
     if (planeInventoryService.checkPlaneIsAtAirport(plane.planeId)) {
       planeInventoryService.removePlane(plane);
       Plane flyingPlane = plane.fly();
-      return new PlaneTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, AirportStatus.NOT_IN_AIRPORT);
+      return planeTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, AirportStatus.NOT_IN_AIRPORT);
     }
     // Pass reason why it is not taken off
-    return new PlaneTakeOffStatus(plane.planeId, plane.planeStatus, AirportStatus.IN_AIRPORT);
+    return planeTakeOffStatus(plane.planeId, plane.planeStatus, AirportStatus.IN_AIRPORT);
   }
 }

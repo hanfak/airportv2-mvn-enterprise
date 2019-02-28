@@ -1,5 +1,5 @@
 package com.hanfak.airport.domain;
-
+// Better name
 public class PlaneTakeOffStatus extends ValueType {
 
   private final PlaneId planeId;
@@ -7,9 +7,13 @@ public class PlaneTakeOffStatus extends ValueType {
   public final AirportStatus airportStatus;
 
   // make into static factory method
-  public PlaneTakeOffStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus) {
+  private PlaneTakeOffStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus) {
     this.planeId = planeId;
     this.planeStatus = planeStatus;
     this.airportStatus = airportStatus;
+  }
+
+  public static PlaneTakeOffStatus planeTakeOffStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus) {
+    return new PlaneTakeOffStatus(planeId, planeStatus, airportStatus);
   }
 }
