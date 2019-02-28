@@ -2,10 +2,10 @@ package acceptancetests;
 
 import com.googlecode.yatspec.junit.SpecRunner;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import com.hanfak.airport.dataproviders.AirportHangerService;
+import com.hanfak.airport.dataproviders.AirportPlaneInventoryService;
 import com.hanfak.airport.domain.Plane;
-import com.hanfak.airport.usecase.HangerService;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
+import com.hanfak.airport.usecase.PlaneInventoryService;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 
 
 @RunWith(SpecRunner.class)
-public class LandPlaneUseCaseTest extends TestState implements WithAssertions {
+public class LandPlaneTest extends TestState implements WithAssertions {
 
   @Test
   public void aPlaneCanLand() {
@@ -53,5 +53,5 @@ public class LandPlaneUseCaseTest extends TestState implements WithAssertions {
   private LandPlaneUseCase airport;
   private Plane plane;
   private boolean actionDone;     // better variable name
-  private HangerService hangerService = new AirportHangerService(); // Should use a stub
+  private PlaneInventoryService hangerService = new AirportPlaneInventoryService(); // Should use a stub
 }

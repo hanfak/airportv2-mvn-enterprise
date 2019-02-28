@@ -30,7 +30,15 @@ So that the software can be used for many different airports
 I would like a default airport capacity that can be overridden as appropriate
 ```
 
-TODO:
+
+Feature TODO:
+
+- Should we be talking about hangers or just airport?
+- Include gate (when landed, proceed to empty gate (using service))
+- plane status service, to change the status and check the status of the plane, turn to db
+
+
+Technical TODO:
 
 - Have an application start up(main, property file for prod)
     - configuration, wiring

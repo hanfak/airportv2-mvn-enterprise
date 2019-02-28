@@ -4,7 +4,7 @@ import com.hanfak.airport.domain.Plane;
 
 import java.util.List;
 
-public interface HangerService {
+public interface PlaneInventoryService {
   List<Plane> planeInventory();
   boolean addPlane(Plane plane);
   boolean removePlane(Plane plane);

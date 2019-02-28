@@ -1,10 +1,10 @@
 package acceptancetests;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import com.hanfak.airport.dataproviders.AirportHangerService;
+import com.hanfak.airport.dataproviders.AirportPlaneInventoryService;
 import com.hanfak.airport.domain.Plane;
-import com.hanfak.airport.usecase.HangerService;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
+import com.hanfak.airport.usecase.PlaneInventoryService;
 import com.hanfak.airport.usecase.TakeOffUseCase;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import static com.hanfak.airport.domain.PlaneId.planeId;
 import static com.hanfak.airport.domain.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 
-public class PlaneTakeOffUseCaseTest extends TestState implements WithAssertions {
+public class PlaneTakeOffTest extends TestState implements WithAssertions {
 
   @Test
   public void aPlaneCanTakeOff() {
@@ -48,7 +48,7 @@ public class PlaneTakeOffUseCaseTest extends TestState implements WithAssertions
     //assert that plane that has left is flying
   }
 
-  private HangerService hangerService = new AirportHangerService(); // Should use a stub
+  private PlaneInventoryService hangerService = new AirportPlaneInventoryService(); // Should use a stub
   private LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(hangerService);
   private TakeOffUseCase takeOffUseCase;
   private Plane plane;

@@ -12,14 +12,14 @@ public class AirportHangerServiceTest {
 
   @Test
   public void shouldHaveAnEmptyHanger() {
-    AirportHangerService airportHangerService = new AirportHangerService();
+    AirportPlaneInventoryService airportHangerService = new AirportPlaneInventoryService();
 
     assertThat(airportHangerService.planeInventory()).isEmpty();
   }
 
   @Test
   public void canAddAPlaneToAHanger() {
-    AirportHangerService airportHangerService = new AirportHangerService();
+    AirportPlaneInventoryService airportHangerService = new AirportPlaneInventoryService();
     Plane plane = new Plane(PlaneId.planeId("A0001"), PlaneStatus.LANDED);
 
     assertThat(airportHangerService.addPlane(plane)).isTrue();
@@ -28,7 +28,7 @@ public class AirportHangerServiceTest {
 
   @Test
   public void canOnlyAddLandedPlanesToAHanger() {
-    AirportHangerService airportHangerService = new AirportHangerService();
+    AirportPlaneInventoryService airportHangerService = new AirportPlaneInventoryService();
     Plane plane = new Plane(PlaneId.planeId("A0001"), PlaneStatus.FLYING);
     airportHangerService.addPlane(plane);
 
@@ -38,7 +38,7 @@ public class AirportHangerServiceTest {
 
   @Test
   public void canOnlyHaveOneUniquePlaneInTheHanger() {
-    AirportHangerService airportHangerService = new AirportHangerService();
+    AirportPlaneInventoryService airportHangerService = new AirportPlaneInventoryService();
     Plane plane = new Plane(PlaneId.planeId("A0001"), PlaneStatus.LANDED);
     Plane plane2 = new Plane(PlaneId.planeId("A0001"), PlaneStatus.LANDED);
 
@@ -52,7 +52,7 @@ public class AirportHangerServiceTest {
 
   @Test
   public void removesPlaneFromHanger() {
-    AirportHangerService airportHangerService = new AirportHangerService();
+    AirportPlaneInventoryService airportHangerService = new AirportPlaneInventoryService();
     Plane plane = new Plane(PlaneId.planeId("A0001"), PlaneStatus.LANDED);
     airportHangerService.addPlane(plane);
 

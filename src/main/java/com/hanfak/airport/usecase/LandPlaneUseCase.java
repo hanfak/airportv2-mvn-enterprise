@@ -8,10 +8,10 @@ import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 
 public class LandPlaneUseCase {
 
-  private final HangerService hangerService;
+  private final PlaneInventoryService planeInventoryService;
 
-  public LandPlaneUseCase(HangerService hangerService) {
-    this.hangerService = hangerService;
+  public LandPlaneUseCase(PlaneInventoryService hangerService) {
+    this.planeInventoryService = hangerService;
   }
 
   // What to return for application output, specific type to include plane, status, inAirport and inHanger (later specific hanger)
@@ -20,6 +20,6 @@ public class LandPlaneUseCase {
     if (plane.planeStatus.equals(LANDED)) {
       return false;
     }
-    return hangerService.addPlane(new Plane(plane.planeId, LANDED));
+    return planeInventoryService.addPlane(new Plane(plane.planeId, LANDED));
   }
 }

@@ -27,7 +27,7 @@ public class TakeOffUseCaseTest implements WithAssertions {
   public void changesStatusOfPlaneAfterBeingRemovedFromHangerToFlying() {
   }
 
-  private final HangerService hangerService = mock(HangerService.class);
+  private final PlaneInventoryService hangerService = mock(PlaneInventoryService.class);
   private final TakeOffUseCase takeOffUseCase = new TakeOffUseCase(hangerService);
   private final Plane flyingPlane = new Plane(planeId("A0001"), FLYING);
   private final Plane landedPlane = new Plane(planeId("A0001"), LANDED);

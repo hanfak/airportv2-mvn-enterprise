@@ -1,14 +1,14 @@
 package com.hanfak.airport.dataproviders;
 
 import com.hanfak.airport.domain.Plane;
-import com.hanfak.airport.usecase.HangerService;
+import com.hanfak.airport.usecase.PlaneInventoryService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 
-public class AirportHangerService implements HangerService {
+public class AirportPlaneInventoryService implements PlaneInventoryService {
 
   private final List<Plane> hanger = new ArrayList<>();
 
