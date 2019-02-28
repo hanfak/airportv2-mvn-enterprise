@@ -1,9 +1,7 @@
 package com.hanfak.airport.usecase;
 
-import com.hanfak.airport.domain.FailedPlaneTakeOffStatus;
 import com.hanfak.airport.domain.Plane;
-import com.hanfak.airport.domain.SuccessfulPlaneTakeOffStatus;
-import javafx.util.Pair;
+import com.hanfak.airport.domain.PlaneTakeOffStatus;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -23,22 +21,22 @@ public class TakeOffUseCaseTest implements WithAssertions {
   public void removesPlaneFromAirportWhenInstructToTakeOff() {
     when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(true);
 
-    Pair<SuccessfulPlaneTakeOffStatus, FailedPlaneTakeOffStatus> actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
+    PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
 
     verify(hangerService).removePlane(plane);
-    assertThat(actionUnderTest.getKey().airportStatus).isEqualTo(NOT_IN_AIRPORT);
-    assertThat(actionUnderTest.getKey().planeStatus).isEqualTo(FLYING);
+    assertThat(actionUnderTest.successfulPlaneTakeOffStatus.airportStatus).isEqualTo(NOT_IN_AIRPORT);
+    assertThat(actionUnderTest.successfulPlaneTakeOffStatus.planeStatus).isEqualTo(FLYING);
   }
 
   @Test
   public void doesNotRemovesPlaneFromAirportWhenInstructToTakeOff() {
     when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(false);
 
-    Pair<SuccessfulPlaneTakeOffStatus, FailedPlaneTakeOffStatus> actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
+    PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
 
     verify(hangerService, never()).removePlane(plane);
-    assertThat(actionUnderTest.getValue().airportStatus).isEqualTo(IN_AIRPORT);
-    assertThat(actionUnderTest.getValue().planeStatus).isEqualTo(LANDED);
+    assertThat(actionUnderTest.failedPlaneTakeOffStatus.airportStatus).isEqualTo(IN_AIRPORT);
+    assertThat(actionUnderTest.failedPlaneTakeOffStatus.planeStatus).isEqualTo(LANDED);
   }
 
   private final PlaneInventoryService hangerService = mock(PlaneInventoryService.class);
