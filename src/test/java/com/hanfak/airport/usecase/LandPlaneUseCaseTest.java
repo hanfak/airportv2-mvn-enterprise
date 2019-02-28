@@ -31,6 +31,15 @@ public class LandPlaneUseCaseTest implements WithAssertions {
     assertThat(actionUnderTest).isFalse();
   }
 
+  @Test
+  public void cannotInstructPlaneToLandWhenPlaneIsAtTheAirport() {
+    when(planeInventoryService.checkPlaneIsAtAirport(flyingPlane.planeId)).thenReturn(true);
+
+    boolean actionUnderTest = airport.instructPlaneToLand(landedPlane);
+
+    assertThat(actionUnderTest).isFalse();
+  }
+
 
 
   private final PlaneInventoryService planeInventoryService = mock(PlaneInventoryService.class);
