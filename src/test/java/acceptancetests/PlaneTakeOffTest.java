@@ -2,7 +2,9 @@ package acceptancetests;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.hanfak.airport.dataproviders.AirportPlaneInventoryService;
+import com.hanfak.airport.domain.AirportStatus;
 import com.hanfak.airport.domain.Plane;
+import com.hanfak.airport.domain.PlaneTakeOffStatus;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import com.hanfak.airport.usecase.PlaneInventoryService;
 import com.hanfak.airport.usecase.TakeOffUseCase;
@@ -23,6 +25,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
     whenAPlaneIsInstructedToTakeOff();
 
     thenthePlaneHasLeftTheAirport();
+    andThePlaneIsFlying();
   }
 
   private void givenAPlaneIsLanded() {
@@ -36,19 +39,22 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void whenAPlaneIsInstructedToTakeOff() {
-    takeOffUseCase.instructPlaneToTakeOff(new Plane(planeId("A0001"), LANDED));
+    planeTakeOffStatus = takeOffUseCase.instructPlaneToTakeOff(new Plane(planeId("A0001"), LANDED));
   }
 
   private void thenthePlaneHasLeftTheAirport() {
+    assertThat(planeTakeOffStatus.airportStatus).isEqualTo(AirportStatus.NOT_IN_AIRPORT);
     assertThat(hangerService.checkPlaneIsAtAirport(plane.planeId)).isFalse();
   }
 
-  private void andThePlaneIsNotFlying() {
-    //assert that plane that has left is flying
+  private void andThePlaneIsFlying() {
+    assertThat(planeTakeOffStatus.planeStatus).isEqualTo(FLYING);
   }
+
 
   private PlaneInventoryService hangerService = new AirportPlaneInventoryService(); // Should use a stub
   private LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(hangerService);
   private TakeOffUseCase takeOffUseCase;
+  private PlaneTakeOffStatus planeTakeOffStatus;
   private Plane plane;
 }

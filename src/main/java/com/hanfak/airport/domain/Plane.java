@@ -1,5 +1,8 @@
 package com.hanfak.airport.domain;
 
+import static com.hanfak.airport.domain.PlaneStatus.FLYING;
+import static com.hanfak.airport.domain.PlaneStatus.LANDED;
+
 // Domain
 public class Plane extends ValueType {
   // Add static types for Landed and Flying
@@ -14,6 +17,10 @@ public class Plane extends ValueType {
 
   public Plane land() {
     // Check for status is not Landed, through assertion?? but already checked in usecase, so do i need it?
-    return new Plane(this.planeId, PlaneStatus.LANDED);
+    return new Plane(this.planeId, LANDED);
+  }
+
+  public Plane fly() {
+    return new Plane(this.planeId, FLYING);
   }
 }

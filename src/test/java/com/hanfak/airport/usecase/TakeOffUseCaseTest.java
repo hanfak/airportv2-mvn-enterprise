@@ -1,13 +1,17 @@
 package com.hanfak.airport.usecase;
 
 import com.hanfak.airport.domain.Plane;
+import com.hanfak.airport.domain.PlaneTakeOffStatus;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
+import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
+import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.PlaneId.planeId;
 import static com.hanfak.airport.domain.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,19 +21,26 @@ public class TakeOffUseCaseTest implements WithAssertions {
   public void removesPlaneFromAirportWhenInstructToTakeOff() {
     when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(true);
 
-    boolean actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(landedPlane);
+    PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
 
-    verify(hangerService).removePlane(landedPlane);
-    assertThat(actionUnderTest).isTrue();
+    verify(hangerService).removePlane(plane);
+    assertThat(actionUnderTest.airportStatus).isEqualTo(NOT_IN_AIRPORT);
+    assertThat(actionUnderTest.planeStatus).isEqualTo(FLYING);
   }
 
   @Test
-  public void changesStatusOfPlaneAfterBeingRemovedFromHangerToFlying() {
+  public void doesNotRemovesPlaneFromAirportWhenInstructToTakeOff() {
+    when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(false);
+
+    PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
+
+    verify(hangerService, never()).removePlane(plane);
+    assertThat(actionUnderTest.airportStatus).isEqualTo(IN_AIRPORT);
+    assertThat(actionUnderTest.planeStatus).isEqualTo(LANDED);
   }
 
   private final PlaneInventoryService hangerService = mock(PlaneInventoryService.class);
   private final TakeOffUseCase takeOffUseCase = new TakeOffUseCase(hangerService);
-  private final Plane flyingPlane = new Plane(planeId("A0001"), FLYING);
-  private final Plane landedPlane = new Plane(planeId("A0001"), LANDED);
+  private final Plane plane = new Plane(planeId("A0001"), LANDED);
 
 }
