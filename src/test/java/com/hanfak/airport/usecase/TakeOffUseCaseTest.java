@@ -8,7 +8,6 @@ import static com.hanfak.airport.domain.PlaneId.planeId;
 import static com.hanfak.airport.domain.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.PlaneStatus.LANDED;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,10 +15,11 @@ public class TakeOffUseCaseTest implements WithAssertions {
 
   @Test
   public void removesPlaneFromAirportWhenInstructToTakeOff() {
-    when(hangerService.removePlane(landedPlane)).thenReturn(true);
+    when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(true);
+
     boolean actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(landedPlane);
 
-    verify(hangerService, only()).removePlane(landedPlane);
+    verify(hangerService).removePlane(landedPlane);
     assertThat(actionUnderTest).isTrue();
   }
 

@@ -23,7 +23,9 @@ public class AirportHangerServiceTest {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
     Plane plane = new Plane(planeId("A0001"), LANDED);
 
-    assertThat(service.addPlane(plane)).isTrue();
+    service.addPlane(plane);
+
+    assertThat(service.checkPlaneIsAtAirport(plane.planeId)).isTrue();
     assertThat(service.planeInventory()).contains(plane);
   }
 
@@ -31,9 +33,10 @@ public class AirportHangerServiceTest {
   public void canOnlyAddLandedPlanesToAHanger() {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
     Plane plane = new Plane(planeId("A0001"), FLYING);
+
     service.addPlane(plane);
 
-    assertThat(service.addPlane(plane)).isFalse();
+    assertThat(service.checkPlaneIsAtAirport(plane.planeId)).isFalse();
     assertThat(service.planeInventory()).doesNotContain(plane);
   }
 
@@ -42,12 +45,11 @@ public class AirportHangerServiceTest {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
     Plane plane = new Plane(planeId("A0001"), LANDED);
     Plane plane2 = new Plane(planeId("A0001"), LANDED);
+    service.addPlane(plane);
 
     service.addPlane(plane);
 
-    assertThat(service.addPlane(plane2)).isFalse();
-    System.out.println(service.planeInventory());
-
+    assertThat(service.checkPlaneIsAtAirport(plane.planeId)).isTrue();
     assertThat(service.planeInventory().size()).isEqualTo(1);
   }
 
@@ -57,10 +59,9 @@ public class AirportHangerServiceTest {
     Plane plane = new Plane(planeId("A0001"), LANDED);
     service.addPlane(plane);
 
-    boolean actionUnderTest = service.removePlane(plane);
+    service.removePlane(plane);
 
     assertThat(service.planeInventory()).doesNotContain(plane);
-    assertThat(actionUnderTest).isTrue();
   }
 
   @Test

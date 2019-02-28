@@ -12,6 +12,10 @@ public class TakeOffUseCase {
 
   // What to return??? type - id, status, inHanger, inAirport,
   public boolean instructPlaneToTakeOff(Plane plane) {
-    return planeInventoryService.removePlane(plane);
+    if (planeInventoryService.checkPlaneIsAtAirport(plane.planeId)) {
+      planeInventoryService.removePlane(plane);
+      return true; // replace booleans with call to planeInventoryService.checkPlaneIsAtAirport(plane.planeId)
+    }
+    return false;
   }
 }

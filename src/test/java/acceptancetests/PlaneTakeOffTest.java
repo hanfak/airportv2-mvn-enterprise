@@ -36,12 +36,11 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void whenAPlaneIsInstructedToTakeOff() {
-    actionDone = takeOffUseCase.instructPlaneToTakeOff(new Plane(planeId("A0001"), LANDED));
+    takeOffUseCase.instructPlaneToTakeOff(new Plane(planeId("A0001"), LANDED));
   }
 
   private void thenthePlaneHasLeftTheAirport() {
-    assertThat(actionDone).isTrue();
-    assertThat(hangerService.planeInventory()).doesNotContain(new Plane(planeId("A0001"), LANDED));
+    assertThat(hangerService.checkPlaneIsAtAirport(plane.planeId)).isFalse();
   }
 
   private void andThePlaneIsNotFlying() {
@@ -52,5 +51,4 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   private LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(hangerService);
   private TakeOffUseCase takeOffUseCase;
   private Plane plane;
-  private boolean actionDone;     // better variable name
 }

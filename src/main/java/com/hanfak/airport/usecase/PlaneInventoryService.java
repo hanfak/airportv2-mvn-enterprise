@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface PlaneInventoryService {
   List<Plane> planeInventory();
-  boolean addPlane(Plane plane);
-  boolean removePlane(Plane plane);
+  void addPlane(Plane plane);
+  void removePlane(Plane plane);
 
   Boolean checkPlaneIsAtAirport(PlaneId planeId);
 }
