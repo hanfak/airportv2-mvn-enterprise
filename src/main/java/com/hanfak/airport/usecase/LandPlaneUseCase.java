@@ -17,9 +17,15 @@ public class LandPlaneUseCase {
   // What to return for application output, specific type to include plane, status, inAirport and inHanger (later specific hanger)
   // Pass in the plane ID, use a PlaneStatusService (a DB) to check if it is flying or landed???
   public boolean instructPlaneToLand(Plane plane) {
-    if (plane.planeStatus.equals(LANDED)) {
+    if (LANDED.equals(plane.planeStatus)) {
       return false;
     }
-    return planeInventoryService.addPlane(new Plane(plane.planeId, LANDED));
+
+    if (!planeInventoryService.checkPlaneIsAtAirport(plane.planeId)) {
+      Plane landedPlane = plane.land();
+      return planeInventoryService.addPlane(landedPlane);
+    }
+
+    return false;
   }
 }

@@ -1,6 +1,7 @@
 package com.hanfak.airport.dataproviders;
 
 import com.hanfak.airport.domain.Plane;
+import com.hanfak.airport.domain.PlaneId;
 import com.hanfak.airport.usecase.PlaneInventoryService;
 
 import java.util.ArrayList;
@@ -27,6 +28,11 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
   @Override
   public boolean removePlane(Plane plane) { // Should param be plane or planeId?
     return hanger.remove(plane);
+  }
+
+  @Override
+  public Boolean checkPlaneIsAtAirport(PlaneId planeId) {
+    return planeInventory().stream().anyMatch(plane -> planeId.equals(plane.planeId));
   }
 
   private boolean addLandedPlaneToHanger(Plane plane) {

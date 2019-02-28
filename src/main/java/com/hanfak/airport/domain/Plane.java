@@ -13,7 +13,7 @@ public class Plane extends ValueType {
   }
 
   public Plane land() {
-    // Check for status is not Landed?? but already checked in usecase, so do i need it?
+    // Check for status is not Landed, through assertion?? but already checked in usecase, so do i need it?
     return new Plane(this.planeId, PlaneStatus.LANDED);
   }
 }

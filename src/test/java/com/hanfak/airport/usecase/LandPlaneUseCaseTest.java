@@ -16,11 +16,12 @@ public class LandPlaneUseCaseTest implements WithAssertions {
 
   @Test
   public void airportInstructsPlaneToLand() {
-    when(hangerService.addPlane(landedPlane)).thenReturn(true);
+    when(planeInventoryService.checkPlaneIsAtAirport(flyingPlane.planeId)).thenReturn(false);
+    when(planeInventoryService.addPlane(landedPlane)).thenReturn(true);
 
     boolean actionUnderTest = airport.instructPlaneToLand(flyingPlane);
 
-    verify(hangerService).addPlane(landedPlane);
+    verify(planeInventoryService).addPlane(landedPlane);
     assertThat(actionUnderTest).isTrue();
   }
 
@@ -33,8 +34,8 @@ public class LandPlaneUseCaseTest implements WithAssertions {
 
 
 
-  private final PlaneInventoryService hangerService = mock(PlaneInventoryService.class);
-  private final LandPlaneUseCase airport = new LandPlaneUseCase(hangerService);
+  private final PlaneInventoryService planeInventoryService = mock(PlaneInventoryService.class);
+  private final LandPlaneUseCase airport = new LandPlaneUseCase(planeInventoryService);
   private final Plane flyingPlane = new Plane(planeId("A0001"), FLYING);
   private final Plane landedPlane = new Plane(planeId("A0001"), LANDED);
 }
