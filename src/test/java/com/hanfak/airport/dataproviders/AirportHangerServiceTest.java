@@ -1,13 +1,13 @@
 package com.hanfak.airport.dataproviders;
 
-import com.hanfak.airport.domain.Plane;
+import com.hanfak.airport.domain.plane.Plane;
 import org.junit.Test;
 
-import static com.hanfak.airport.domain.PlaneId.planeId;
-import static com.hanfak.airport.domain.PlaneStatus.FLYING;
-import static com.hanfak.airport.domain.PlaneStatus.LANDED;
+import static com.hanfak.airport.domain.plane.Plane.plane;
+import static com.hanfak.airport.domain.plane.PlaneId.planeId;
+import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
+import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static org.assertj.core.api.Assertions.assertThat;
-
 
 public class AirportHangerServiceTest {
 
@@ -21,7 +21,7 @@ public class AirportHangerServiceTest {
   @Test
   public void canAddAPlaneToAHanger() {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-    Plane plane = new Plane(planeId("A0001"), LANDED);
+    Plane plane = plane(planeId("A0001"), LANDED);
 
     service.addPlane(plane);
 
@@ -32,7 +32,7 @@ public class AirportHangerServiceTest {
   @Test
   public void canOnlyAddLandedPlanesToAHanger() {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-    Plane plane = new Plane(planeId("A0001"), FLYING);
+    Plane plane = plane(planeId("A0001"), FLYING);
 
     service.addPlane(plane);
 
@@ -43,8 +43,8 @@ public class AirportHangerServiceTest {
   @Test
   public void canOnlyHaveOneUniquePlaneInTheHanger() {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-    Plane plane = new Plane(planeId("A0001"), LANDED);
-    Plane plane2 = new Plane(planeId("A0001"), LANDED);
+    Plane plane = plane(planeId("A0001"), LANDED);
+    plane(planeId("A0001"), LANDED);
     service.addPlane(plane);
 
     service.addPlane(plane);
@@ -56,7 +56,7 @@ public class AirportHangerServiceTest {
   @Test
   public void removesPlaneFromHanger() {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-    Plane plane = new Plane(planeId("A0001"), LANDED);
+    Plane plane = plane(planeId("A0001"), LANDED);
     service.addPlane(plane);
 
     service.removePlane(plane);
@@ -67,7 +67,7 @@ public class AirportHangerServiceTest {
   @Test
   public void checkPlaneIsInAirport() {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-    Plane plane = new Plane(planeId("A0001"), LANDED);
+    Plane plane = plane(planeId("A0001"), LANDED);
     service.addPlane(plane);
 
     boolean planeAtAirport = service.checkPlaneIsAtAirport(planeId("A0001"));

@@ -1,4 +1,6 @@
-package com.hanfak.airport.domain;
+package com.hanfak.airport.domain.plane;
+
+import com.hanfak.airport.domain.helper.SingleValueType;
 
 // Validation over this domain
 public class PlaneId extends SingleValueType<String> {

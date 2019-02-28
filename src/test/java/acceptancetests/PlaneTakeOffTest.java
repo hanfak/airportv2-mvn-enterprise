@@ -2,20 +2,21 @@ package acceptancetests;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.hanfak.airport.dataproviders.AirportPlaneInventoryService;
-import com.hanfak.airport.domain.Plane;
-import com.hanfak.airport.domain.PlaneTakeOffStatus;
-import com.hanfak.airport.domain.SuccessfulPlaneTakeOffStatus;
+import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
+import com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import com.hanfak.airport.usecase.PlaneInventoryService;
 import com.hanfak.airport.usecase.TakeOffUseCase;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
-import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
-import static com.hanfak.airport.domain.PlaneId.planeId;
-import static com.hanfak.airport.domain.PlaneStatus.FLYING;
-import static com.hanfak.airport.domain.PlaneStatus.LANDED;
-import static com.hanfak.airport.domain.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
+import static com.hanfak.airport.domain.plane.Plane.plane;
+import static com.hanfak.airport.domain.plane.PlaneId.planeId;
+import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
+import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
+import static com.hanfak.airport.domain.planetakeoffstatus.AirportStatus.NOT_IN_AIRPORT;
+import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
 
 public class PlaneTakeOffTest extends TestState implements WithAssertions {
 
@@ -32,7 +33,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
 
   private void givenAPlaneIsLanded() {
     takeOffUseCase = new TakeOffUseCase(hangerService);
-    plane = new Plane(planeId("A0001"), FLYING);
+    plane = plane(planeId("A0001"), FLYING);
     interestingGivens.add("plane", plane);
   }
 
@@ -41,7 +42,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void whenAPlaneIsInstructedToTakeOff() {
-    planeTakeOffStatus = takeOffUseCase.instructPlaneToTakeOff(new Plane(planeId("A0001"), LANDED));
+    planeTakeOffStatus = takeOffUseCase.instructPlaneToTakeOff(plane(planeId("A0001"), LANDED));
   }
 
   private void thenthePlaneHasLeftTheAirport() {

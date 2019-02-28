@@ -1,7 +1,7 @@
 package com.hanfak.airport.usecase;
 
-import com.hanfak.airport.domain.Plane;
-import com.hanfak.airport.domain.PlaneId;
+import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.domain.plane.PlaneId;
 
 import java.util.List;
 

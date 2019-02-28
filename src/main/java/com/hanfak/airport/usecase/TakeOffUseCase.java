@@ -1,15 +1,15 @@
 package com.hanfak.airport.usecase;
 
-import com.hanfak.airport.domain.FailedPlaneTakeOffStatus;
-import com.hanfak.airport.domain.Plane;
-import com.hanfak.airport.domain.PlaneTakeOffStatus;
-import com.hanfak.airport.domain.SuccessfulPlaneTakeOffStatus;
+import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus;
+import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
+import com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus;
 
-import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
-import static com.hanfak.airport.domain.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
-import static com.hanfak.airport.domain.PlaneStatus.FLYING;
-import static com.hanfak.airport.domain.PlaneTakeOffStatus.createPlaneTakeOffStatus;
-import static com.hanfak.airport.domain.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
+import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
+import static com.hanfak.airport.domain.planetakeoffstatus.AirportStatus.NOT_IN_AIRPORT;
+import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
+import static com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus.createPlaneTakeOffStatus;
+import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
 
 public class TakeOffUseCase {
 

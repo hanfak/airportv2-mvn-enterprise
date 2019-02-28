@@ -1,4 +1,4 @@
-package com.hanfak.airport.domain;
+package com.hanfak.airport.domain.helper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

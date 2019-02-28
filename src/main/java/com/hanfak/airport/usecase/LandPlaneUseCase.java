@@ -1,8 +1,8 @@
 package com.hanfak.airport.usecase;
 
-import com.hanfak.airport.domain.Plane;
+import com.hanfak.airport.domain.plane.Plane;
 
-import static com.hanfak.airport.domain.PlaneStatus.LANDED;
+import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 // New Usecase for airport controller to use, to assess the state of the plane by accessing the
 // AirportHangerService using the planeId to get the its flight status
 

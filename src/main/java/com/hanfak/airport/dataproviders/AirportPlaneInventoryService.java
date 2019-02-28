@@ -1,13 +1,13 @@
 package com.hanfak.airport.dataproviders;
 
-import com.hanfak.airport.domain.Plane;
-import com.hanfak.airport.domain.PlaneId;
+import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.domain.plane.PlaneId;
 import com.hanfak.airport.usecase.PlaneInventoryService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.hanfak.airport.domain.PlaneStatus.LANDED;
+import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static java.util.Collections.unmodifiableList;
 
 public class AirportPlaneInventoryService implements PlaneInventoryService {

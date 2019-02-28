@@ -1,4 +1,9 @@
-package com.hanfak.airport.domain;
+package com.hanfak.airport.domain.planetakeoffstatus;
+
+import com.hanfak.airport.domain.helper.ValueType;
+import com.hanfak.airport.domain.plane.PlaneId;
+import com.hanfak.airport.domain.plane.PlaneStatus;
+
 // Better name
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class SuccessfulPlaneTakeOffStatus extends ValueType {

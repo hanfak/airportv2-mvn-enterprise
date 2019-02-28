@@ -1,4 +1,7 @@
-package com.hanfak.airport.domain;
+package com.hanfak.airport.domain.planetakeoffstatus;
+
+import com.hanfak.airport.domain.helper.ValueType;
+
 // Better name
 public class PlaneTakeOffStatus extends ValueType {
 
