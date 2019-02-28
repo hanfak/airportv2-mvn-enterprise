@@ -2,9 +2,9 @@ package com.hanfak.airport.domain;
 //Test
 public class SingleValueType<T> extends ValueType {
 
-  public final T value;
+  private final T value;
 
-  public SingleValueType(T value) {
+  SingleValueType(T value) {
     this.value = value;
   }
 

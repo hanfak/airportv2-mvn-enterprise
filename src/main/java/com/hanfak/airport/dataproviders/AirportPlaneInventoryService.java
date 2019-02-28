@@ -21,7 +21,7 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
 
   @Override
   public void addPlane(Plane plane) {
-    // Throw exception if plane is in planesInventory
+    // Throw exception if plane is in airport
     if (!checkPlaneIsAtAirport(plane.planeId)) {
       addLandedPlaneToHanger(plane);
     }
@@ -29,6 +29,7 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
 
   @Override
   public void removePlane(Plane plane) { // Should param be plane or planeId?
+    // Throw exception if plane not in airport
     planesInventory.remove(plane);
   }
 
@@ -37,8 +38,10 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
     return planesInventory.stream().anyMatch(plane -> planeId.equals(plane.planeId));
   }
 
-  private boolean addLandedPlaneToHanger(Plane plane) {
+  private void addLandedPlaneToHanger(Plane plane) {
     // Throw exception if plane is still flying
-    return LANDED.equals(plane.planeStatus) && planesInventory.add(plane);
+    if (LANDED.equals(plane.planeStatus)) { // Do we need this check if done in use case??
+      planesInventory.add(plane);
+    }
   }
 }
