@@ -1,7 +1,9 @@
 package com.hanfak.airport.usecase;
 
+import com.hanfak.airport.domain.FailedPlaneTakeOffStatus;
 import com.hanfak.airport.domain.Plane;
-import com.hanfak.airport.domain.PlaneTakeOffStatus;
+import com.hanfak.airport.domain.SuccessfulPlaneTakeOffStatus;
+import javafx.util.Pair;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -21,22 +23,22 @@ public class TakeOffUseCaseTest implements WithAssertions {
   public void removesPlaneFromAirportWhenInstructToTakeOff() {
     when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(true);
 
-    PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
+    Pair<SuccessfulPlaneTakeOffStatus, FailedPlaneTakeOffStatus> actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
 
     verify(hangerService).removePlane(plane);
-    assertThat(actionUnderTest.airportStatus).isEqualTo(NOT_IN_AIRPORT);
-    assertThat(actionUnderTest.planeStatus).isEqualTo(FLYING);
+    assertThat(actionUnderTest.getKey().airportStatus).isEqualTo(NOT_IN_AIRPORT);
+    assertThat(actionUnderTest.getKey().planeStatus).isEqualTo(FLYING);
   }
 
   @Test
   public void doesNotRemovesPlaneFromAirportWhenInstructToTakeOff() {
     when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(false);
 
-    PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
+    Pair<SuccessfulPlaneTakeOffStatus, FailedPlaneTakeOffStatus> actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
 
     verify(hangerService, never()).removePlane(plane);
-    assertThat(actionUnderTest.airportStatus).isEqualTo(IN_AIRPORT);
-    assertThat(actionUnderTest.planeStatus).isEqualTo(LANDED);
+    assertThat(actionUnderTest.getValue().airportStatus).isEqualTo(IN_AIRPORT);
+    assertThat(actionUnderTest.getValue().planeStatus).isEqualTo(LANDED);
   }
 
   private final PlaneInventoryService hangerService = mock(PlaneInventoryService.class);

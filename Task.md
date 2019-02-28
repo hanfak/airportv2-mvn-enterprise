@@ -46,15 +46,18 @@ Technical TODO:
 - Add Jetty server, split up usecase into several classes
     - respond with json
     - acceptance tests are run via server then docker container
+    - post req for takeoff and landing
+    - get req for plane status
 - Add db, object pooling, property file
 - use stub for database in test
+- plant uml for acceptance test
 - Use third party weather service, use wire mock for stub, http client to talk wiht it
     - https://fcc-weather-api.glitch.me/api/current?lat=51.4700&lon=0.4543
     - https://www.metaweather.com/api/
 - log incoming and outgoing requests
-- cqrs and event sourcing
+- cqrs and event sourcing, aggregates for flow
 - find bugs SA
-- scheduler to check weather, and store in cache (Db)
+- scheduler to check weather, and store in cache (Db - redis)
 - status page, check db & weather service is up, scheduled job every minute
 - dockerise
 - jenkins ci build
