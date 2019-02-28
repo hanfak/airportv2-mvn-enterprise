@@ -20,6 +20,7 @@ public class LandPlaneUseCase {
       return false;
     }
 
+    // Should this check be here or in planeInventoryService? if in planeInventoryService can throw exception
     if (!planeInventoryService.checkPlaneIsAtAirport(plane.planeId)) {
       Plane landedPlane = plane.land();
       planeInventoryService.addPlane(landedPlane);

@@ -37,13 +37,26 @@ public class TakeOffUseCaseTest implements WithAssertions {
     PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
 
     verify(hangerService, never()).removePlane(plane);
-    assertThat(actionUnderTest.failedPlaneTakeOffStatus).isEqualTo(expectedFailedPlaneTakeOffStatus);
+    assertThat(actionUnderTest.failedPlaneTakeOffStatus).isEqualTo(expectedFailedPlaneTakeOffStatusForNotPresentPlane);
   }
+
+  @Test
+  public void planeDoesNotLeaveAirportWhenPlaneIsFlying() {
+    when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(false);
+
+    PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(flyingPlane);
+
+    verify(hangerService, never()).removePlane(plane);
+    assertThat(actionUnderTest.failedPlaneTakeOffStatus).isEqualTo(expectedFailedPlaneTakeOffStatusForFlyingPlane);
+  }
+
 
   private final PlaneInventoryService hangerService = mock(PlaneInventoryService.class);
   private final TakeOffUseCase takeOffUseCase = new TakeOffUseCase(hangerService);
   private final Plane plane = new Plane(planeId("A0001"), LANDED);
-  private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatus = failedPlaneTakeOffStatus(planeId("A0001"), LANDED, NOT_IN_AIRPORT, "Plane could not take off as it is not in the airport");
+  private final Plane flyingPlane = new Plane(planeId("A0001"), FLYING);
+  private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForNotPresentPlane = failedPlaneTakeOffStatus(planeId("A0001"), LANDED, NOT_IN_AIRPORT, "Plane could not take off as it is not in the airport");
+  private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForFlyingPlane = failedPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT, "Plane could not take off as it is still Flying");
   private final SuccessfulPlaneTakeOffStatus expectedSuccessfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT);
 
 }
