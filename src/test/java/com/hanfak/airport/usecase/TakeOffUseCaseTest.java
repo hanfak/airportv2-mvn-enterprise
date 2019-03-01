@@ -14,6 +14,8 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planetakeoffstatus.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
+import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_FLYING;
+import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_NOT_AT_THE_AIRPORT;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -55,7 +57,7 @@ public class TakeOffUseCaseTest implements WithAssertions {
   private final TakeOffUseCase takeOffUseCase = new TakeOffUseCase(hangerService);
   private final Plane plane = plane(planeId("A0001"), LANDED);
   private final Plane flyingPlane = plane(planeId("A0001"), FLYING);
-  private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForNotPresentPlane = failedPlaneTakeOffStatus(planeId("A0001"), LANDED, NOT_IN_AIRPORT, "Plane could not take off as it is not in the airport");
-  private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForFlyingPlane = failedPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT, "Plane could not take off as it is still Flying");
+  private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForNotPresentPlane = failedPlaneTakeOffStatus(planeId("A0001"), LANDED, NOT_IN_AIRPORT, PLANE_IS_NOT_AT_THE_AIRPORT);
+  private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForFlyingPlane = failedPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT, PLANE_IS_FLYING);
   private final SuccessfulPlaneTakeOffStatus expectedSuccessfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT);
 }
