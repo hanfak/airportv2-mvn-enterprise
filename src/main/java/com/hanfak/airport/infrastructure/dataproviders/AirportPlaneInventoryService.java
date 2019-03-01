@@ -10,6 +10,7 @@ import java.util.List;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static java.util.Collections.unmodifiableList;
 
+// Split into two classes, one for dataprovider dependency, this to call dataprovider and check logic
 public class AirportPlaneInventoryService implements PlaneInventoryService {
 
   private final List<Plane> planesInventory = new ArrayList<>();
@@ -29,8 +30,11 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
 
   @Override
   public void removePlane(Plane plane) { // Should param be plane or planeId?
-    // Throw exception if plane not in airport
-    planesInventory.remove(plane);
+    if (checkPlaneIsAtAirport(plane.planeId)) {
+      planesInventory.remove(plane);
+    } else {
+      throw new IllegalStateException(String.format("Plane, '%s', not in airport, cannot remove plane", plane.planeId));
+    }
   }
 
   @Override

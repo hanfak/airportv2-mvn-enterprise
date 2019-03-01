@@ -8,6 +8,7 @@ import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AirportHangerServiceTest {
 
@@ -62,6 +63,16 @@ public class AirportHangerServiceTest {
     service.removePlane(plane);
 
     assertThat(service.planeInventory()).doesNotContain(plane);
+  }
+
+  @Test
+  public void cannotRemovePlaneFromHangerWhenPlaneNotAtHanger() {
+    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
+    Plane plane = plane(planeId("A0001"), LANDED);
+
+    assertThatThrownBy(() -> service.removePlane(plane))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("Plane, 'A0001', not in airport, cannot remove plane");
   }
 
   @Test

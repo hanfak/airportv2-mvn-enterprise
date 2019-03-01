@@ -29,26 +29,26 @@ public class TakeOffUseCase {
   // Or Can think about using railway programming??
   public PlaneTakeOffStatus instructPlaneToTakeOff(Plane plane) {
     if (FLYING.equals(plane.planeStatus)) {
+      // log
       return createPlaneTakeOffStatus(null,
               getFailedPlaneTakeOffStatus(plane, PLANE_IS_FLYING));
     }
 
-    // Should this check be here or in planeInventoryService? if in planeInventoryService can throw exception
-    if (planeInventoryService.checkPlaneIsAtAirport(plane.planeId)) {
+    try {
       planeInventoryService.removePlane(plane);
       Plane flyingPlane = plane.fly();
       return createPlaneTakeOffStatus(getSuccessfulPlaneTakeOffStatus(flyingPlane), null);
+    } catch (Exception e) {
+      // log
+      return createPlaneTakeOffStatus(null,
+              getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT));
     }
-
-    return createPlaneTakeOffStatus(null,
-            getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT));
   }
 // better name
   private SuccessfulPlaneTakeOffStatus getSuccessfulPlaneTakeOffStatus(Plane flyingPlane) {
     return successfulPlaneTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, NOT_IN_AIRPORT);
   }
 // better name
-  // reason should be constant in other class
   private FailedPlaneTakeOffStatus getFailedPlaneTakeOffStatus(Plane plane, TakeOffFailureReason reason) {
     return failedPlaneTakeOffStatus(plane.planeId, plane.planeStatus, NOT_IN_AIRPORT, reason);
   }
