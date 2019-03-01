@@ -1,10 +1,10 @@
 package acceptancetests;
 
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import com.hanfak.airport.dataproviders.AirportPlaneInventoryService;
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
 import com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus;
+import com.hanfak.airport.infrastructure.dataproviders.AirportPlaneInventoryService;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import com.hanfak.airport.usecase.PlaneInventoryService;
 import com.hanfak.airport.usecase.TakeOffUseCase;

@@ -19,12 +19,11 @@ public class TakeOffUseCase {
     this.planeInventoryService = hangerService;
   }
 
-  // Have extra field for failure reason in PlaneTakeOffStatus??
-  // Or return tuple with new types SuccessfulPlaneTakeOffStatus &
+  // return tuple with new types SuccessfulPlaneTakeOffStatus &
   // FailurePlaneTakeOffStatus (includes reason for failure) ??
-  // Throw exception for failure case?? but information will get lost
-  // Use a map
-  // Can think about using railway programming??
+  // Or Throw exception for failure case?? but information will get lost
+  // Or Use a map
+  // Or Can think about using railway programming??
   public PlaneTakeOffStatus instructPlaneToTakeOff(Plane plane) {
     if (FLYING.equals(plane.planeStatus)) {
       return createPlaneTakeOffStatus(null,
@@ -46,6 +45,7 @@ public class TakeOffUseCase {
     return successfulPlaneTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, NOT_IN_AIRPORT);
   }
 // better name
+  // reason should be constant in other class
   private FailedPlaneTakeOffStatus getFailedPlaneTakeOffStatus(Plane plane, String reason) {
     return failedPlaneTakeOffStatus(plane.planeId, plane.planeStatus, NOT_IN_AIRPORT, reason);
   }

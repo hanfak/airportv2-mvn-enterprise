@@ -1,4 +1,4 @@
-package com.hanfak.airport.dataproviders;
+package com.hanfak.airport.infrastructure.dataproviders;
 
 import com.hanfak.airport.domain.plane.Plane;
 import org.junit.Test;

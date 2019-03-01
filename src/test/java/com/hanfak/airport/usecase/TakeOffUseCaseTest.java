@@ -32,7 +32,7 @@ public class TakeOffUseCaseTest implements WithAssertions {
   }
 
   @Test
-  public void doesNotRemovesPlaneFromAirportWhenInstructToTakeOff() {
+  public void doesNotRemovesPlaneFromAirportWhenPlaneIsNotAtTheAirport() {
     when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(false);
 
     PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);

@@ -49,16 +49,18 @@ Technical TODO:
     - post req for takeoff and landing
     - get req for plane status
 - Add db, object pooling, property file
+- flyway db to setup database
 - use stub for database in test
 - plant uml for acceptance test
 - Use third party weather service, use wire mock for stub, http client to talk wiht it
     - https://fcc-weather-api.glitch.me/api/current?lat=51.4700&lon=0.4543
     - https://www.metaweather.com/api/
 - log incoming and outgoing requests
+- separate acceptance test into module
 - cqrs and event sourcing, aggregates for flow
-- find bugs SA
+- find bugs Static analysis via maven
 - scheduler to check weather, and store in cache (Db - redis)
 - status page, check db & weather service is up, scheduled job every minute
-- dockerise
+- dockerise, use maven to dockerise and run acceptance tests through image
 - jenkins ci build
 - metrics end point, prometheues
