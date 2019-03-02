@@ -6,6 +6,7 @@ import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
 import com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
@@ -43,7 +44,7 @@ public class TakeOffUseCaseTest implements WithAssertions {
   }
 
   private final PlaneInventoryService hangerService = mock(PlaneInventoryService.class);
-  private final TakeOffUseCase takeOffUseCase = new TakeOffUseCase(hangerService);
+  private final TakeOffUseCase takeOffUseCase = new TakeOffUseCase(hangerService, mock(Logger.class));
   private final Plane plane = plane(planeId("A0001"), LANDED);
   private final Plane flyingPlane = plane(planeId("A0001"), FLYING);
   private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForFlyingPlane = failedPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT, PLANE_IS_FLYING);
