@@ -32,7 +32,7 @@ public class TakeOffUseCase {
   // Or Can think about using railway programming??
   public PlaneTakeOffStatus instructPlaneToTakeOff(Plane plane) {
     if (FLYING.equals(plane.planeStatus)) {
-      // log
+      logger.info(String.format("Plane, '%s', cannot take off, status is '%s'", plane.planeId, plane.planeStatus.name()));
       return createPlaneTakeOffStatus(null,
               getFailedPlaneTakeOffStatus(plane, PLANE_IS_FLYING));
     }
