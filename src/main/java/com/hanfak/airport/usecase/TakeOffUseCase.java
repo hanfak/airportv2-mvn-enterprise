@@ -5,6 +5,7 @@ import com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus;
 import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
 import com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus;
 import com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason;
+import org.slf4j.Logger;
 
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.planetakeoffstatus.AirportStatus.NOT_IN_AIRPORT;
@@ -17,9 +18,11 @@ import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.
 public class TakeOffUseCase {
 
   private final PlaneInventoryService planeInventoryService;
+  private final Logger logger;
 
-  public TakeOffUseCase(PlaneInventoryService hangerService) {
+  public TakeOffUseCase(PlaneInventoryService hangerService, Logger logger) {
     this.planeInventoryService = hangerService;
+    this.logger = logger;
   }
 
   // return tuple with new types SuccessfulPlaneTakeOffStatus &
@@ -39,7 +42,7 @@ public class TakeOffUseCase {
       Plane flyingPlane = plane.fly();
       return createPlaneTakeOffStatus(getSuccessfulPlaneTakeOffStatus(flyingPlane), null);
     } catch (Exception e) {
-      // log
+      logger.info("Plane not airport", e);
       return createPlaneTakeOffStatus(null,
               getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT));
     }

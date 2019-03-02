@@ -33,6 +33,7 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
     if (checkPlaneIsAtAirport(plane.planeId)) {
       planesInventory.remove(plane);
     } else {
+      // Use custom one
       throw new IllegalStateException(String.format("Plane, '%s', not in airport, cannot remove plane", plane.planeId));
     }
   }
@@ -43,7 +44,6 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
   }
 
   private void addLandedPlaneToHanger(Plane plane) {
-    // Throw exception if plane is still flying
     if (LANDED.equals(plane.planeStatus)) { // Do we need this check if done in use case??
       planesInventory.add(plane);
     }

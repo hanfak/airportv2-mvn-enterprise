@@ -25,7 +25,7 @@
 hs_err_pid*
 
 /target/
-/.surefire-6598E725700B5F50DD21220D5E4DCE05F21F332D
+/.surefire-*
 /airport-version2.iml
 /dependency-reduced-pom.xml
 /.idea/
