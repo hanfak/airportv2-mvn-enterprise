@@ -40,6 +40,7 @@ public class TakeOffUseCase {
     try {
       planeInventoryService.removePlane(plane);
       Plane flyingPlane = plane.fly();
+      logger.info(String.format("Plane, '%s', has succesfully left the airport", plane.planeId));
       return createPlaneTakeOffStatus(getSuccessfulPlaneTakeOffStatus(flyingPlane), null);
     } catch (Exception e) {
       logger.info("Plane not at airport", e);

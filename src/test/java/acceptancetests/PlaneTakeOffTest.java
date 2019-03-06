@@ -82,6 +82,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void thenThePlaneHasLeftTheAirport() {
+    verify(logger).info(eq("Plane, 'A0001', has succesfully left the airport"));
     assertThat(planeTakeOffStatus.successfulPlaneTakeOffStatus).isEqualTo(expectedSuccessfulPlaneTakeOffStatus);
     assertThat(hangerService.checkPlaneIsAtAirport(plane.planeId)).isFalse();
   }
