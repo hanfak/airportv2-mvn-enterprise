@@ -19,7 +19,7 @@ public class SuccessfulPlaneLandStatus extends ValueType {
     this.airportStatus = airportStatus;
   }
 
-  public static SuccessfulPlaneLandStatus successfulPlaneTakeOffStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus) {
+  public static SuccessfulPlaneLandStatus successfulPlaneLandStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus) {
     return new SuccessfulPlaneLandStatus(planeId, planeStatus, airportStatus);
   }
 }

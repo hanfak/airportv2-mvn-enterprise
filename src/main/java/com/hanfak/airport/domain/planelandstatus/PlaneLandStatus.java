@@ -1,21 +1,19 @@
 package com.hanfak.airport.domain.planelandstatus;
 
 import com.hanfak.airport.domain.helper.ValueType;
-import com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus;
-import com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus;
 
 // Better name
 public class PlaneLandStatus extends ValueType {
 
-  public final SuccessfulPlaneTakeOffStatus successfulPlaneTakeOffStatus;
-  public final FailedPlaneTakeOffStatus failedPlaneTakeOffStatus;
+  public final SuccessfulPlaneLandStatus successfulPlaneLandStatus;
+  public final FailedPlaneLandStatus failedPlaneLandStatus;
 
-  private PlaneLandStatus(SuccessfulPlaneTakeOffStatus successfulPlaneTakeOffStatus, FailedPlaneTakeOffStatus failedPlaneTakeOffStatus) {
-    this.successfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus;
-    this.failedPlaneTakeOffStatus = failedPlaneTakeOffStatus;
+  private PlaneLandStatus(SuccessfulPlaneLandStatus successfulPlaneLandStatus, FailedPlaneLandStatus failedPlaneLandStatus) {
+    this.successfulPlaneLandStatus = successfulPlaneLandStatus;
+    this.failedPlaneLandStatus = failedPlaneLandStatus;
   }
 
-  public static PlaneLandStatus createPlaneTakeOffStatus(SuccessfulPlaneTakeOffStatus successfulPlaneTakeOffStatus, FailedPlaneTakeOffStatus failedPlaneTakeOffStatus) {
-    return new PlaneLandStatus(successfulPlaneTakeOffStatus, failedPlaneTakeOffStatus);
+  public static PlaneLandStatus createPlaneLandStatus(SuccessfulPlaneLandStatus successfulPlaneLandStatus, FailedPlaneLandStatus failedPlaneLandStatus) {
+    return new PlaneLandStatus(successfulPlaneLandStatus, failedPlaneLandStatus);
   }
 }

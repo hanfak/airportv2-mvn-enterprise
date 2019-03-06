@@ -2,9 +2,12 @@ package com.hanfak.airport.usecase;
 
 
 import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
+import com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
+import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
@@ -19,27 +22,29 @@ public class LandPlaneUseCaseTest implements WithAssertions {
   public void airportInstructsPlaneToLand() {
     when(planeInventoryService.checkPlaneIsAtAirport(flyingPlane.planeId)).thenReturn(false);
 
-    boolean actionUnderTest = airport.instructPlaneToLand(flyingPlane);
+    PlaneLandStatus actionUnderTest = airport.instructPlaneToLand(flyingPlane);
 
     verify(planeInventoryService).addPlane(landedPlane);
-    assertThat(actionUnderTest).isTrue();
+    assertThat(actionUnderTest.successfulPlaneLandStatus).isEqualTo(expectedSuccessfulPlaneLandStatus);
   }
 
   @Test
   public void cannotInstructPlaneToLandWhenPlaneIsNotFlying() {
-    boolean actionUnderTest = airport.instructPlaneToLand(landedPlane);
+    PlaneLandStatus actionUnderTest = airport.instructPlaneToLand(landedPlane);
 
-    assertThat(actionUnderTest).isFalse();
+    assertThat(actionUnderTest).isNull();
   }
 
   @Test
   public void cannotInstructPlaneToLandWhenPlaneIsAtTheAirport() {
     when(planeInventoryService.checkPlaneIsAtAirport(flyingPlane.planeId)).thenReturn(true);
 
-    boolean actionUnderTest = airport.instructPlaneToLand(landedPlane);
+    PlaneLandStatus actionUnderTest = airport.instructPlaneToLand(landedPlane);
 
-    assertThat(actionUnderTest).isFalse();
+    assertThat(actionUnderTest).isNull();
   }
+
+  private final SuccessfulPlaneLandStatus expectedSuccessfulPlaneLandStatus = SuccessfulPlaneLandStatus.successfulPlaneLandStatus(planeId("A0001"), LANDED, IN_AIRPORT);
 
   private final PlaneInventoryService planeInventoryService = mock(PlaneInventoryService.class);
   private final LandPlaneUseCase airport = new LandPlaneUseCase(planeInventoryService);
