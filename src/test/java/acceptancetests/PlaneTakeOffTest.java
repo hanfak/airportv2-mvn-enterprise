@@ -82,7 +82,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void thenThePlaneHasLeftTheAirport() {
-    verify(logger).info(eq("Plane, 'A0001', has succesfully left the airport"));
+    verify(logger).info(eq("Plane, 'A0001', has successfully left the airport"));
     assertThat(planeTakeOffStatus.successfulPlaneTakeOffStatus).isEqualTo(expectedSuccessfulPlaneTakeOffStatus);
     assertThat(hangerService.checkPlaneIsAtAirport(plane.planeId)).isFalse();
   }
@@ -93,7 +93,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
 
   private final Logger logger = mock(Logger.class);
   private final PlaneInventoryService hangerService = new AirportPlaneInventoryService(); // Should use a stub
-  private final LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(hangerService);
+  private final LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(hangerService, logger);
   private final SuccessfulPlaneTakeOffStatus expectedSuccessfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT);
   private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForNotPresentPlane = failedPlaneTakeOffStatus(planeId("A0001"), LANDED, NOT_IN_AIRPORT, PLANE_IS_NOT_AT_THE_AIRPORT);
   private TakeOffUseCase takeOffUseCase;

@@ -11,12 +11,16 @@ import com.hanfak.airport.usecase.PlaneInventoryService;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
 
 import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 
 @RunWith(SpecRunner.class)
@@ -39,7 +43,7 @@ public class LandPlaneTest extends TestState implements WithAssertions {
   }
 
   private void andAnAirportHasCapacity() {
-    airport = new LandPlaneUseCase(hangerService);
+    airport = new LandPlaneUseCase(hangerService, logger);
   }
 
   private void whenAPlaneIsInstructedToLand() {
@@ -47,6 +51,8 @@ public class LandPlaneTest extends TestState implements WithAssertions {
   }
 
   private void thenthePlaneIsInTheAirport() {
+    verify(logger).info(eq("Plane, 'A0001', has successfully landed at the airport"));
+
     assertThat(planeLandStatus.successfulPlaneLandStatus).isEqualTo(expectedSuccessfulPlaneLandStatus);
     assertThat(hangerService.checkPlaneIsAtAirport(plane.planeId)).isTrue();
   }
@@ -56,6 +62,8 @@ public class LandPlaneTest extends TestState implements WithAssertions {
   }
 
   private final SuccessfulPlaneLandStatus expectedSuccessfulPlaneLandStatus = SuccessfulPlaneLandStatus.successfulPlaneLandStatus(planeId("A0001"), LANDED, IN_AIRPORT);
+
+  private final Logger logger = mock(Logger.class);
 
   private LandPlaneUseCase airport;
   private Plane plane;
