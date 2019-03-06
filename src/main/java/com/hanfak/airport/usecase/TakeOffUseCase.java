@@ -42,7 +42,7 @@ public class TakeOffUseCase {
       Plane flyingPlane = plane.fly();
       return createPlaneTakeOffStatus(getSuccessfulPlaneTakeOffStatus(flyingPlane), null);
     } catch (Exception e) {
-      logger.info("Plane not airport", e);
+      logger.info("Plane not at airport", e);
       return createPlaneTakeOffStatus(null,
               getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT));
     }

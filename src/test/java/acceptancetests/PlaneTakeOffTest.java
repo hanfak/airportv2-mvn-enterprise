@@ -77,7 +77,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void thenThereIsAFailureInstructingThePlaneToTakeOff() {
-    verify(logger).info(eq("Plane not airport"), any(IllegalStateException.class));
+    verify(logger).info(eq("Plane not at airport"), any(IllegalStateException.class));
     assertThat(planeTakeOffStatus.failedPlaneTakeOffStatus).isEqualTo(expectedFailedPlaneTakeOffStatusForNotPresentPlane);
   }
 

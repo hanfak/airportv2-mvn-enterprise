@@ -43,8 +43,8 @@ Technical TODO:
 
 - Have an application start up(main, property file for prod)
     - configuration, wiring
-- Add Exceptions, then try catch them and add logs with stack trace
-    - slf4j
+- ~~Add Exceptions, then try catch them and add logs with stack trace~~
+    - ~~slf4j~~
 - Add Jetty server, split up usecase into several classes
     - property file
     - respond with json, custom marshaller and unmarshaller
