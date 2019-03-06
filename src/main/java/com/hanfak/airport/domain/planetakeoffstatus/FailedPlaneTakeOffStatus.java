@@ -1,5 +1,6 @@
 package com.hanfak.airport.domain.planetakeoffstatus;
 
+import com.hanfak.airport.domain.AirportStatus;
 import com.hanfak.airport.domain.helper.ValueType;
 import com.hanfak.airport.domain.plane.PlaneId;
 import com.hanfak.airport.domain.plane.PlaneStatus;

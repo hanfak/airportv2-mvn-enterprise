@@ -15,11 +15,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
+import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
-import static com.hanfak.airport.domain.planetakeoffstatus.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_NOT_AT_THE_AIRPORT;
@@ -91,7 +91,6 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
     assertThat(planeTakeOffStatus.successfulPlaneTakeOffStatus.planeStatus).isEqualTo(FLYING);
   }
 
-  //  private final Logger logger = LoggerFactory.getLogger("application");
   private final Logger logger = mock(Logger.class);
   private final PlaneInventoryService hangerService = new AirportPlaneInventoryService(); // Should use a stub
   private final LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(hangerService);

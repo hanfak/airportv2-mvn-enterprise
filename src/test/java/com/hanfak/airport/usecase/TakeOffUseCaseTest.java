@@ -8,11 +8,11 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
-import static com.hanfak.airport.domain.planetakeoffstatus.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_FLYING;

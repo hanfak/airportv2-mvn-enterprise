@@ -7,8 +7,8 @@ import com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus
 import com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason;
 import org.slf4j.Logger;
 
+import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
-import static com.hanfak.airport.domain.planetakeoffstatus.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus.createPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
