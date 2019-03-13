@@ -41,7 +41,9 @@ Feature TODO:
 
 Technical TODO:
 
+- ~~clean architecture maintained via domain-enforcer libray~~
 - Have an application start up(main, property file for prod)
+    - -simple wiring and application class-
     - configuration, wiring
     - simple main, with command line interface
 - ~~Add Exceptions, then try catch them and add logs with stack trace~~
