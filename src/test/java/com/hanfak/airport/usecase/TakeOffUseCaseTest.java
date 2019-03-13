@@ -16,39 +16,38 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_FLYING;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 public class TakeOffUseCaseTest implements WithAssertions {
 
-  @Test
-  public void removesPlaneFromAirportWhenInstructToTakeOff() {
-    when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(true);
+    @Test
+    public void removesPlaneFromAirportWhenInstructToTakeOff() {
+        when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(true);
 
-    PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
+        PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
 
-    verify(hangerService).removePlane(plane);
-    assertThat(actionUnderTest.successfulPlaneTakeOffStatus).isEqualTo(expectedSuccessfulPlaneTakeOffStatus);
-  }
+        verify(hangerService).removePlane(plane);
+        verify(logger).info(eq("Plane, 'A0001', has successfully left the airport"));
+        assertThat(actionUnderTest.successfulPlaneTakeOffStatus).isEqualTo(expectedSuccessfulPlaneTakeOffStatus);
+    }
 
-  @Test
-  public void planeDoesNotLeaveAirportWhenPlaneIsFlying() {
-    when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(false);
+    @Test
+    public void planeDoesNotLeaveAirportWhenPlaneIsFlying() {
+        when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(false);
 
-    PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(flyingPlane);
+        PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(flyingPlane);
 
-    verify(hangerService, never()).removePlane(plane);
-    verify(logger).info("Plane, 'A0001', cannot take off, status is 'FLYING'");
-    assertThat(actionUnderTest.failedPlaneTakeOffStatus).isEqualTo(expectedFailedPlaneTakeOffStatusForFlyingPlane);
-  }
+        verify(hangerService, never()).removePlane(plane);
+        verify(logger).info("Plane, 'A0001', cannot take off, status is 'FLYING'");
+        assertThat(actionUnderTest.failedPlaneTakeOffStatus).isEqualTo(expectedFailedPlaneTakeOffStatusForFlyingPlane);
+    }
 
-  private final PlaneInventoryService hangerService = mock(PlaneInventoryService.class);
-  private final Logger logger = mock(Logger.class);
-  private final TakeOffUseCase takeOffUseCase = new TakeOffUseCase(hangerService, logger);
-  private final Plane plane = plane(planeId("A0001"), LANDED);
-  private final Plane flyingPlane = plane(planeId("A0001"), FLYING);
-  private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForFlyingPlane = failedPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT, PLANE_IS_FLYING);
-  private final SuccessfulPlaneTakeOffStatus expectedSuccessfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT);
+    private final PlaneInventoryService hangerService = mock(PlaneInventoryService.class);
+    private final Logger logger = mock(Logger.class);
+    private final TakeOffUseCase takeOffUseCase = new TakeOffUseCase(hangerService, logger);
+    private final Plane plane = plane(planeId("A0001"), LANDED);
+    private final Plane flyingPlane = plane(planeId("A0001"), FLYING);
+    private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForFlyingPlane = failedPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT, PLANE_IS_FLYING);
+    private final SuccessfulPlaneTakeOffStatus expectedSuccessfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT);
 }

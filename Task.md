@@ -54,9 +54,9 @@ Technical TODO:
     - acceptance tests are run via server then docker container
     - post req for takeoff and landing
     - get req for plane status
-    - logging
+    - logging using logbook
     - log incoming and outgoing requests
-
+- Access and audit logging
 - Add db, object pooling, property file
     - mysql/postgres
     - c3po or hikari pooling
@@ -64,8 +64,7 @@ Technical TODO:
     - use stub for database in test
 - flyway db to setup database
     - maven, module
-- put logging behind interface instead of calling library directly
-    - use testlogger
+- ~~use testlogger~~
 - Yatspec
     - dictionary
     - interestingGivens.getType

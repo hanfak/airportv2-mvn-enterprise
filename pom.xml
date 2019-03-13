@@ -33,7 +33,7 @@
     <yatspec.version>1.22</yatspec.version>
     <commons.lang.version>3.4</commons.lang.version>
     <jetty.version>9.4.11.v20180605</jetty.version>
-    <log.slf4j.version>1.7.26</log.slf4j.version>
+    <log.slf4j.version>1.7.25</log.slf4j.version>
   </properties>
 
   <build>
@@ -331,21 +331,39 @@
       <version>${yatspec.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>versions-maven-plugin</artifactId>
-      <version>2.7</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.codehaus.mojo</groupId>-->
+      <!--<artifactId>versions-maven-plugin</artifactId>-->
+      <!--<version>2.7</version>-->
+    <!--</dependency>-->
 
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.8.0-beta4</version>
+      <artifactId>log4j-over-slf4j</artifactId>
+      <version>${log.slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
     </dependency>
     <dependency>
       <groupId>io.github.theangrydev</groupId>
       <artifactId>domain-enforcer</artifactId>
       <version>1.1.1</version>
+    </dependency>
+
+    <!-- MIME type finder -->
+    <dependency>
+      <groupId>net.sf.jmimemagic</groupId>
+      <artifactId>jmimemagic</artifactId>
+      <version>0.1.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
     </dependency>
   </dependencies>
 </project>

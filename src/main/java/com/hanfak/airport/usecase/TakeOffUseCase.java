@@ -14,46 +14,49 @@ import static com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus.cr
 import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_FLYING;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_NOT_AT_THE_AIRPORT;
+import static java.lang.String.format;
 
 public class TakeOffUseCase {
 
-  private final PlaneInventoryService planeInventoryService;
-  private final Logger logger;
+    private final PlaneInventoryService planeInventoryService;
+    private final Logger logger;
 
-  public TakeOffUseCase(PlaneInventoryService hangerService, Logger logger) {
-    this.planeInventoryService = hangerService;
-    this.logger = logger;
-  }
-
-  // return tuple with new types SuccessfulPlaneTakeOffStatus &
-  // FailurePlaneTakeOffStatus (includes reason for failure) ??
-  // Or Throw exception for failure case?? but information will get lost
-  // Or Use a map
-  // Or Can think about using railway programming??
-  public PlaneTakeOffStatus instructPlaneToTakeOff(Plane plane) {
-    if (FLYING.equals(plane.planeStatus)) {
-      logger.info(String.format("Plane, '%s', cannot take off, status is '%s'", plane.planeId, plane.planeStatus.name()));
-      return createPlaneTakeOffStatus(null,
-              getFailedPlaneTakeOffStatus(plane, PLANE_IS_FLYING));
+    public TakeOffUseCase(PlaneInventoryService hangerService, Logger logger) {
+        this.planeInventoryService = hangerService;
+        this.logger = logger;
     }
 
-    try {
-      planeInventoryService.removePlane(plane);
-      Plane flyingPlane = plane.fly();
-      logger.info(String.format("Plane, '%s', has successfully left the airport", plane.planeId));
-      return createPlaneTakeOffStatus(getSuccessfulPlaneTakeOffStatus(flyingPlane), null);
-    } catch (Exception e) {
-      logger.info("Plane not at airport", e);
-      return createPlaneTakeOffStatus(null,
-              getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT));
+    // return tuple with new types SuccessfulPlaneTakeOffStatus &
+    // FailurePlaneTakeOffStatus (includes reason for failure) ??
+    // Or Throw exception for failure case?? but information will get lost
+    // Or Use a map
+    // Or Can think about using railway programming??
+    public PlaneTakeOffStatus instructPlaneToTakeOff(Plane plane) {
+        if (FLYING.equals(plane.planeStatus)) {
+            logger.info(format("Plane, '%s', cannot take off, status is '%s'", plane.planeId, plane.planeStatus.name()));
+            return createPlaneTakeOffStatus(null,
+                    getFailedPlaneTakeOffStatus(plane, PLANE_IS_FLYING));
+        }
+
+        try {
+            planeInventoryService.removePlane(plane);
+            Plane flyingPlane = plane.fly();
+            logger.info(format("Plane, '%s', has successfully left the airport", plane.planeId));
+            return createPlaneTakeOffStatus(getSuccessfulPlaneTakeOffStatus(flyingPlane), null);
+        } catch (Exception e) {
+            logger.error(format("Plane, '%s', is not at airport", plane.planeId), e);
+            return createPlaneTakeOffStatus(null,
+                    getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT));
+        }
     }
-  }
-// better name
-  private SuccessfulPlaneTakeOffStatus getSuccessfulPlaneTakeOffStatus(Plane flyingPlane) {
-    return successfulPlaneTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, NOT_IN_AIRPORT);
-  }
-// better name
-  private FailedPlaneTakeOffStatus getFailedPlaneTakeOffStatus(Plane plane, TakeOffFailureReason reason) {
-    return failedPlaneTakeOffStatus(plane.planeId, plane.planeStatus, NOT_IN_AIRPORT, reason);
-  }
+
+    // better name
+    private SuccessfulPlaneTakeOffStatus getSuccessfulPlaneTakeOffStatus(Plane flyingPlane) {
+        return successfulPlaneTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, NOT_IN_AIRPORT);
+    }
+
+    // better name
+    private FailedPlaneTakeOffStatus getFailedPlaneTakeOffStatus(Plane plane, TakeOffFailureReason reason) {
+        return failedPlaneTakeOffStatus(plane.planeId, plane.planeStatus, NOT_IN_AIRPORT, reason);
+    }
 }

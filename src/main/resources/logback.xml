@@ -1,0 +1,20 @@
+<configuration>
+
+    <appender name="APPLICATION" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[LOG_START] [LOG_TYPE=APP] %date{ISO8601} [%thread] %-5level\(%class{0}: %L\) - %msg %ex{full}[LOG_END]%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="APPLICATION"/>
+    </root>
+
+    <logger name="net.sf.jmimemagic" level="WARN"/>
+
+    <logger name="APPLICATION" level="INFO" additivity="false">
+        <appender-ref ref="APPLICATION"/>
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+</configuration>

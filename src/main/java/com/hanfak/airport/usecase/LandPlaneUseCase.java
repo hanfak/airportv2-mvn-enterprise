@@ -47,9 +47,9 @@ public class LandPlaneUseCase {
     }
   }
 
-  private PlaneLandStatus getFailurePlaneLandStatus(Plane plane, AirportStatus notInAirport, LandFailureReason planeIsLanded) {
+  private PlaneLandStatus getFailurePlaneLandStatus(Plane plane, AirportStatus airportStatus, LandFailureReason landFailureReason) {
     return createPlaneLandStatus(null,
-            failedPlaneLandStatus(plane.planeId, plane.planeStatus, notInAirport, planeIsLanded));
+            failedPlaneLandStatus(plane.planeId, plane.planeStatus, airportStatus, landFailureReason));
   }
 
   private PlaneLandStatus getSuccessfulPlaneLandStatus(Plane landedPlane) {

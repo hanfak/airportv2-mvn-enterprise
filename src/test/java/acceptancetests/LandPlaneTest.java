@@ -12,7 +12,7 @@ import com.hanfak.airport.usecase.PlaneInventoryService;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
+import testinfrastructure.TestLogger;
 
 import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
@@ -20,10 +20,6 @@ import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 
 @RunWith(SpecRunner.class)
@@ -71,13 +67,12 @@ public class LandPlaneTest extends TestState implements WithAssertions {
   }
 
   private void thenThereIsAFailureInstructingThePlaneToLand() {
-    verify(logger).error(eq("Plane, 'A0001', is at airport"), any(IllegalStateException.class));
+//    verify(logger).error(eq("Plane, 'A0001', is at airport"), any(IllegalStateException.class)); // test in unit test for exception
+    assertThat(logger.errorLogs()).contains("Plane, 'A0001', is at airport");
     assertThat(planeLandStatus.failedPlaneLandStatus).isEqualTo(expectedFailedPlaneLandStatusForPresentPlane);
   }
 
   private void thenthePlaneIsInTheAirport() {
-    verify(logger).info(eq("Plane, 'A0001', has successfully landed at the airport"));
-
     assertThat(planeLandStatus.successfulPlaneLandStatus).isEqualTo(expectedSuccessfulPlaneLandStatus);
     assertThat(hangerService.checkPlaneIsAtAirport(plane.planeId)).isTrue();
   }
@@ -89,7 +84,7 @@ public class LandPlaneTest extends TestState implements WithAssertions {
 
   private final SuccessfulPlaneLandStatus expectedSuccessfulPlaneLandStatus = SuccessfulPlaneLandStatus.successfulPlaneLandStatus(planeId("A0001"), LANDED, IN_AIRPORT);
 
-  private final Logger logger = mock(Logger.class); // Use a testlogger
+  private final TestLogger logger = new TestLogger();
 
   private FailedPlaneLandStatus expectedFailedPlaneLandStatusForPresentPlane = new FailedPlaneLandStatus(planeId("A0001"), FLYING, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);
   private LandPlaneUseCase airport;

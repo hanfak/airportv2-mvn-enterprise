@@ -13,7 +13,7 @@ import com.hanfak.airport.usecase.TakeOffUseCase;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
+import testinfrastructure.TestLogger;
 
 import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
@@ -23,10 +23,6 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_NOT_AT_THE_AIRPORT;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 // split to happy and sad path tests
 @RunWith(SpecRunner.class)
@@ -78,12 +74,12 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void thenThereIsAFailureInstructingThePlaneToTakeOff() {
-    verify(logger).info(eq("Plane not at airport"), any(IllegalStateException.class));
+//    verify(logger).info(eq("Plane not at airport"), any(IllegalStateException.class)); // test in unit test
+    assertThat(logger.errorLogs()).contains("Plane, 'A0001', is not at airport");
     assertThat(planeTakeOffStatus.failedPlaneTakeOffStatus).isEqualTo(expectedFailedPlaneTakeOffStatusForNotPresentPlane);
   }
 
   private void thenThePlaneHasLeftTheAirport() {
-    verify(logger).info(eq("Plane, 'A0001', has successfully left the airport"));
     assertThat(planeTakeOffStatus.successfulPlaneTakeOffStatus).isEqualTo(expectedSuccessfulPlaneTakeOffStatus);
     assertThat(hangerService.checkPlaneIsAtAirport(plane.planeId)).isFalse();
   }
@@ -92,7 +88,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
     assertThat(planeTakeOffStatus.successfulPlaneTakeOffStatus.planeStatus).isEqualTo(FLYING);
   }
 
-  private final Logger logger = mock(Logger.class); // use a testlogger
+  private final TestLogger logger = new TestLogger();
   private final PlaneInventoryService hangerService = new AirportPlaneInventoryService(); // Should use a stub
   private final LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(hangerService, logger);
   private final SuccessfulPlaneTakeOffStatus expectedSuccessfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT);
