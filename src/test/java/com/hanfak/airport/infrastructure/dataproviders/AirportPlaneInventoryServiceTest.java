@@ -9,7 +9,7 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 // Better test names
-public class AirportHangerServiceTest {
+public class AirportPlaneInventoryServiceTest {
 
   @Test
   public void shouldHaveAnEmptyHanger() {
