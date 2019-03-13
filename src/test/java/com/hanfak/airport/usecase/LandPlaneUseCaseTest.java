@@ -16,7 +16,6 @@ import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.failedPlaneLandStatus;
-import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_LANDED;
 import static com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus.successfulPlaneLandStatus;
 import static org.mockito.ArgumentMatchers.eq;
@@ -49,7 +48,6 @@ public class LandPlaneUseCaseTest implements WithAssertions {
 
   private final SuccessfulPlaneLandStatus expectedSuccessfulPlaneLandStatus = successfulPlaneLandStatus(planeId("A0001"), LANDED, IN_AIRPORT);
   private final FailedPlaneLandStatus expectedFailedPlaneLandStatusForLandedPlane = failedPlaneLandStatus(planeId("A0001"), LANDED, NOT_IN_AIRPORT, PLANE_IS_LANDED);
-  private final FailedPlaneLandStatus expectedFailedPlaneLandStatusForPlaneInAirport = failedPlaneLandStatus(planeId("A0001"), FLYING, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);
 
   private final PlaneInventoryService planeInventoryService = mock(PlaneInventoryService.class);
   private final Logger logger = mock(Logger.class);

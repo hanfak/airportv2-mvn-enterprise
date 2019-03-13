@@ -62,8 +62,6 @@ public class LandPlaneTest extends TestState implements WithAssertions {
     interestingGivens.add("plane", plane);
   }
 
-  private FailedPlaneLandStatus expectedFailedPlaneLandStatusForPresentPlane = new FailedPlaneLandStatus(planeId("A0001"), FLYING, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);
-
   private void andAnAirportHasCapacity() {
     airport = new LandPlaneUseCase(hangerService, logger);
   }
@@ -88,10 +86,12 @@ public class LandPlaneTest extends TestState implements WithAssertions {
     assertThat(hangerService.planeInventory().get(0).planeStatus).isEqualTo(LANDED);
   }
 
+
   private final SuccessfulPlaneLandStatus expectedSuccessfulPlaneLandStatus = SuccessfulPlaneLandStatus.successfulPlaneLandStatus(planeId("A0001"), LANDED, IN_AIRPORT);
 
   private final Logger logger = mock(Logger.class); // Use a testlogger
 
+  private FailedPlaneLandStatus expectedFailedPlaneLandStatusForPresentPlane = new FailedPlaneLandStatus(planeId("A0001"), FLYING, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);
   private LandPlaneUseCase airport;
   private Plane plane;
   private PlaneLandStatus planeLandStatus;     // better variable name

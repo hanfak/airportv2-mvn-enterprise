@@ -1,6 +1,8 @@
 package com.hanfak.airport.usecase;
 
+import com.hanfak.airport.domain.AirportStatus;
 import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.domain.planelandstatus.LandFailureReason;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
 import com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.failedPlaneLandStatus;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_LANDED;
+import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPlaneLandStatus;
 // New Usecase for airport controller to use, to assess the state of the plane by accessing the
 // AirportHangerService using the planeId to get the its flight status
 
@@ -28,8 +31,7 @@ public class LandPlaneUseCase {
   public PlaneLandStatus instructPlaneToLand(Plane plane) {
     if (LANDED.equals(plane.planeStatus)) {
       logger.info(String.format("Plane, '%s', cannot land, status is '%s'", plane.planeId, plane.planeStatus.name()));
-      return PlaneLandStatus.createPlaneLandStatus(null,
-              failedPlaneLandStatus(plane.planeId, plane.planeStatus, NOT_IN_AIRPORT, PLANE_IS_LANDED));
+      return getFailurePlaneLandStatus(plane, NOT_IN_AIRPORT, PLANE_IS_LANDED);
     }
 
     // Should this check be here or in planeInventoryService? if in planeInventoryService can throw exception
@@ -41,13 +43,17 @@ public class LandPlaneUseCase {
       return getSuccessfulPlaneLandStatus(landedPlane);
     } catch (Exception e) {
       logger.error(String.format("Plane, '%s', is at airport", plane.planeId), e);
-      return PlaneLandStatus.createPlaneLandStatus(null,
-              failedPlaneLandStatus(plane.planeId, plane.planeStatus, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT));
+      return getFailurePlaneLandStatus(plane, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);
     }
   }
 
+  private PlaneLandStatus getFailurePlaneLandStatus(Plane plane, AirportStatus notInAirport, LandFailureReason planeIsLanded) {
+    return createPlaneLandStatus(null,
+            failedPlaneLandStatus(plane.planeId, plane.planeStatus, notInAirport, planeIsLanded));
+  }
+
   private PlaneLandStatus getSuccessfulPlaneLandStatus(Plane landedPlane) {
-    return PlaneLandStatus.createPlaneLandStatus(SuccessfulPlaneLandStatus.successfulPlaneLandStatus(landedPlane.planeId, landedPlane.planeStatus, IN_AIRPORT)
+    return createPlaneLandStatus(SuccessfulPlaneLandStatus.successfulPlaneLandStatus(landedPlane.planeId, landedPlane.planeStatus, IN_AIRPORT)
             , null);
   }
 }
