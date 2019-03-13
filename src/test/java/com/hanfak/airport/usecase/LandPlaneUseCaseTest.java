@@ -16,8 +16,10 @@ import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.failedPlaneLandStatus;
+import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_LANDED;
 import static com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus.successfulPlaneLandStatus;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -32,6 +34,7 @@ public class LandPlaneUseCaseTest implements WithAssertions {
     PlaneLandStatus actionUnderTest = airport.instructPlaneToLand(flyingPlane);
 
     verify(planeInventoryService).addPlane(landedPlane);
+    verify(logger).info(eq("Plane, 'A0001', has successfully landed at the airport"));
     assertThat(actionUnderTest.successfulPlaneLandStatus).isEqualTo(expectedSuccessfulPlaneLandStatus);
   }
 
@@ -44,17 +47,9 @@ public class LandPlaneUseCaseTest implements WithAssertions {
     assertThat(actionUnderTest.failedPlaneLandStatus).isEqualTo(expectedFailedPlaneLandStatusForLandedPlane);
   }
 
-  @Test
-  public void cannotInstructPlaneToLandWhenPlaneIsAtTheAirport() {
-    when(planeInventoryService.checkPlaneIsAtAirport(flyingPlane.planeId)).thenReturn(true);
-
-    PlaneLandStatus actionUnderTest = airport.instructPlaneToLand(flyingPlane);
-
-    assertThat(actionUnderTest).isNull();
-  }
-
   private final SuccessfulPlaneLandStatus expectedSuccessfulPlaneLandStatus = successfulPlaneLandStatus(planeId("A0001"), LANDED, IN_AIRPORT);
   private final FailedPlaneLandStatus expectedFailedPlaneLandStatusForLandedPlane = failedPlaneLandStatus(planeId("A0001"), LANDED, NOT_IN_AIRPORT, PLANE_IS_LANDED);
+  private final FailedPlaneLandStatus expectedFailedPlaneLandStatusForPlaneInAirport = failedPlaneLandStatus(planeId("A0001"), FLYING, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);
 
   private final PlaneInventoryService planeInventoryService = mock(PlaneInventoryService.class);
   private final Logger logger = mock(Logger.class);

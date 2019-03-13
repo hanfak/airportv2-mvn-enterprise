@@ -14,7 +14,7 @@ public class FailedPlaneLandStatus extends ValueType {
   private final AirportStatus airportStatus;
   private final LandFailureReason failureMessage;
 
-  private FailedPlaneLandStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus, LandFailureReason failureMessage) {
+  public FailedPlaneLandStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus, LandFailureReason failureMessage) {
     this.planeId = planeId;
     this.planeStatus = planeStatus;
     this.airportStatus = airportStatus;

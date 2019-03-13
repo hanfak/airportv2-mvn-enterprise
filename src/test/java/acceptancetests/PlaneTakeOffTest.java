@@ -43,6 +43,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
     andThePlaneIsFlying();
   }
 
+  // Move to module test so that plane service is active, or move to documentation test and use a stub
   @Test
   public void aPlaneCannotTakeOffIfNotAtAirport() {
     givenAPlaneHasLandedSomewhereOutsideTheAirport();
@@ -91,7 +92,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
     assertThat(planeTakeOffStatus.successfulPlaneTakeOffStatus.planeStatus).isEqualTo(FLYING);
   }
 
-  private final Logger logger = mock(Logger.class);
+  private final Logger logger = mock(Logger.class); // use a testlogger
   private final PlaneInventoryService hangerService = new AirportPlaneInventoryService(); // Should use a stub
   private final LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(hangerService, logger);
   private final SuccessfulPlaneTakeOffStatus expectedSuccessfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT);

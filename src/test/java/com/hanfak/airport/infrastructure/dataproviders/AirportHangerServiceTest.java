@@ -5,11 +5,10 @@ import org.junit.Test;
 
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
-import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
+// Better test names
 public class AirportHangerServiceTest {
 
   @Test
@@ -31,24 +30,15 @@ public class AirportHangerServiceTest {
   }
 
   @Test
-  public void canOnlyAddLandedPlanesToAHanger() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-    Plane plane = plane(planeId("A0001"), FLYING);
-
-    service.addPlane(plane);
-
-    assertThat(service.checkPlaneIsAtAirport(plane.planeId)).isFalse();
-    assertThat(service.planeInventory()).doesNotContain(plane);
-  }
-
-  @Test
   public void canOnlyHaveOneUniquePlaneInTheHanger() {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
     Plane plane = plane(planeId("A0001"), LANDED);
     plane(planeId("A0001"), LANDED);
     service.addPlane(plane);
 
-    service.addPlane(plane);
+    assertThatThrownBy(() -> service.addPlane(plane))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("Plane, 'A0001', in airport, cannot store plane in airport");
 
     assertThat(service.checkPlaneIsAtAirport(plane.planeId)).isTrue();
     assertThat(service.planeInventory().size()).isEqualTo(1);
@@ -66,13 +56,24 @@ public class AirportHangerServiceTest {
   }
 
   @Test
-  public void cannotRemovePlaneFromHangerWhenPlaneNotAtHanger() {
+  public void cannotRemovePlaneFromAirportWhenPlaneNotInTheAirport() {
     AirportPlaneInventoryService service = new AirportPlaneInventoryService();
     Plane plane = plane(planeId("A0001"), LANDED);
 
     assertThatThrownBy(() -> service.removePlane(plane))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Plane, 'A0001', not in airport, cannot remove plane");
+  }
+
+  @Test
+  public void cannotStorePlaneToAirportWhenPlaneIsInAirport() {
+    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
+    Plane plane = plane(planeId("A0001"), LANDED);
+    service.addPlane(plane);
+
+    assertThatThrownBy(() -> service.addPlane(plane))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("Plane, 'A0001', in airport, cannot store plane in airport");
   }
 
   @Test

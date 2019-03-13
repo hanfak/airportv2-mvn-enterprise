@@ -2,7 +2,8 @@ package com.hanfak.airport.domain.planelandstatus;
 
 public enum LandFailureReason {
 
-  PLANE_IS_LANDED("Plane could not land as it is still on land");
+  PLANE_IS_LANDED("Plane could not land as it is still on land"),
+  PLANE_IS_AT_THE_AIRPORT("Plane could not land as it is in the airport");
 
   private final String reason;
 

@@ -7,7 +7,6 @@ import com.hanfak.airport.usecase.PlaneInventoryService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static java.util.Collections.unmodifiableList;
 
 // Split into two classes, one for dataprovider dependency, this to call dataprovider and check logic
@@ -22,9 +21,11 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
 
   @Override
   public void addPlane(Plane plane) {
-    // Throw exception if plane is in airport
     if (!checkPlaneIsAtAirport(plane.planeId)) {
-      addLandedPlaneToHanger(plane);
+      planesInventory.add(plane);
+    } else {
+      // Use custom one
+      throw new IllegalStateException(String.format("Plane, '%s', in airport, cannot store plane in airport", plane.planeId));
     }
   }
 
@@ -41,11 +42,5 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
   @Override
   public Boolean checkPlaneIsAtAirport(PlaneId planeId) {
     return planesInventory.stream().anyMatch(plane -> planeId.equals(plane.planeId));
-  }
-
-  private void addLandedPlaneToHanger(Plane plane) {
-    if (LANDED.equals(plane.planeStatus)) { // Do we need this check if done in use case??
-      planesInventory.add(plane);
-    }
   }
 }

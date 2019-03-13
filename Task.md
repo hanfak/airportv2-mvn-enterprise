@@ -43,6 +43,7 @@ Technical TODO:
 
 - Have an application start up(main, property file for prod)
     - configuration, wiring
+    - simple main, with command line interface
 - ~~Add Exceptions, then try catch them and add logs with stack trace~~
     - ~~slf4j~~
 - Add Jetty server, split up usecase into several classes
@@ -53,6 +54,7 @@ Technical TODO:
     - get req for plane status
     - logging
     - log incoming and outgoing requests
+
 - Add db, object pooling, property file
     - mysql/postgres
     - c3po or hikari pooling
@@ -60,6 +62,8 @@ Technical TODO:
     - use stub for database in test
 - flyway db to setup database
     - maven, module
+- put logging behind interface instead of calling library directly
+    - use testlogger
 - Yatspec
     - dictionary
     - interestingGivens.getType
