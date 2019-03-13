@@ -342,5 +342,10 @@
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.8.0-beta4</version>
     </dependency>
+    <dependency>
+      <groupId>io.github.theangrydev</groupId>
+      <artifactId>domain-enforcer</artifactId>
+      <version>1.1.1</version>
+    </dependency>
   </dependencies>
 </project>
