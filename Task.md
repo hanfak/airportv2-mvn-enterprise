@@ -48,6 +48,9 @@ Technical TODO:
     - simple main, with command line interface
 - ~~Add Exceptions, then try catch them and add logs with stack trace~~
     - ~~slf4j~~
+- ~~plant uml~~
+    - use intellij plugin to generate this file
+    - TODO: generate using code ie workflow
 - Add Jetty server, split up usecase into several classes
     - property file
     - respond with json, custom marshaller and unmarshaller
@@ -75,7 +78,7 @@ Technical TODO:
     - logging
     - timeout
 - separate acceptance test into module
-- find bugs Static analysis via maven
+- ~~find bugs Static analysis via maven~~
     - mvn findbugs:findbugs
     -  mvn org.apache.maven.plugins:maven-pmd-plugin:3.6:pmd
 - scheduler to check weather, and store in cache (Db - redis)

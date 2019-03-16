@@ -1,0 +1,36 @@
+@startuml
+floating note left: Airport Instruct plane to land
+start
+
+if (plane is flying?) then (plane already landed)
+    :failedPlaneLandStatus;
+endif
+
+:plane lands;
+
+if (plane is in aiport) then (throw exception)
+    :failedPlaneLandStatus;
+else (plane not in airport)
+    :plane is stored in airport;
+endif
+
+
+:plane land success;
+
+'note left: blah
+
+'note left
+'    blha
+'    blah
+'    blah
+'end note
+
+'while (Something OK?) is (fail)
+'    :Next Step;
+'endwhile (ok)
+
+
+
+
+stop
+@enduml
