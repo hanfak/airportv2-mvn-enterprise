@@ -1,8 +1,10 @@
 package com.hanfak.airport.domain.planelandstatus;
 
 import com.hanfak.airport.domain.helper.ValueType;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 // Better name
+@SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD") // Later fix this issue, getters or different type
 public class PlaneLandStatus extends ValueType {
 
   public final SuccessfulPlaneLandStatus successfulPlaneLandStatus;

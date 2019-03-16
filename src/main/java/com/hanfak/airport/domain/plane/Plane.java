@@ -5,7 +5,6 @@ import com.hanfak.airport.domain.helper.ValueType;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 
-// Domain
 public class Plane extends ValueType {
   // Add static types for Landed and Flying
 

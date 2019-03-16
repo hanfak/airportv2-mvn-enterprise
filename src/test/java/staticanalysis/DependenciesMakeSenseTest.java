@@ -14,11 +14,12 @@ public class DependenciesMakeSenseTest implements WithAssertions {
   private final DomainEnforcer domainEnforcer = enforceSources(Paths.get("./src/main/java"));
   private static final String APACHE_COMMONS_BUILDERS = "org.apache.commons.lang3.builder";
   private static final String LOGGER = "org.slf4j.Logger";
+  private static final String FINDBUGS = "edu.umd.cs.findbugs.annotations.SuppressFBWarnings";
 
   @Test
   public void domainShouldOnlyTalkToItselfAndJava() {
     List<String> violations = domainEnforcer.checkThatPackageOnlyTalksToItself("com.hanfak.airport.domain")
-            .apartFrom("java", APACHE_COMMONS_BUILDERS);
+            .apartFrom("java", LOGGER, APACHE_COMMONS_BUILDERS, FINDBUGS);
 
     assertThat(violations).describedAs("Violations").isEmpty();
   }

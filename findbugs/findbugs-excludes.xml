@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<FindBugsFilter
+        xmlns="http://findbugs.sourceforge.net/filter/3.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://findbugs.sourceforge.net/filter/3.0.0 https://findbugs.googlecode.com/git/findbugs/etc/findbugsfilter.xsd">
+
+    <!-- Exclusions for bugs that might provide a performance benefit but are not worth breaking the build for -->
+    <Match>
+        <Or>
+            <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+            <Bug pattern="DM_NUMBER_CTOR"/>
+            <Bug pattern="ITA_INEFFICIENT_TO_ARRAY"/>
+            <Bug pattern="SIC_INNER_SHOULD_BE_STATIC"/>
+            <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+            <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS"/>
+            <Bug pattern="SE_INNER_CLASS"/>
+        </Or>
+    </Match>
+
+    <!-- Exclusions for naming bugs that might help understanding the code but are not worth breaking the build for -->
+    <Match>
+        <Or>
+            <Bug pattern="NM_CLASS_NAMING_CONVENTION"/>
+            <Bug pattern="NM_CLASS_NOT_EXCEPTION"/>
+            <Bug pattern="NM_CONFUSING"/>
+            <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+            <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
+            <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
+        </Or>
+    </Match>
+
+    <!-- Exclusions for internationalisation bugs that are not applicable until we care about multiple locales -->
+    <Match>
+        <Bug pattern="DM_CONVERT_CASE"/>
+    </Match>
+
+    <!-- New line formatting concerns are not applicable because all our environments are UNIX based -->
+    <Match>
+        <Bug pattern="VA_FORMAT_STRING_USES_NEWLINE"/>
+    </Match>
+
+    <!-- We are moving away from implementing Serializable as a mechanism for sharing between other applications and so we can ignore serialization related bugs -->
+    <Match>
+        <Or>
+            <Bug pattern="SE_NO_SERIALVERSIONID"/>
+            <Bug pattern="SE_BAD_FIELD"/>
+        </Or>
+    </Match>
+
+    <!-- Implementing equals might not mean needing to implement hashCode if the hashCode method is not intended to ever be called -->
+    <Match>
+        <Or>
+            <Bug pattern="HE_INHERITS_EQUALS_USE_HASHCODE"/>
+            <Bug pattern="EQ_DOESNT_OVERRIDE_EQUALS"/>
+        </Or>
+    </Match>
+</FindBugsFilter>

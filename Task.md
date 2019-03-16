@@ -76,6 +76,7 @@ Technical TODO:
     - timeout
 - separate acceptance test into module
 - find bugs Static analysis via maven
+    mvn findbugs:findbugs
 - scheduler to check weather, and store in cache (Db - redis)
     - quartz, cron
 - status page, check db & weather service is up, scheduled job every minute

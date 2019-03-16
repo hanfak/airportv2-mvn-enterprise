@@ -34,6 +34,7 @@
     <commons.lang.version>3.4</commons.lang.version>
     <jetty.version>9.4.11.v20180605</jetty.version>
     <log.slf4j.version>1.7.25</log.slf4j.version>
+    <findbugs.annotations.version>3.0.1</findbugs.annotations.version>
   </properties>
 
   <build>
@@ -135,6 +136,30 @@
           <mainClass>Main</mainClass>
         </configuration>
       </plugin>
+      <!-- FindBugs -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>3.0.3</version>
+        <configuration>
+          <skip>${skipTests}</skip>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+          <xmlOutput>true</xmlOutput>
+          <failOnError>true</failOnError>
+          <excludeFilterFile>${project.basedir}/findbugs/findbugs-excludes.xml</excludeFilterFile>
+          <findbugsXmlOutputDirectory>${project.build.directory}/findbugs</findbugsXmlOutputDirectory>
+          <maxHeap>2048</maxHeap>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -150,7 +175,6 @@
       </activation>
       <build>
         <plugins>
-
           <!-- Shade is used to package an uber JAR which contains all the dependencies -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -174,7 +198,6 @@
               </execution>
             </executions>
           </plugin>
-
           <!-- Unit Tests -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -206,7 +229,6 @@
               </execution>
             </executions>
           </plugin>
-
           <!--acceptance tests-->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -243,8 +265,6 @@
               </includes>
             </configuration>
           </plugin>
-
-
           <!-- Enable default lifecycle -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -260,6 +280,7 @@
               </execution>
             </executions>
           </plugin>
+          <!--resources-->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
@@ -275,6 +296,7 @@
               </execution>
             </executions>
           </plugin>
+          <!--jar-->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
@@ -364,6 +386,11 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>annotations</artifactId>
+      <version>${findbugs.annotations.version}</version>
     </dependency>
   </dependencies>
 </project>
