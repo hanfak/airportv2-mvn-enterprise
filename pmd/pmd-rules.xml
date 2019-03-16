@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         name="Application Rules"
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
+
+    <description>
+        Rules we care about that will break the build if they are violated.
+        If a ruleset is giving too many false positives, or it seems pointless,
+        consider adding an exclude for the rule that is an issue (see examples below).
+    </description>
+
+    <rule ref="rulesets/java/basic.xml"/>
+    <rule ref="rulesets/java/braces.xml"/>
+    <rule ref="rulesets/java/empty.xml"/>
+    <rule ref="rulesets/java/unnecessary.xml"/>
+    <rule ref="rulesets/java/unusedcode.xml"/>
+    <rule ref="rulesets/java/clone.xml"/>
+    <rule ref="rulesets/java/codesize.xml"/>
+    <rule ref="rulesets/java/finalizers.xml"/>
+    <rule ref="rulesets/java/imports.xml"/>
+    <rule ref="rulesets/java/junit.xml"/>
+    <rule ref="rulesets/java/finalizers.xml"/>
+    <rule ref="rulesets/java/optimizations.xml">
+        <exclude name="MethodArgumentCouldBeFinal"/><!-- Final method arguments are not a way to improve performance since the final keyword does not end up in the class file -->
+        <exclude name="LocalVariableCouldBeFinal"/><!-- Final variables are not a way to improve performance since the final keyword does not end up in the class file -->
+    </rule>
+    <rule ref="rulesets/java/coupling.xml">
+        <exclude name="LoosePackageCoupling"/><!-- This rule would be good but you can only configure class excludes not package excludes -->
+        <exclude name="LawOfDemeter"/><!-- The Law of Demeter is a good thing to keep in mind, but this rule triggers too many false positives with e.g. fluent interfaces -->
+    </rule>
+    <rule ref="rulesets/java/logging-java.xml">
+        <exclude name="LoggerIsNotStaticFinal"/><!-- Too many false positives, it picks up on anything named logger! -->
+        <exclude name="GuardLogStatementJavaUtil"/><!-- We do not anticipate expensive toString operations so this is likely to be a premature optimization -->
+    </rule>
+    <rule ref="rulesets/java/strictexception.xml">
+        <exclude name="AvoidCatchingNPE"/><!-- Will be handled by AvoidCatchingGenericException -->
+        <exclude name="AvoidCatchingGenericException"/><!-- Sometimes we need to do this to cater for all kinds of exceptions. I'm assuming we are sensible enough to know when to apply it :) -->
+    </rule>
+    <rule ref="rulesets/java/strings.xml"/>
+    <rule ref="rulesets/java/sunsecure.xml"/>
+    <rule ref="rulesets/java/typeresolution.xml">
+        <exclude name="UnusedImports"/><!-- Unused imports don't hurt anyone at runtime, so we don't care -->
+    </rule>
+    <rule ref="rulesets/java/naming.xml">
+        <exclude name="AvoidFieldNameMatchingMethodName"/><!-- We actually like this convention for getters -->
+        <exclude name="AvoidFieldNameMatchingTypeName"/><!-- We actually like this convention for e.g. value types -->
+        <exclude name="LongVariable"/><!-- Long names are descriptive -->
+        <exclude name="AbstractNaming"/><!-- We do not like the convention of naming abstract classes Abstract* -->
+        <exclude name="GenericsNaming"/><!-- We do not like the convention of single letters for generics, sometimes a full word is more readable -->
+    </rule>
+    <rule ref="rulesets/java/controversial.xml">
+        <exclude name="AtLeastOneConstructor"/><!-- Sometimes we want a utility class with only static methods -->
+        <exclude name="DataflowAnomalyAnalysis"/><!-- This rule is not very useful, too many false positives -->
+        <exclude name="UseConcurrentHashMap"/><!-- HashMap is fine for most of our use cases, we are not writing a lot of concurrently executed code -->
+        <exclude name="CallSuperInConstructor"/><!-- The default call to super is enough; if a super call is required the compiler will complain -->
+        <exclude name="DefaultPackage"/><!-- Default package scope is useful to hide a class within a package if it is not intended to be public -->
+        <exclude name="OnlyOneReturn"/><!-- More than one return can help to avoid arrow code -->
+        <exclude name="AvoidLiteralsInIfCondition"/><!-- We think that String literals are OK in an if statement -->
+        <exclude name="AvoidPrefixingMethodParameters"/><!-- Don't want this restriction on naming -->
+        <exclude name="UseObjectForClearerAPI"/><!-- We think 4 parameters in a method signature is not always painful -->
+    </rule>
+    <rule ref="rulesets/java/design.xml">
+        <exclude name="UseLocaleWithCaseConversions"/><!-- Don't care, we do not do any internationalization, yet -->
+        <exclude name="UseUtilityClass"/><!-- Don't care, it doesn't hurt anyone to have a class full of static utility methods -->
+        <exclude name="ImmutableField"/><!-- This is a nice to have, and should not break the build -->
+        <exclude name="ClassWithOnlyPrivateConstructorsShouldBeFinal"/><!-- This is a nice to have, and should not break the build -->
+        <exclude name="AbstractClassWithoutAbstractMethod"/><!-- Sometimes you want to force extending a class even though there are no abstract methods -->
+    </rule>
+</ruleset>

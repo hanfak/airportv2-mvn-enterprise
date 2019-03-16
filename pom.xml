@@ -14,7 +14,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <root.package>${groupId}</root.package>
+    <root.package>${project.groupId}</root.package>
     <commons-lang3.version>3.5</commons-lang3.version>
     <java.version>1.8</java.version>
     <!-- Plugins -->
@@ -23,7 +23,7 @@
     <maven.dependency.plugin.version>3.0.1</maven.dependency.plugin.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <acceptance.tests>${groupId}.acceptancetests/**/*.java</acceptance.tests>
+    <acceptance.tests>${project.groupId}.acceptancetests/**/*.java</acceptance.tests>
     <skipTests>false</skipTests>
     <maven.surefire.version>2.19.1</maven.surefire.version>
     <required.maven.version>3.0.5</required.maven.version>
@@ -88,7 +88,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>${groupId}.Application</mainClass>
+              <mainClass>${project.groupId}.Application</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -104,13 +104,13 @@
             </goals>
             <phase>package</phase>
             <configuration>
-              <finalName>${artifactId}</finalName>
+              <finalName>${project.artifactId}</finalName>
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
               <archive>
                 <manifest>
-                  <mainClass>${groupId}.Application</mainClass>
+                  <mainClass>${project.groupId}.Application</mainClass>
                 </manifest>
               </archive>
             </configuration>
@@ -159,6 +159,45 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <!-- PMD -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <skip>${skipTests}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>jxr</goal>
+              <goal>test-jxr</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-pmd-plugin</artifactId>
+      <version>3.6</version>
+      <configuration>
+        <skip>${skipTests}</skip>
+        <verbose>true</verbose>
+        <printFailingErrors>true</printFailingErrors>
+        <rulesets>
+          <ruleset>${project.basedir}/pmd/pmd-rules.xml</ruleset>
+        </rulesets>
+      </configuration>
+      <executions>
+        <execution>
+          <phase>verify</phase>
+          <goals>
+            <goal>check</goal>
+          </goals>
+        </execution>
+      </executions>
       </plugin>
     </plugins>
   </build>
