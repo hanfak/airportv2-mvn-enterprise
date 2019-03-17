@@ -63,8 +63,10 @@ Technical TODO:
 - Add db, object pooling, property file
     - mysql/postgres
     - c3po or hikari pooling
-    - use in memory db ie H2 and properties  and code (extra methods on db) just for tests
-    - use stub for database in test
+    - use in memory db ie H2 and properties and code (extra methods on db) just for tests
+    - use stub (list) for database in test
+    - create users, owenrs with rights
+    - editioning and views
 - flyway db to setup database
     - maven, module
 - ~~use testlogger~~

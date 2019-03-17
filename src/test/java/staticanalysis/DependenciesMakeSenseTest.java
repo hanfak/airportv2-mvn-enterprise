@@ -15,6 +15,7 @@ public class DependenciesMakeSenseTest implements WithAssertions {
   private static final String APACHE_COMMONS_BUILDERS = "org.apache.commons.lang3.builder";
   private static final String LOGGER = "org.slf4j.Logger";
   private static final String FINDBUGS = "edu.umd.cs.findbugs.annotations.SuppressFBWarnings";
+  private static final String HIKARI = "com.zaxxer.hikari";
 
   @Test
   public void domainShouldOnlyTalkToItselfAndJava() {
@@ -35,7 +36,11 @@ public class DependenciesMakeSenseTest implements WithAssertions {
   @Test
   public void infrastructureShouldOnlyTalkToItselfAndUsecaseAndDomainAndJava() {
     List<String> violations = domainEnforcer.checkThatPackageOnlyTalksToItself("com.hanfak.airport.infrastructure")
-            .apartFrom("com.hanfak.airport.domain", "com.hanfak.airport.usecase", LOGGER, "java");
+            .apartFrom("com.hanfak.airport.domain",
+                    "com.hanfak.airport.usecase",
+                    LOGGER,
+                    HIKARI,
+                    "java");
 
     assertThat(violations).describedAs("Violations").isEmpty();
   }
