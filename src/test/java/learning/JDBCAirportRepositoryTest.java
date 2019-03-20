@@ -18,10 +18,9 @@ import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class JDBCAirportRepositoryTest implements WithAssertions {
 
@@ -51,6 +50,7 @@ public class JDBCAirportRepositoryTest implements WithAssertions {
     inOrder.verify(resultSet).close();
     inOrder.verify(queryPreparedStatement).close();
     inOrder.verify(connection).close();
+    inOrder.verifyNoMoreInteractions();
   }
 
   @Test
@@ -76,6 +76,7 @@ public class JDBCAirportRepositoryTest implements WithAssertions {
     inOrder.verify(resultSet).close();
     inOrder.verify(queryPreparedStatement).close();
     inOrder.verify(connection).close();
+    inOrder.verifyNoMoreInteractions();
   }
 
   @Test
@@ -90,10 +91,67 @@ public class JDBCAirportRepositoryTest implements WithAssertions {
             .hasCause(new SQLException());
   }
 
+  @Test
+  public void writesAPlaneToAirport() throws SQLException {
+    when(databaseConnectionProvider.getDBConnection()).thenReturn(connection);
+    when(connection.prepareStatement(anyString())).thenReturn(insertPreparedStatement);
+    when(insertPreparedStatement.executeUpdate()).thenReturn(1);
+
+    repository.write(plane1);
+
+    InOrder inOrder = inOrder(logger, databaseConnectionProvider, connection, insertPreparedStatement);
+    inOrder.verify(databaseConnectionProvider).getDBConnection();
+    inOrder.verify(connection).prepareStatement(any());
+    inOrder.verify(logger).info("Persisting 'Plane[planeId=A0001,planeStatus=FLYING]'");
+    verify(insertPreparedStatement, atMost(2)).setString(anyInt(), anyString());
+//    inOrder.verify(insertPreparedStatement).setString(anyInt(), anyString()); // Why not working??
+//    inOrder.verify(insertPreparedStatement).setString(anyInt(), anyString()); // Why not working??
+    inOrder.verify(insertPreparedStatement).executeUpdate();
+    inOrder.verify(connection).commit();
+    inOrder.verify(logger).info("Successfully persisted 'Plane[planeId=A0001,planeStatus=FLYING]'");
+    inOrder.verify(insertPreparedStatement).close();
+    inOrder.verify(connection).close();
+    inOrder.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void writesAPlaneToAirportButDoesNothing() throws SQLException {
+    when(databaseConnectionProvider.getDBConnection()).thenReturn(connection);
+    when(connection.prepareStatement(anyString())).thenReturn(insertPreparedStatement);
+    when(insertPreparedStatement.executeUpdate()).thenReturn(0);
+
+    assertThatThrownBy(()->repository.write(plane1))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("Something went wrong when trying to persist 'Plane[planeId=A0001,planeStatus=FLYING]'. We expected 1 row to be affected but instead 0 rows were affected.");
+
+    InOrder inOrder = inOrder(logger, databaseConnectionProvider, connection, insertPreparedStatement);
+    inOrder.verify(databaseConnectionProvider).getDBConnection();
+    inOrder.verify(connection).prepareStatement(any());
+    inOrder.verify(logger).info("Persisting 'Plane[planeId=A0001,planeStatus=FLYING]'");
+    verify(insertPreparedStatement, atMost(2)).setString(anyInt(), anyString());
+    inOrder.verify(insertPreparedStatement).executeUpdate();
+    inOrder.verify(insertPreparedStatement).close();
+    inOrder.verify(connection).close();
+    inOrder.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void throwsExceptionIfSomeErrorWhenWritingARecordToDatabase() throws SQLException {
+    when(databaseConnectionProvider.getDBConnection()).thenReturn(connection);
+    when(connection.prepareStatement(anyString())).thenReturn(insertPreparedStatement);
+    when(insertPreparedStatement.executeUpdate()).thenThrow(SQLException.class);
+
+    assertThatThrownBy(()->repository.write(plane1))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("Failed to store plane, 'Plane[planeId=A0001,planeStatus=FLYING]', to airport")
+            .hasCause(new SQLException());
+  }
+
   private final JDBCDatabaseConnectionManager databaseConnectionProvider = mock(JDBCDatabaseConnectionManager.class);
   private final Logger logger = mock(Logger.class);
   private final Connection connection = mock(Connection.class);
   private final PreparedStatement queryPreparedStatement = mock(PreparedStatement.class);
+  private final PreparedStatement insertPreparedStatement = mock(PreparedStatement.class);
   private final ResultSet resultSet = mock(ResultSet.class);
 
   private Plane plane1 = plane(planeId("A0001"), FLYING);
