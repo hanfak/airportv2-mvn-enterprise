@@ -6,11 +6,14 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
+import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.infrastructure.logging.LoggingCategory.APPLICATION;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -35,6 +38,68 @@ public class DatabaseLearningTest implements WithAssertions {
     List<Plane> allPlanesFromAirport = repository.getAllPlanesFromAirport();
 
     assertThat(allPlanesFromAirport).contains(plane1);
+    System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
+  }
+
+  @Test
+  public void addMulitpleDataToDatabase() throws SQLException {
+    JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
+    repository.deleteTableContents("airport");
+
+    Plane plane1 = plane(planeId("A00015"), FLYING);
+    Plane plane2 = plane(planeId("A00019"), LANDED);
+    Plane plane3 = plane(planeId("A00017"), FLYING);
+    Plane plane4 = plane(planeId("A00034"), LANDED);
+    Plane plane5 = plane(planeId("A00023"), FLYING);
+    Plane plane6 = plane(planeId("A00001"), LANDED);
+    List<Plane> planes = Arrays.asList(plane1, plane2, plane3, plane4, plane5, plane6);
+    repository.writeBatchPlanes(planes);
+    List<Plane> allPlanesFromAirport = repository.getAllPlanesFromAirport();
+
+    assertThat(allPlanesFromAirport).contains(plane1, plane2);
+    System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
+  }
+
+  @Test
+  public void updateDataToDatabase() {
+    JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
+    Plane plane1 = plane(planeId("A00017"), FLYING);
+
+    repository.updateRecord(plane1, 1);
+    List<Plane> allPlanesFromAirport = repository.getAllPlanesFromAirport();
+
+    assertThat(allPlanesFromAirport).contains(plane1);
+    System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
+  }
+
+  @Test
+  public void deletingAllDataToDatabase() throws SQLException {
+    JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
+
+    repository.deleteTableContents("airport");
+    List<Plane> allPlanesFromAirport = repository.getAllPlanesFromAirport();
+
+    assertThat(allPlanesFromAirport).isEmpty();
+    System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
+  }
+
+  @Test
+  public void deleteOneRecordByIdToDatabase() throws SQLException {
+    JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
+
+    repository.deleteTableContents("airport");
+
+    Plane plane1 = plane(planeId("A00015"), FLYING);
+    Plane plane2 = plane(planeId("A00019"), LANDED);
+
+    repository.write(plane1);
+    repository.write(plane2);
+    List<Plane> inAirport = repository.getAllPlanesFromAirport();
+    System.out.println("inAirport = " + inAirport);
+
+    repository.deleteByRowID(20);
+    List<Plane> allPlanesFromAirport = repository.getAllPlanesFromAirport();
+
     System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
   }
 }

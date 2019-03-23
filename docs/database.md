@@ -12,3 +12,4 @@ links:
 - To set up docker db https://hackernoon.com/dont-install-postgres-docker-pull-postgres-bee20e200198
 - https://stackoverflow.com/questions/37694987/connecting-to-postgresql-in-a-docker-container-from-outside
 - https://blog.codecentric.de/en/2017/01/flyway-tutorial-managing-database-migrations/
+- http://pointbeing.net/weblog/2008/03/mysql-versus-postgresql-adding-a-last-modified-column-to-a-table.html
