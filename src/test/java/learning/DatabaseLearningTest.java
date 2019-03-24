@@ -1,11 +1,17 @@
 package learning;
 
 import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.infrastructure.dataproviders.database.connection.HikariDatabaseConnectionPooling;
 import com.hanfak.airport.infrastructure.dataproviders.database.connection.PoolingJDBCDatabasConnectionManager;
+import com.hanfak.airport.infrastructure.properties.Settings;
+import com.hanfak.airport.wiring.configuration.Application;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -15,11 +21,16 @@ import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.infrastructure.logging.LoggingCategory.APPLICATION;
+import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSettings;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class DatabaseLearningTest implements WithAssertions {
   private final Logger applicationLogger = getLogger(APPLICATION.name());
-  private final PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger);
+  Path appProperties = Paths.get("target/classes/localhost.application.properties");
+  Path secretsProperties = Paths.get("unused");
+  Settings settings = loadSettings(LoggerFactory.getLogger(Application.class), appProperties, secretsProperties);
+  private final HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);
+  private final PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling);
 
   @Test
   public void getDataFromDatabase() {
@@ -32,7 +43,7 @@ public class DatabaseLearningTest implements WithAssertions {
   @Test
   public void addDataToDatabase() {
     JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
-    Plane plane1 = plane(planeId("A00015"), FLYING);
+    Plane plane1 = plane(planeId("A00234"), FLYING);
 
     repository.write(plane1);
     List<Plane> allPlanesFromAirport = repository.getAllPlanesFromAirport();

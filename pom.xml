@@ -24,6 +24,7 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <acceptance.tests>${project.groupId}.acceptancetests/**/*.java</acceptance.tests>
+    <learning.tests>${project.groupId}.learning/**/*.java</learning.tests>
     <skipTests>false</skipTests>
     <maven.surefire.version>2.19.1</maven.surefire.version>
     <required.maven.version>3.0.5</required.maven.version>
@@ -263,6 +264,8 @@
                 <configuration>
                   <excludes>
                     <exclude>${acceptance.tests}</exclude>
+                    <!--TODO: Not working???-->
+                    <exclude>${learning.tests}</exclude>
                   </excludes>
                 </configuration>
               </execution>
@@ -370,6 +373,13 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>42.2.5</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>27.1-jre</version>
     </dependency>
 
     <!-- Reflective toString/equals/hashCode builders -->

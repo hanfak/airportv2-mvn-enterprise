@@ -17,13 +17,15 @@ public class PoolingJDBCDatabasConnectionManagerTest {
 
   private final Logger logger = mock(Logger.class);
   private final DataSource dataSource = mock(DataSource.class);
+  private final HikariDatabaseConnectionPooling databaseConnectionPooling = mock(HikariDatabaseConnectionPooling.class);
   private final Connection connectionz = mock(Connection.class);
 
   @Test
   public void getDatabaseConnection() throws SQLException {
     when(dataSource.getConnection()).thenReturn(connectionz);
+    when(databaseConnectionPooling.getDataSource()).thenReturn(dataSource);
 
-    PoolingJDBCDatabasConnectionManager poolingJDBCDatabasConnectionManager = new PoolingJDBCDatabasConnectionManager(logger, dataSource);
+    PoolingJDBCDatabasConnectionManager poolingJDBCDatabasConnectionManager = new PoolingJDBCDatabasConnectionManager(logger, databaseConnectionPooling);
     Connection dbConnection = poolingJDBCDatabasConnectionManager.getDBConnection();
 
     assertThat(dbConnection).isEqualTo(connectionz);
@@ -32,8 +34,9 @@ public class PoolingJDBCDatabasConnectionManagerTest {
 
   @Test
   public void throwExceptionWhenGettingConnectionFails() throws SQLException {
+    when(databaseConnectionPooling.getDataSource()).thenReturn(dataSource);
     when(dataSource.getConnection()).thenThrow(SQLException.class);
-    PoolingJDBCDatabasConnectionManager poolingJDBCDatabasConnectionManager = new PoolingJDBCDatabasConnectionManager(logger, dataSource);
+    PoolingJDBCDatabasConnectionManager poolingJDBCDatabasConnectionManager = new PoolingJDBCDatabasConnectionManager(logger, databaseConnectionPooling);
 
     assertThatThrownBy(poolingJDBCDatabasConnectionManager::getDBConnection)
             .isInstanceOf(IllegalStateException.class)

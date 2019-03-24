@@ -13,9 +13,11 @@ public class DependenciesMakeSenseTest implements WithAssertions {
 
   private final DomainEnforcer domainEnforcer = enforceSources(Paths.get("./src/main/java"));
   private static final String APACHE_COMMONS_BUILDERS = "org.apache.commons.lang3.builder";
+  private static final String APACHE_COMMONS_STRING_UTILS = "org.apache.commons.lang3.StringUtils";
   private static final String LOGGER = "org.slf4j.Logger";
   private static final String FINDBUGS = "edu.umd.cs.findbugs.annotations.SuppressFBWarnings";
   private static final String HIKARI = "com.zaxxer.hikari";
+  private static final String GUAVA_VISIBLE_FOR_TESTING = "com.google.common.annotations.VisibleForTesting";
 
   @Test
   public void domainShouldOnlyTalkToItselfAndJava() {
@@ -40,6 +42,8 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     "com.hanfak.airport.usecase",
                     LOGGER,
                     HIKARI,
+                    APACHE_COMMONS_STRING_UTILS,
+                    GUAVA_VISIBLE_FOR_TESTING,
                     "java");
 
     assertThat(violations).describedAs("Violations").isEmpty();
