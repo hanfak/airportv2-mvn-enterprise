@@ -1,4 +1,4 @@
-package learning;
+package learning.database;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.infrastructure.dataproviders.database.connection.HikariDatabaseConnectionPooling;

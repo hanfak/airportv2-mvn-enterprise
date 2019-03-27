@@ -76,7 +76,11 @@ Technical TODO:
 - status page, check db & weather service is up, scheduled job every minute
 - ~~use testlogger~~
 - Yatspec
-    - dictionary
+    - dictionary (see shelf)
+    - Use givenWhenThen from TestState (Move to another test, with different way of asserting on output using capturedInputsAndOutputs)
+        - for learning test with webserver
+    - interesting givens
+    - sequence diagram
     - interestingGivens.getType
     - plant uml for acceptance test
 - Use third party weather service, use wire mock for stub, http client to talk wiht it
@@ -88,6 +92,7 @@ Technical TODO:
 - separate acceptance test into module
 - ~~find bugs Static analysis via maven~~
     - mvn findbugs:findbugs
+        - issues with findbugs???
     - mvn org.apache.maven.plugins:maven-pmd-plugin:3.6:pmd
 - scheduler to check weather, and store in cache (Db - redis)
     - quartz, cron
