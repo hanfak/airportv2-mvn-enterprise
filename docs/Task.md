@@ -46,6 +46,7 @@ Technical TODO:
     - -simple wiring and application class-
     - configuration, wiring
     - simple main, with command line interface
+    - wiring, split for third party int, database
 - ~~Add Exceptions, then try catch them and add logs with stack trace~~
     - ~~slf4j~~
 - ~~plant uml~~
@@ -57,15 +58,15 @@ Technical TODO:
     - ~~default & enhanced prop~~
     - test properties
 - Add db, object pooling, property file
-    - mysql/postgres
+    - ~~postgres~~
     - c3po or hikari pooling
     - use in memory db ie H2 and properties and code (extra methods on db) just for tests
     - use stub (list) for database in test
-    - create users, owenrs with rights
     - editioning and views
 - flyway db to setup database
     - ~~maven, module~~
     - afterMigrate create user
+    - create users, owenrs with rights
     - clean db, drop users
 - Add Jetty server, split up usecase into several classes
     - property file
@@ -86,13 +87,13 @@ Technical TODO:
     - sequence diagram
     - interestingGivens.getType
     - plant uml for acceptance test
+    - separate acceptance test into module
 - Use third party weather service, use wire mock for stub, http client to talk wiht it
     - https://fcc-weather-api.glitch.me/api/current?lat=51.4700&lon=0.4543
     - https://www.metaweather.com/api/
     - logging
     - timeout
-- wiring, split for third party int, database
-- separate acceptance test into module
+
 - ~~find bugs Static analysis via maven~~
     - mvn findbugs:findbugs
         - issues with findbugs???
