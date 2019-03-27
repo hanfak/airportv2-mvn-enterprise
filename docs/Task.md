@@ -52,9 +52,10 @@ Technical TODO:
     - use intellij plugin to generate this file
     - TODO: generate using code ie workflow
 - properties
-    - property loader
-    - test and prod
-    - default & enhanced prop
+    - ~~property loader~~
+    - ~~test and prod~~
+    - ~~default & enhanced prop~~
+    - test properties
 - Add db, object pooling, property file
     - mysql/postgres
     - c3po or hikari pooling
@@ -63,15 +64,17 @@ Technical TODO:
     - create users, owenrs with rights
     - editioning and views
 - flyway db to setup database
-    - maven, module
+    - ~~maven, module~~
+    - afterMigrate create user
+    - clean db, drop users
 - Add Jetty server, split up usecase into several classes
     - property file
     - respond with json, custom marshaller and unmarshaller
     - acceptance tests are run via server then docker container
     - post req for takeoff and landing
     - get req for plane status
-    - logging using logbook
-    - log incoming and outgoing requests
+    - ~~logging using logbook~~
+        - ~~log incoming and outgoing requests~~
 - Access and audit logging
 - status page, check db & weather service is up, scheduled job every minute
 - ~~use testlogger~~
