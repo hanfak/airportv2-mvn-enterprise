@@ -1,7 +1,7 @@
 package learning.database;
 
 import com.hanfak.airport.domain.plane.Plane;
-import com.hanfak.airport.infrastructure.dataproviders.database.JDBCDatabaseConnectionManager;
+import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.mockito.InOrder;

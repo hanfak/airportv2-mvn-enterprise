@@ -3,7 +3,7 @@ package learning.database;
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.plane.PlaneId;
 import com.hanfak.airport.domain.plane.PlaneStatus;
-import com.hanfak.airport.infrastructure.dataproviders.database.JDBCDatabaseConnectionManager;
+import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
@@ -175,5 +175,4 @@ public class JDBCAirportRepository {
       throw new IllegalArgumentException(e);
     }
   }
-
 }

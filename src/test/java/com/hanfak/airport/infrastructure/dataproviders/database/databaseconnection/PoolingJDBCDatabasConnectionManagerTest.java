@@ -1,4 +1,4 @@
-package com.hanfak.airport.infrastructure.dataproviders.database.connection;
+package com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection;
 
 import org.junit.Test;
 import org.slf4j.Logger;

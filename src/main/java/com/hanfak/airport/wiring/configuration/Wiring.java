@@ -1,6 +1,10 @@
 package com.hanfak.airport.wiring.configuration;
 
 import com.hanfak.airport.infrastructure.dataproviders.AirportPlaneInventoryService;
+import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
+import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.HikariDatabaseConnectionPooling;
+import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
+import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageRepository;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import com.hanfak.airport.usecase.TakeOffUseCase;
@@ -43,6 +47,18 @@ public class Wiring {
   }
 
   private AirportPlaneInventoryService airportPlaneInventoryService() {
-    return new AirportPlaneInventoryService();
+    return new AirportPlaneInventoryService(airportStorageRepository());
+  }
+  // TODO should separate to jdbc wiring class
+  private AirportStorageRepository airportStorageRepository() {
+    return new AirportStorageRepository(applicationLogger, databaseConnectionManager());
+  }
+
+  private JDBCDatabaseConnectionManager databaseConnectionManager() {
+    return new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling());
+  }
+
+  private HikariDatabaseConnectionPooling databaseConnectionPooling() {
+    return new HikariDatabaseConnectionPooling(singletons.settings);
   }
 }

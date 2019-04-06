@@ -22,14 +22,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class LandPlaneUseCaseTest implements WithAssertions {
 
   @Test
   public void airportInstructsPlaneToLand() {
-    when(planeInventoryService.checkPlaneIsAtAirport(flyingPlane.planeId)).thenReturn(false);
-
     PlaneLandStatus actionUnderTest = airport.instructPlaneToLand(flyingPlane);
 
     verify(planeInventoryService).addPlane(landedPlane);

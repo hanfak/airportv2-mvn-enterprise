@@ -28,5 +28,6 @@ hs_err_pid*
 /.surefire-*
 /airport-version2.iml
 /dependency-reduced-pom.xml
+flyway-sql/dependency-reduced-pom.xml
 /.idea/
 /log

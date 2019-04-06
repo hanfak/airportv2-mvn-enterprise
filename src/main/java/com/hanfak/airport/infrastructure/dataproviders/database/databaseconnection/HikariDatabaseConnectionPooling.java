@@ -1,4 +1,4 @@
-package com.hanfak.airport.infrastructure.dataproviders.database.connection;
+package com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection;
 
 
 import com.hanfak.airport.infrastructure.properties.Settings;

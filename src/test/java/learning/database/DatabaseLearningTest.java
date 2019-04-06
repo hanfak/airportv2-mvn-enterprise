@@ -1,8 +1,8 @@
 package learning.database;
 
 import com.hanfak.airport.domain.plane.Plane;
-import com.hanfak.airport.infrastructure.dataproviders.database.connection.HikariDatabaseConnectionPooling;
-import com.hanfak.airport.infrastructure.dataproviders.database.connection.PoolingJDBCDatabasConnectionManager;
+import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.HikariDatabaseConnectionPooling;
+import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.wiring.configuration.Application;
 import org.assertj.core.api.WithAssertions;

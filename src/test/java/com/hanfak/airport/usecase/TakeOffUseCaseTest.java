@@ -17,14 +17,14 @@ import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffSta
 import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_FLYING;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 public class TakeOffUseCaseTest implements WithAssertions {
 
     @Test
     public void removesPlaneFromAirportWhenInstructToTakeOff() {
-        when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(true);
-
         PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
 
         verify(hangerService).removePlane(plane);
@@ -34,8 +34,6 @@ public class TakeOffUseCaseTest implements WithAssertions {
 
     @Test
     public void planeDoesNotLeaveAirportWhenPlaneIsFlying() {
-        when(hangerService.checkPlaneIsAtAirport(planeId("A0001"))).thenReturn(false);
-
         PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(flyingPlane);
 
         verify(hangerService, never()).removePlane(plane);

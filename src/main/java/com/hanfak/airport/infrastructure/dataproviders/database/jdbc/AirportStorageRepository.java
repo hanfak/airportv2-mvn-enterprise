@@ -1,8 +1,9 @@
-package com.hanfak.airport.infrastructure.dataproviders.database;
+package com.hanfak.airport.infrastructure.dataproviders.database.jdbc;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.plane.PlaneId;
 import com.hanfak.airport.domain.plane.PlaneStatus;
+import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
@@ -17,6 +18,7 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static java.lang.String.format;
 
+// Split for each operation
 public class AirportStorageRepository {
 
   private static final String PLANE_BY_PLANE_ID = "SELECT PLANE_STATUS, PLANE_ID FROM airport WHERE PLANE_ID=?";
@@ -31,20 +33,7 @@ public class AirportStorageRepository {
     this.databaseConnectionManager = databaseConnectionManager;
   }
 
-  public Optional<Plane> checkPlaneIsAtAirport(PlaneId planeId) {
-    return executeReadSqlBy(planeId);
-  }
-
-  public void addPlane(Plane plane) {
-    writeASingleRecord(plane);
-  }
-
-  public void removePlane(Plane plane){
-    deleteByRowId(plane.planeId.value);
-  }
-
-  // extract to delegate
-  private Optional<Plane> executeReadSqlBy(PlaneId lookupId) {
+  public Optional<Plane> read(PlaneId lookupId) {
     logger.info(format("Reading Airport for '%s'", lookupId));
     logger.debug(format("Using sql:%n%s", PLANE_BY_PLANE_ID));
 
@@ -75,8 +64,7 @@ public class AirportStorageRepository {
     }
   }
 
-  // extract to Delegate
-  private void writeASingleRecord(final Plane plane) {
+  public void write(final Plane plane) {
     logger.info(format("Persisting '%s'", plane));
     logger.debug(format("Using sql:%n%s", INSERT_A_PLANE));
 
@@ -97,8 +85,7 @@ public class AirportStorageRepository {
     }
   }
 
-  // extract to delegate
-  private void deleteByRowId(String id) {
+  public void delete(String id) {
     logger.info(format("Deleting row with plane id '%s'", id));
     logger.debug(format("Using sql:%n%s", DELETE_PLANE_FROM_AIRPORT));
 

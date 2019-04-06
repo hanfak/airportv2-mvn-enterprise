@@ -1,98 +1,70 @@
 package com.hanfak.airport.infrastructure.dataproviders;
 
 import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageRepository;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
-import static org.assertj.core.api.Assertions.assertThat;
+import static java.util.Optional.empty;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 // Better test names
 public class AirportPlaneInventoryServiceTest {
-
-  @Test
-  public void shouldHaveAnEmptyHanger() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-
-    assertThat(service.planeInventory()).isEmpty();
-  }
+  private final AirportStorageRepository airportStorageRepository = mock(AirportStorageRepository.class);
 
   @Test
   public void canAddAPlaneToAHanger() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
     Plane plane = plane(planeId("A0001"), LANDED);
+    when(airportStorageRepository.read(planeId("A0001"))).thenReturn(empty());
+    AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
 
     service.addPlane(plane);
 
-    assertThat(service.checkPlaneIsAtAirport(plane.planeId)).isTrue();
-    assertThat(service.planeInventory()).contains(plane);
+    verify(airportStorageRepository).write(plane);
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void canOnlyHaveOneUniquePlaneInTheHanger() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
     Plane plane = plane(planeId("A0001"), LANDED);
-    plane(planeId("A0001"), LANDED);
+    when(airportStorageRepository.read(planeId("A0001"))).thenReturn(empty(), Optional.of(plane));
+
+    AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
     service.addPlane(plane);
 
+    verify(airportStorageRepository).write(plane);
     assertThatThrownBy(() -> service.addPlane(plane))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Plane, 'A0001', in airport, cannot store plane in airport");
-
-    assertThat(service.checkPlaneIsAtAirport(plane.planeId)).isTrue();
-    assertThat(service.planeInventory().size()).isEqualTo(1);
   }
 
   @Test
   public void removesPlaneFromHanger() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
     Plane plane = plane(planeId("A0001"), LANDED);
-    service.addPlane(plane);
+    AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
+    when(airportStorageRepository.read(planeId("A0001"))).thenReturn(Optional.of(plane));
 
     service.removePlane(plane);
 
-    assertThat(service.planeInventory()).doesNotContain(plane);
+    verify(airportStorageRepository).delete(plane.planeId.value);
   }
 
   @Test
   public void cannotRemovePlaneFromAirportWhenPlaneNotInTheAirport() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
+    AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
     Plane plane = plane(planeId("A0001"), LANDED);
+    when(airportStorageRepository.read(planeId("A0001"))).thenReturn(empty());
+
 
     assertThatThrownBy(() -> service.removePlane(plane))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Plane, 'A0001', not in airport, cannot remove plane");
-  }
-
-  @Test
-  public void cannotStorePlaneToAirportWhenPlaneIsInAirport() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-    Plane plane = plane(planeId("A0001"), LANDED);
-    service.addPlane(plane);
-
-    assertThatThrownBy(() -> service.addPlane(plane))
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessage("Plane, 'A0001', in airport, cannot store plane in airport");
-  }
-
-  @Test
-  public void checkPlaneIsInAirport() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-    Plane plane = plane(planeId("A0001"), LANDED);
-    service.addPlane(plane);
-
-    boolean planeAtAirport = service.checkPlaneIsAtAirport(planeId("A0001"));
-
-    assertThat(planeAtAirport).isTrue();
-  }
-
-  @Test
-  public void checkPlaneIsNotAtAirport() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService();
-
-    boolean planeAtAirport = service.checkPlaneIsAtAirport(planeId("A0001"));
-
-    assertThat(planeAtAirport).isFalse();
   }
 }

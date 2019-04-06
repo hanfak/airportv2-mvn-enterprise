@@ -1,6 +1,6 @@
-package com.hanfak.airport.infrastructure.dataproviders.database.connection;
+package com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection;
 
-import com.hanfak.airport.infrastructure.dataproviders.database.JDBCDatabaseConnectionManager;
+import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import org.slf4j.Logger;
 
 import javax.sql.DataSource;

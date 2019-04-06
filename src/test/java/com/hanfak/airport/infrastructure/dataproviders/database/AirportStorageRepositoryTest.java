@@ -1,6 +1,8 @@
 package com.hanfak.airport.infrastructure.dataproviders.database;
 
 import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
+import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageRepository;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -33,7 +35,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
     when(resultSet.getString("PLANE_ID")).thenReturn("A0001");
 
     Optional<Plane> result =
-            repository.checkPlaneIsAtAirport(planeId("A0001"));
+            repository.read(planeId("A0001"));
 
     assertThat(result).contains(plane1);
 
@@ -61,8 +63,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
 
     when(resultSet.next()).thenReturn(false);
 
-    Optional<Plane> result =
-            repository.checkPlaneIsAtAirport(planeId("A0001"));
+    Optional<Plane> result = repository.read(planeId("A0001"));
 
     assertThat(result.isPresent()).isFalse();
     InOrder inOrder = inOrder(logger, databaseConnectionProvider, connection, queryPreparedStatement, resultSet);
@@ -87,7 +88,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
 
     when(resultSet.next()).thenReturn(true, true);
 
-    assertThatThrownBy(() -> repository.checkPlaneIsAtAirport(planeId("A0001")))
+    assertThatThrownBy(() -> repository.read(planeId("A0001")))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Found more than one 'plane' for 'A0001'");
 
@@ -112,7 +113,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
     when(databaseConnectionProvider.getDBConnection()).thenThrow( new SQLException("blah"));
 
 
-    assertThatThrownBy(() -> repository.checkPlaneIsAtAirport(planeId("A0001")))
+    assertThatThrownBy(() -> repository.read(planeId("A0001")))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Failed to read 'plane' for 'A0001'")
             .hasCause(new SQLException("blah"));
@@ -125,7 +126,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
     when(insertPreparedStatement.executeQuery()).thenReturn(resultSet);
     when(insertPreparedStatement.executeUpdate()).thenReturn(1);
 
-    repository.addPlane(plane1);
+    repository.write(plane1);
 
     InOrder inOrder = inOrder(logger, databaseConnectionProvider, connection, insertPreparedStatement, resultSet);
     inOrder.verify(logger).info("Persisting 'Plane[planeId=A0001,planeStatus=FLYING]'");
@@ -146,7 +147,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
     when(insertPreparedStatement.executeQuery()).thenReturn(resultSet);
     when(insertPreparedStatement.executeUpdate()).thenReturn(2);
 
-    assertThatThrownBy(() -> repository.addPlane(plane1))
+    assertThatThrownBy(() -> repository.write(plane1))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Something went wrong when trying to persist 'Plane[planeId=A0001,planeStatus=FLYING]'. We expected 1 row to be affected but instead 2 rows were affected.");
 
@@ -165,7 +166,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
     when(databaseConnectionProvider.getDBConnection()).thenReturn(connection);
     when(connection.prepareStatement(any())).thenThrow(new SQLException("blah"));
 
-    assertThatThrownBy(() -> repository.addPlane(plane1))
+    assertThatThrownBy(() -> repository.write(plane1))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Failed to store plane, 'Plane[planeId=A0001,planeStatus=FLYING]', to airport")
             .hasCause(new SQLException("blah"));
@@ -177,7 +178,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
     when(connection.prepareStatement(anyString())).thenReturn(deletePreparedStatement);
     when(deletePreparedStatement.executeUpdate()).thenReturn(1);
 
-    repository.removePlane(plane1);
+    repository.delete(plane1.planeId.value);
 
     InOrder inOrder = inOrder(logger, databaseConnectionProvider, connection, deletePreparedStatement, resultSet);
     inOrder.verify(logger).info("Deleting row with plane id 'A0001'");
@@ -197,7 +198,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
     when(connection.prepareStatement(anyString())).thenReturn(deletePreparedStatement);
     when(deletePreparedStatement.executeUpdate()).thenReturn(0);
 
-    assertThatThrownBy(() -> repository.removePlane(plane1))
+    assertThatThrownBy(() -> repository.delete(plane1.planeId.value))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Tried to delete plane with id 'A0001' but was not there");
 
@@ -219,7 +220,7 @@ public class AirportStorageRepositoryTest implements WithAssertions {
     when(deletePreparedStatement.executeUpdate()).thenThrow(new SQLException("blah"));
 
 
-    assertThatThrownBy(() -> repository.removePlane(plane1))
+    assertThatThrownBy(() -> repository.delete(plane1.planeId.value))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Failed to delete plane with id 'A0001' from airport")
             .hasCause(new SQLException("blah"));
