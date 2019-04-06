@@ -81,7 +81,6 @@ public class LandPlaneTest extends TestState implements WithAssertions {
     assertThat(hangerService.planeInventory().get(0).planeStatus).isEqualTo(LANDED);
   }
 
-
   private final SuccessfulPlaneLandStatus expectedSuccessfulPlaneLandStatus = SuccessfulPlaneLandStatus.successfulPlaneLandStatus(planeId("A0001"), LANDED, IN_AIRPORT);
 
   private final TestLogger logger = new TestLogger();

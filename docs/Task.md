@@ -1,7 +1,7 @@
 ### Task
 
 
-We have a request from a client to write the software to control the flow of planes at an airport. The planes can land and take off provided that the weather is sunny. Occasionally it may be stormy, in which case no planes can land or take off. Here are the user stories that we worked out in collaboration with the client:
+We have a request from a client to writeASingleRecord the software to control the flow of planes at an airport. The planes can land and take off provided that the weather is sunny. Occasionally it may be stormy, in which case no planes can land or take off. Here are the user stories that we worked out in collaboration with the client:
 
 
 ```
@@ -41,44 +41,68 @@ Feature TODO:
 
 Technical TODO:
 
-- ~~clean architecture maintained via domain-enforcer libray~~
-- Have an application start up(main, property file for prod)
+- ~~clean architecture maintained~~
+    - domain-enforcer libray
+    - domain objects - immutable
+    - dependency inversion for inner layers to communicate with outer layers
+    - use case - shows flow of single application action
+
+- Have an application start up
     - -simple wiring and application class-
     - configuration, wiring
-    - simple main, with command line interface
+    - ~~singletons for instantiating specific objects~~
     - wiring, split for third party int, database
+
 - ~~Add Exceptions, then try catch them and add logs with stack trace~~
-    - ~~slf4j~~
+
 - ~~plant uml~~
     - use intellij plugin to generate this file
     - TODO: generate using code ie workflow
+
 - properties
     - ~~property loader~~
-    - ~~test and prod~~
+    - test and prod
     - ~~default & enhanced prop~~
     - test properties
+
 - Add db, object pooling, property file
     - ~~postgres~~
-    - c3po or hikari pooling
+    - ~~c3po or hikari for object pooling~~
     - use in memory db ie H2 and properties and code (extra methods on db) just for tests
     - use stub (list) for database in test
     - editioning and views
+
 - flyway db to setup database
     - ~~maven, module~~
     - afterMigrate create user
     - create users, owenrs with rights
     - clean db, drop users
+
 - Add Jetty server, split up usecase into several classes
     - property file
-    - respond with json, custom marshaller and unmarshaller
+    - respond with xml, custom marshaller and unmarshaller
     - acceptance tests are run via server then docker container
     - post req for takeoff and landing
     - get req for plane status
+    - ready page
     - ~~logging using logbook~~
         - ~~log incoming and outgoing requests~~
-- Access and audit logging
-- status page, check db & weather service is up, scheduled job every minute
-- ~~use testlogger~~
+    - 404 page with links for all endpoints
+        - hide links
+
+- status page,
+    - check db & weather service is up,
+    - scheduled job every minute
+    - use in memory cache to store result
+    - use executor service to do concurrent checks
+    - status check for scheduled jobs (use quartz db)
+
+- Logging
+    - ~~slf4j~~
+    - Access and audit logging
+    - Logback to config logging
+    - ~~use testlogger~~
+
 - Yatspec
     - dictionary (see shelf)
     - Use givenWhenThen from TestState (Move to another test, with different way of asserting on output using capturedInputsAndOutputs)
@@ -88,24 +112,46 @@ Technical TODO:
     - interestingGivens.getType
     - plant uml for acceptance test
     - separate acceptance test into module
-- Use third party weather service, use wire mock for stub, http client to talk wiht it
+
+- Use third party weather service
     - https://fcc-weather-api.glitch.me/api/current?lat=51.4700&lon=0.4543
     - https://www.metaweather.com/api/
+    - http client
+    - marshalling request & unmarshalling response (json)
+    - wiremock
     - logging
     - timeout
+    - traceyid
+    - audit, store weather in db
 
 - ~~find bugs Static analysis via maven~~
     - mvn findbugs:findbugs
         - issues with findbugs???
     - mvn org.apache.maven.plugins:maven-pmd-plugin:3.6:pmd
+
 - scheduler to check weather, and store in cache (Db - redis)
+    - cache for weather service (in memory)
     - quartz, cron
-- Use Akka to make calls to db async
-- cache for weather service (redis)
-- dockerise, use maven to dockerise and run acceptance tests through image
-- metrics end point, prometheues
+
+- data warehouse views to build reports
+    - sql queries to report on status of airport
+
+- dockerise
+    - use maven to dockerise , fabric8
+    - run acceptance tests through image
+    - start script and properties
+
+- metrics end point
+    - prometheues
+
 - jenkins ci build
-- extract service to separate app (database)
+    - ci build, run tests
+    - deploy to test
+    - deploy to prod
+
+- Use Akka to make calls to db async
+
+- extract service to separate app (database & weather service)
     - use docker
     - kubernetes, multiple replicas
         - pre install hook for migrating and populating db
@@ -113,12 +159,21 @@ Technical TODO:
     - traceyId
     - wiremock
     - contract tests
+
 - batch/aysnc jobs to other service
     - refuel, unload, clean up, inspect
     - messaging service
     - concurrent
     - soap, ftp, amq,
+
 - cqrs and event sourcing, aggregates for flow
+
 - gui
+    - access api
+    - display controls and return values
+    - javafx
+    - html/js
+    - react
+
 - implement using spring, other libraries
 

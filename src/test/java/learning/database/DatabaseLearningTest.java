@@ -6,6 +6,7 @@ import com.hanfak.airport.infrastructure.dataproviders.database.connection.Pooli
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.wiring.configuration.Application;
 import org.assertj.core.api.WithAssertions;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ public class DatabaseLearningTest implements WithAssertions {
   private final PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling);
 
   @Test
+  @Ignore
   public void getDataFromDatabase() {
     JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
 
@@ -40,6 +42,7 @@ public class DatabaseLearningTest implements WithAssertions {
     System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
   }
 
+  @Ignore
   @Test
   public void addDataToDatabase() {
     JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
@@ -52,6 +55,7 @@ public class DatabaseLearningTest implements WithAssertions {
     System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
   }
 
+  @Ignore
   @Test
   public void addMulitpleDataToDatabase() throws SQLException {
     JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
@@ -71,6 +75,7 @@ public class DatabaseLearningTest implements WithAssertions {
     System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
   }
 
+  @Ignore
   @Test
   public void updateDataToDatabase() {
     JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
@@ -83,6 +88,7 @@ public class DatabaseLearningTest implements WithAssertions {
     System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
   }
 
+  @Ignore
   @Test
   public void deletingAllDataToDatabase() throws SQLException {
     JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);
@@ -94,6 +100,7 @@ public class DatabaseLearningTest implements WithAssertions {
     System.out.println("allPlanesFromAirport = " + allPlanesFromAirport);
   }
 
+  @Ignore
   @Test
   public void deleteOneRecordByIdToDatabase() throws SQLException {
     JDBCAirportRepository repository = new JDBCAirportRepository(applicationLogger, databaseConnectionManager);

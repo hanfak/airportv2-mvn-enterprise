@@ -18,7 +18,7 @@ public class PoolingJDBCDatabasConnectionManager implements JDBCDatabaseConnecti
     }
 
     @Override
-    public Connection getDBConnection() {
+    public Connection getDBConnection() throws SQLException {
         DataSource dataSource = databaseConnectionPooling.getDataSource();
 
         try {
@@ -26,7 +26,7 @@ public class PoolingJDBCDatabasConnectionManager implements JDBCDatabaseConnecti
             return dataSource.getConnection();
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new IllegalStateException("Cannot connect to db", e);
+            throw new SQLException("Cannot connect to db", e);
         }
     }
 }

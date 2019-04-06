@@ -30,8 +30,6 @@ public class Wiring {
     Singletons(Settings settings) {
       this.settings = settings;
     }
-
-
   }
 
   private static Logger applicationLogger = getLogger(APPLICATION.name());

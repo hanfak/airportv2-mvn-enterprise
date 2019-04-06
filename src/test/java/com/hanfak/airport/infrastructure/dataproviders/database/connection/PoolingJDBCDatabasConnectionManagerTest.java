@@ -39,8 +39,7 @@ public class PoolingJDBCDatabasConnectionManagerTest {
     PoolingJDBCDatabasConnectionManager poolingJDBCDatabasConnectionManager = new PoolingJDBCDatabasConnectionManager(logger, databaseConnectionPooling);
 
     assertThatThrownBy(poolingJDBCDatabasConnectionManager::getDBConnection)
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessage("Cannot connect to db")
-            .hasCause(new SQLException());
+            .isInstanceOf(SQLException.class)
+            .hasMessage("Cannot connect to db");
   }
 }

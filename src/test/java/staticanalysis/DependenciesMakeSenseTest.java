@@ -35,6 +35,7 @@ public class DependenciesMakeSenseTest implements WithAssertions {
     assertThat(violations).describedAs("Violations").isEmpty();
   }
 
+  //TODO fix so can talk to everything except for wiring
   @Test
   public void infrastructureShouldOnlyTalkToItselfAndUsecaseAndDomainAndJava() {
     List<String> violations = domainEnforcer.checkThatPackageOnlyTalksToItself("com.hanfak.airport.infrastructure")
@@ -45,7 +46,6 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     APACHE_COMMONS_STRING_UTILS,
                     GUAVA_VISIBLE_FOR_TESTING,
                     "java");
-
     assertThat(violations).describedAs("Violations").isEmpty();
   }
 

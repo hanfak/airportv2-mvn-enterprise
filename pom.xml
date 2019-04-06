@@ -141,30 +141,30 @@
           <mainClass>Main</mainClass>
         </configuration>
       </plugin>
-      <!-- FindBugs -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.3</version>
-        <configuration>
-          <skip>${skipTests}</skip>
-          <effort>Max</effort>
-          <threshold>Low</threshold>
-          <xmlOutput>true</xmlOutput>
-          <failOnError>true</failOnError>
-          <excludeFilterFile>${project.basedir}/findbugs/findbugs-excludes.xml</excludeFilterFile>
-          <findbugsXmlOutputDirectory>${project.build.directory}/findbugs</findbugsXmlOutputDirectory>
-          <maxHeap>2048</maxHeap>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+      <!-- FindBugs - not working -->
+      <!--<plugin>-->
+        <!--<groupId>org.codehaus.mojo</groupId>-->
+        <!--<artifactId>findbugs-maven-plugin</artifactId>-->
+        <!--<version>3.0.3</version>-->
+        <!--<configuration>-->
+          <!--<skip>${skipTests}</skip>-->
+          <!--<effort>Max</effort>-->
+          <!--<threshold>Low</threshold>-->
+          <!--<xmlOutput>true</xmlOutput>-->
+          <!--<failOnError>true</failOnError>-->
+          <!--<excludeFilterFile>${project.basedir}/findbugs/findbugs-excludes.xml</excludeFilterFile>-->
+          <!--<findbugsXmlOutputDirectory>${project.build.directory}/findbugs</findbugsXmlOutputDirectory>-->
+          <!--<maxHeap>2048</maxHeap>-->
+        <!--</configuration>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<phase>verify</phase>-->
+            <!--<goals>-->
+              <!--<goal>check</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
       <!-- PMD -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

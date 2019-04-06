@@ -89,6 +89,7 @@
                 <configuration>
                     <user>postgres</user>
                     <password>docker</password>
+                    <!--TODO use unix env variable for local db-->
                     <url>jdbc:postgresql://127.0.0.1:5432/airportlocal</url>
                     <locations>
                         <location>filesystem:src/main/resources</location>
@@ -104,5 +105,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

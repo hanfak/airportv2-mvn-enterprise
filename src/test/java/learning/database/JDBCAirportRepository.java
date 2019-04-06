@@ -109,7 +109,7 @@ public class JDBCAirportRepository {
     }
   }
 
-  // write multiple planes
+  // writeASingleRecord multiple planes
   public void writeBatchPlanes(final List<Plane> planes) {
     try (Connection connection = databaseConnectionManager.getDBConnection();
          PreparedStatement insertStatement = connection.prepareStatement(INSERT_A_PLANE)) {

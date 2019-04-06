@@ -21,7 +21,7 @@ Flyway
 - Need to set up docker images, as above, and create the db
 
 - Commands
-    - apply schemas    
+    - apply clean
         -  mvn compile flyway:clean
     - clean db, drop tables
         - mvn compile flyway:migrate

@@ -10,5 +10,5 @@ public interface PlaneInventoryService {
   void addPlane(Plane plane);
   void removePlane(Plane plane);
 
-  Boolean checkPlaneIsAtAirport(PlaneId planeId);
+  Boolean checkPlaneIsAtAirport(PlaneId planeId); // Change to return Optional<Plane>
 }
