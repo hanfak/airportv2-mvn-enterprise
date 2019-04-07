@@ -10,7 +10,9 @@ import org.zalando.logbook.servlet.LogbookFilter;
 import javax.servlet.http.HttpServlet;
 import java.util.EnumSet;
 
-import static javax.servlet.DispatcherType.*;
+import static javax.servlet.DispatcherType.ASYNC;
+import static javax.servlet.DispatcherType.ERROR;
+import static javax.servlet.DispatcherType.REQUEST;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.zalando.logbook.DefaultHttpLogWriter.Level.INFO;
 

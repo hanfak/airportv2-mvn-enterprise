@@ -6,7 +6,7 @@ import com.hanfak.airport.domain.plane.PlaneId;
 import com.hanfak.airport.domain.plane.PlaneStatus;
 
 // Better name
-@SuppressWarnings({"FieldCanBeLocal", "unused", "PMD.UncommentedEmptyConstructor"})
+@SuppressWarnings({"FieldCanBeLocal", "unused", "PMD.SingularField", "URF_UNREAD_FIELD"})
 public class FailedPlaneLandStatus extends ValueType {
 
 

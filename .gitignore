@@ -24,10 +24,12 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-/target/
 /.surefire-*
 /airport-version2.iml
 /dependency-reduced-pom.xml
-flyway-sql/dependency-reduced-pom.xml
 /.idea/
 /log
+
+/application/.surefire-354D0E1A8C5BA12D2DD7F841C464235487D7B8F7
+/application/dependency-reduced-pom.xml
+/application/target/
