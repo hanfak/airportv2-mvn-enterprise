@@ -234,6 +234,16 @@
                       <mainClass>${root.package}.Application</mainClass>
                     </transformer>
                   </transformers>
+                  <filters>
+                    <filter>
+                      <!-- This artifact has stupidly copy-pasted some classes that conflict with the JARs that the classes were copy pasted from, so we should exclude them -->
+                      <artifact>com.google.code.findbugs:annotations</artifact>
+                      <excludes>
+                        <exclude>javax/annotation/**</exclude>
+                        <exclude>net/jcip/annotations/**</exclude>
+                      </excludes>
+                    </filter>
+                  </filters>
                 </configuration>
               </execution>
             </executions>
@@ -346,6 +356,52 @@
               <execution>
                 <id>default-jar</id>
                 <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>findbugs</id>
+      <activation>
+        <property>
+          <name>!isolated</name><!-- Profile is active unless -Disolated is specified -->
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <!-- Enable required lifecycle -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven.compiler.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>default-compile</id>
+                <phase>compile</phase>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>findbugs-maven-plugin</artifactId>
+            <version>3.0.4</version>
+            <configuration>
+              <skip>${skipTests}</skip>
+              <effort>Max</effort>
+              <threshold>Low</threshold>
+              <failOnError>true</failOnError><excludeFilterFile>${project.basedir}/findbugs/findbugs-excludes.xml</excludeFilterFile>
+              <findbugsXmlOutputDirectory>${project.build.directory}/findbugs</findbugsXmlOutputDirectory>
+            </configuration>
+            <executions>
+              <execution>
+                <id>findbugs-check</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>

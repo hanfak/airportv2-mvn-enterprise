@@ -47,6 +47,10 @@ Technical TODO:
     - dependency inversion for inner layers to communicate with outer layers
     - use case - shows flow of single application action
 
+- Multiple maven modules
+    - app
+    - flyway
+
 - Have an application start up
     - -simple wiring and application class-
     - configuration, wiring
@@ -73,7 +77,7 @@ Technical TODO:
     - editioning and views
 
 - flyway db to setup database
-    - ~~maven, module~~
+    - ~~maven~~
     - afterMigrate create user
     - create users, owenrs with rights
     - clean db, drop users
@@ -98,10 +102,11 @@ Technical TODO:
     - status check for scheduled jobs (use quartz db)
 
 - Logging
+    - ~~use testlogger~~
     - ~~slf4j~~
     - Access and audit logging
     - Logback to config logging
-    - ~~use testlogger~~
+    - logback add logs to file, and append
 
 - Yatspec
     - dictionary (see shelf)

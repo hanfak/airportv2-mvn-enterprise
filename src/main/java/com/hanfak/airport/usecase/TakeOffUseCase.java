@@ -15,7 +15,7 @@ import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOf
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_FLYING;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_NOT_AT_THE_AIRPORT;
 import static java.lang.String.format;
-
+@SuppressWarnings("PMD.TooManyStaticImports") // These all refer to domain objects
 public class TakeOffUseCase {
 
     private final PlaneInventoryService planeInventoryService;

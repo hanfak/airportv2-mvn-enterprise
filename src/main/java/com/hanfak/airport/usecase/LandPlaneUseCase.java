@@ -16,7 +16,7 @@ import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_
 import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPlaneLandStatus;
 // New Usecase for airport controller to use, to assess the state of the plane by accessing the
 // AirportHangerService using the planeId to get the its flight status
-
+@SuppressWarnings("PMD.TooManyStaticImports") // These all refer to domain objects
 public class LandPlaneUseCase {
 
   private final PlaneInventoryService planeInventoryService;

@@ -4,7 +4,7 @@ import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.HikariDatabaseConnectionPooling;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
 import com.hanfak.airport.infrastructure.properties.Settings;
-import com.hanfak.airport.wiring.configuration.Application;
+import com.hanfak.airport.wiring.Application;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Ignore;
 import org.junit.Test;

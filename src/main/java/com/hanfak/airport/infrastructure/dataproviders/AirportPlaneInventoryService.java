@@ -15,11 +15,11 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
 
   @Override
   public void addPlane(Plane plane) {
-    if (!airportStorageRepository.read(plane.planeId).isPresent()) {
-      airportStorageRepository.write(plane);
-    } else {
+    if (airportStorageRepository.read(plane.planeId).isPresent()) {
       // Use custom one
       throw new IllegalStateException(String.format("Plane, '%s', in airport, cannot store plane in airport", plane.planeId));
+    } else {
+      airportStorageRepository.write(plane);
     }
   }
 

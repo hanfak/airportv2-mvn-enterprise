@@ -1,8 +1,7 @@
-package com.hanfak.airport.infrastructure.dataproviders.database;
+package com.hanfak.airport.infrastructure.dataproviders.database.jdbc;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
-import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageRepository;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.mockito.InOrder;

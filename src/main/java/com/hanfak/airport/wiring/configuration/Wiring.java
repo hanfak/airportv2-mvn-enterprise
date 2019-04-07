@@ -15,6 +15,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class Wiring {
 
+  private static Logger applicationLogger = getLogger(APPLICATION.name());
   public final Singletons singletons;
 
   private Wiring(Singletons singletons) {
@@ -25,18 +26,14 @@ public class Wiring {
     Singletons singletons = new Singletons(settings);
     return new Wiring(singletons);
   }
-
   public static class Singletons {
-
-//    public final DataSourceProvider dataSourceProvider; // To add
+    //    public final DataSourceProvider dataSourceProvider; // To add
     final Settings settings;
     @SuppressWarnings({"PMD.ExcessiveParameterList"})
     Singletons(Settings settings) {
       this.settings = settings;
     }
   }
-
-  private static Logger applicationLogger = getLogger(APPLICATION.name());
 
   public LandPlaneUseCase landPlaneUseCase() {
     return new LandPlaneUseCase(airportPlaneInventoryService(), applicationLogger);
