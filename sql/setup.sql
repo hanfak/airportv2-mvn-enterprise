@@ -1,4 +1,3 @@
--- Change to production, test etc
 create database "airportlocal";
 
 -- conntect to db
@@ -28,9 +27,6 @@ INSERT INTO airport (PLANE_ID, PLANE_STATUS) VALUES ('A002', 'LANDED');
 
 -- delete  all info
 TRUNCATE airport;
-
--- reset sequence
-ALTER SEQUENCE my_sequence RESTART WITH 1;
 
 -- delete table
 DROP TABLE "airport";

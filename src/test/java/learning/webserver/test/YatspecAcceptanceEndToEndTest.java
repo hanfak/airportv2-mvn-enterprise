@@ -22,7 +22,7 @@ public abstract class YatspecAcceptanceEndToEndTest implements WithTestState, Wi
     private final WebServerRunner application = new WebServerRunner();
 
     @Before
-    public void startup() {
+    public void startup() throws Exception {
         application.startWebServer();
     }
 
