@@ -9,11 +9,10 @@ import com.hanfak.airport.domain.plane.PlaneStatus;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "PMD.SingularField", "URF_UNREAD_FIELD"})
 public class FailedPlaneLandStatus extends ValueType {
 
-
-  private final PlaneId planeId;
-  private final PlaneStatus planeStatus;
-  private final AirportStatus airportStatus;
-  private final LandFailureReason failureMessage;
+  public final PlaneId planeId;
+  public final PlaneStatus planeStatus;
+  public final AirportStatus airportStatus;
+  public final LandFailureReason failureMessage;
 
   public FailedPlaneLandStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus, LandFailureReason failureMessage) {
     this.planeId = planeId;

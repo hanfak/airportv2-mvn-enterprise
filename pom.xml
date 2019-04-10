@@ -12,6 +12,10 @@
     <module>flyway-sql</module>
     <module>application</module>
   </modules>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
 
   <name>airport</name>
   <!-- FIXME change it to the project's website -->

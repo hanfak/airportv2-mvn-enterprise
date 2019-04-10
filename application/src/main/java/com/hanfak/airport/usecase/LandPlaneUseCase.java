@@ -14,6 +14,7 @@ import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.fa
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_LANDED;
 import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPlaneLandStatus;
+
 // New Usecase for airport controller to use, to assess the state of the plane by accessing the
 // AirportHangerService using the planeId to get the its flight status
 @SuppressWarnings("PMD.TooManyStaticImports") // These all refer to domain objects

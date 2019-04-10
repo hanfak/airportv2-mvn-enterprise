@@ -9,8 +9,14 @@ import com.hanfak.airport.domain.plane.PlaneStatus;
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class SuccessfulPlaneLandStatus extends ValueType {
 
+  public final PlaneId planeId;
+  public final PlaneStatus planeStatus;
+  public final AirportStatus airportStatus;
 
   private SuccessfulPlaneLandStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus) {
+    this.planeId = planeId;
+    this.planeStatus = planeStatus;
+    this.airportStatus = airportStatus;
   }
 
   public static SuccessfulPlaneLandStatus successfulPlaneLandStatus(PlaneId planeId, PlaneStatus planeStatus, AirportStatus airportStatus) {
