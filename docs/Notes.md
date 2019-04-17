@@ -8,7 +8,10 @@ Landing
     * true exit
 4. land plane
     * status changes
-5. Add plane to airport
+5. Call Airport services (batched and async job)
+6. Call passenger removal
+7. Call internal airplane serivces (batched & async)
+8. Add plane to airport
 
 Take off
 
@@ -16,10 +19,12 @@ Take off
     * false exit
 3. Check if at airport
     * false exit
+4. Call passenger boarding
 4. take off plane
     * status change
 6. Remove plane from aiport
 
+Airport services - baggage collections, garbage cleaning
 
 Full Flows:
 

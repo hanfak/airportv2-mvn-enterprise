@@ -112,11 +112,11 @@ Technical TODO:
     - dictionary (see shelf)
     - Use givenWhenThen from TestState (Move to another test, with different way of asserting on output using capturedInputsAndOutputs)
         - for learning test with webserver
-    - interesting givens
+    - ~~interesting givens~~
     - sequence diagram
     - interestingGivens.getType
     - plant uml for acceptance test
-    - separate acceptance test into module
+    - separate acceptance test  and end to end tests into module
 
 - Use third party weather service
     - https://fcc-weather-api.glitch.me/api/current?lat=51.4700&lon=0.4543
@@ -128,11 +128,15 @@ Technical TODO:
     - timeout
     - traceyid
     - audit, store weather in db
+    - cache by storing result in db, update every hour
 
 - ~~find bugs Static analysis via maven~~
     - mvn findbugs:findbugs
         - issues with findbugs???
     - mvn org.apache.maven.plugins:maven-pmd-plugin:3.6:pmd
+
+- Code coverage in build
+   - see application/target/site/jacoco/index.html
 
 - scheduler to check weather, and store in cache (Db - redis)
     - cache for weather service (in memory)
@@ -145,6 +149,9 @@ Technical TODO:
     - use maven to dockerise , fabric8
     - run acceptance tests through image
     - start script and properties
+
+- Batch job of emails to send
+    - end of hour send report by email, get details from
 
 - metrics end point
     - prometheues

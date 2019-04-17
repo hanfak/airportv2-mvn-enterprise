@@ -37,7 +37,7 @@
         <jetty.version>9.4.15.v20190215</jetty.version>
         <log.slf4j.version>1.7.25</log.slf4j.version>
         <findbugs.annotations.version>3.0.1</findbugs.annotations.version>
-        <json.version>20160212</json.version><!--TODO: MON-256 why do we have two json libraries... get rid of one of them! -->
+        <json.version>20160212</json.version>
 
     </properties>
 
@@ -341,7 +341,7 @@
                 </plugins>
             </build>
         </profile>
-
+        <!--findbugs-->
         <profile>
             <id>findbugs</id>
             <activation>
@@ -372,7 +372,8 @@
                             <skip>${skipTests}</skip>
                             <effort>Max</effort>
                             <threshold>Low</threshold>
-                            <failOnError>true</failOnError><excludeFilterFile>${project.basedir}/findbugs/findbugs-excludes.xml</excludeFilterFile>
+                            <failOnError>true</failOnError>
+                            <excludeFilterFile>${project.basedir}/findbugs/findbugs-excludes.xml</excludeFilterFile>
                             <findbugsXmlOutputDirectory>${project.build.directory}/findbugs</findbugsXmlOutputDirectory>
                         </configuration>
                         <executions>
@@ -381,6 +382,66 @@
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--jacoco - code coverage-->
+        <profile>
+            <id>jacoco</id>
+            <activation>
+                <property>
+                    <name>!isolated</name><!-- Profile is active unless -Disolated is specified -->
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.2</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>jacoco-report</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                            <!-- Add this checking -->
+                            <execution>
+                                <id>jacoco-check</id>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <rule>
+                                            <element>PACKAGE</element>
+                                            <limits>
+                                                <limit>
+                                                    <counter>LINE</counter>
+                                                    <value>COVEREDRATIO</value>
+                                                    <minimum>0.99</minimum>
+                                                </limit>
+                                            </limits>
+                                        </rule>
+                                    </rules>
+                                    <excludes>
+                                        <exclude>**/com/hanfak/airport/wiring/*</exclude>
+                                        <exclude>**/com/hanfak/airport/wiring/**/*</exclude>
+                                        <exclude>**/com/hanfak/airport/infrastructure/logging/*</exclude>
+                                        <exclude>**/com/hanfak/airport/infrastructure/dataproviders/database/databaseconnection/HikariDatabaseConnectionPooling.*</exclude> <!-- create db pool config-->
+                                    </excludes>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
