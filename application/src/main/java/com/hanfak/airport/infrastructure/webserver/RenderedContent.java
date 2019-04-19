@@ -1,9 +1,11 @@
 package com.hanfak.airport.infrastructure.webserver;
 
+import com.hanfak.airport.domain.helper.ValueType;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RenderedContent {
+public class RenderedContent extends ValueType {
 
     public final String body;
     public final String contentType;

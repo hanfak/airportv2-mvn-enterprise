@@ -29,7 +29,7 @@ public class JettyServletBuilderTest implements WithAssertions {
     
     @Test
     public void shouldAddServletToHandler() {
-        JettyServletBuilder.registerEndPoint(EndPoint.get("/path"), servlet);
+        JettyServletBuilder.registerEndPoint(EndPoint.post("/path"), servlet);
 
         verify(servletHandler).addServlet(any(ServletHolder.class), anyString());
     }

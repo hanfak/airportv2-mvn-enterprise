@@ -1,6 +1,5 @@
 1. Write tests for jetty server
 
-- dependency management
 2. Integration test for database
 3. Integration test for jetty server
 - unit test entry point

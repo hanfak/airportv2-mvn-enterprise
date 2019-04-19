@@ -5,13 +5,19 @@ import com.hanfak.airport.domain.plane.PlaneId;
 import com.hanfak.airport.domain.plane.PlaneStatus;
 import org.json.JSONObject;
 
+import static com.hanfak.airport.domain.plane.Plane.plane;
+import static com.hanfak.airport.domain.plane.PlaneId.planeId;
+import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
+import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
+
 public class LandAirplaneRequestUnmarshaller {
+
   public Plane unmarshal(String request) {
-    PlaneId planeId = PlaneId.planeId(new JSONObject(request).getString("PlaneId"));
+    PlaneId planeId = planeId(new JSONObject(request).getString("PlaneId"));
     String planeStatusUnmarshalled = new JSONObject(request).getString("PlaneStatus");
     PlaneStatus planeStatus = "flying".equalsIgnoreCase(planeStatusUnmarshalled) ?
-      PlaneStatus.FLYING : PlaneStatus.LANDED;
+      FLYING : LANDED;
 
-    return Plane.plane(planeId, planeStatus);
+    return plane(planeId, planeStatus);
   }
 }

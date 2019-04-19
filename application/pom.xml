@@ -439,6 +439,11 @@
                                         <exclude>**/com/hanfak/airport/wiring/*</exclude>
                                         <exclude>**/com/hanfak/airport/wiring/**/*</exclude>
                                         <exclude>**/com/hanfak/airport/infrastructure/logging/*</exclude>
+                                        <exclude>**/com/hanfak/airport/infrastructure/properties/SettingsLoader.*</exclude> <!-- Properties Object is not a dependency -->
+                                        <exclude>**/com/hanfak/airport/infrastructure/entrypoints/LandAirplaneServlet.*</exclude> <!--Todo: will be removed when end to end tests are created -->
+                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/RenderedContent.*</exclude> <!--Todo: will be removed when end to end tests are created -->
+                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/JettyWebServer.*</exclude> <!--Cannot mock final methods -->
+                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/InputStreamReader.*</exclude> <!--Cannot mock final methods -->
                                         <exclude>**/com/hanfak/airport/infrastructure/dataproviders/database/databaseconnection/HikariDatabaseConnectionPooling.*</exclude> <!-- create db pool config-->
                                     </excludes>
                                 </configuration>
@@ -458,6 +463,13 @@
     </repositories>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.8</version>
+        </dependency>
         <!--Database pooling¡-->
         <dependency>
             <groupId>com.zaxxer</groupId>

@@ -1,34 +1,42 @@
 package com.hanfak.airport.infrastructure.entrypoints;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus;
 import com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
-import org.json.JSONObject;
+
+import java.util.LinkedHashMap;
 
 public class LandAirplaneResponseMarshaller {
 
-  public RenderedContent marshall(SuccessfulPlaneLandStatus successfulPlaneLandStatus) {
-    return new RenderedContent(createInnerSuccesfulResponseJson(successfulPlaneLandStatus), "application/json", 200);
+  public RenderedContent marshall(SuccessfulPlaneLandStatus successfulPlaneLandStatus) throws JsonProcessingException {
+    return new RenderedContent(createSuccesfulResponseBodyJson(successfulPlaneLandStatus), "application/json", 200);
   }
 
-  public RenderedContent marshall(FailedPlaneLandStatus failedPlaneLandStatus) {
-    return new RenderedContent(createInnerFailedResponseJson(failedPlaneLandStatus), "application/json", 404);
+  public RenderedContent marshall(FailedPlaneLandStatus failedPlaneLandStatus) throws JsonProcessingException {
+    return new RenderedContent(createFailedResponseBodyJson(failedPlaneLandStatus), "application/json", 404);
   }
 
-  private String createInnerSuccesfulResponseJson(SuccessfulPlaneLandStatus successfulPlaneLandStatus) {
-    JSONObject jsonObj = new JSONObject();
-    jsonObj.put("PlaneId", successfulPlaneLandStatus.planeId);
-    jsonObj.put("PlaneStatus", successfulPlaneLandStatus.planeStatus);
-    jsonObj.put("AirportStatus", successfulPlaneLandStatus.airportStatus);
-    return jsonObj.toString(4);
+  private String createSuccesfulResponseBodyJson(SuccessfulPlaneLandStatus successfulPlaneLandStatus) throws JsonProcessingException {
+    LinkedHashMap<String, String> jsonBody = new LinkedHashMap<>();
+    jsonBody.put("PlaneId", successfulPlaneLandStatus.planeId.value);
+    jsonBody.put("PlaneStatus", successfulPlaneLandStatus.planeStatus.name());
+    jsonBody.put("AirportStatus", successfulPlaneLandStatus.airportStatus.name());
+
+    return new ObjectMapper().setDefaultPrettyPrinter(new DefaultPrettyPrinter())
+            .writerWithDefaultPrettyPrinter().writeValueAsString(jsonBody);
   }
 
-  private String createInnerFailedResponseJson(FailedPlaneLandStatus failedPlaneLandStatus) {
-    JSONObject jsonObj = new JSONObject();
-    jsonObj.put("PlaneId", failedPlaneLandStatus.planeId);
-    jsonObj.put("PlaneStatus", failedPlaneLandStatus.planeStatus);
-    jsonObj.put("AirportStatus", failedPlaneLandStatus.airportStatus);
-    jsonObj.put("LandFailureReason", failedPlaneLandStatus.failureMessage);
-    return jsonObj.toString(4);
+  private String createFailedResponseBodyJson(FailedPlaneLandStatus failedPlaneLandStatus) throws JsonProcessingException {
+    LinkedHashMap<String, String> jsonBody = new LinkedHashMap<>();
+    jsonBody.put("PlaneId", failedPlaneLandStatus.planeId.value);
+    jsonBody.put("PlaneStatus", failedPlaneLandStatus.planeStatus.name());
+    jsonBody.put("AirportStatus", failedPlaneLandStatus.airportStatus.name());
+    jsonBody.put("LandFailureReason", failedPlaneLandStatus.failureMessage.toString());
+
+    return new ObjectMapper().setDefaultPrettyPrinter(new DefaultPrettyPrinter())
+            .writerWithDefaultPrettyPrinter().writeValueAsString(jsonBody);
   }
 }
