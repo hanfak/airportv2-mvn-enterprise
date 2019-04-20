@@ -4,11 +4,11 @@ import com.hanfak.airport.infrastructure.dataproviders.AirportPlaneInventoryServ
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.HikariDatabaseConnectionPooling;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
-import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageRepository;
-import com.hanfak.airport.infrastructure.entrypoints.LandAirplaneRequestUnmarshaller;
-import com.hanfak.airport.infrastructure.entrypoints.LandAirplaneResponseMarshaller;
-import com.hanfak.airport.infrastructure.entrypoints.LandAirplaneServlet;
-import com.hanfak.airport.infrastructure.entrypoints.LandAirplaneWebservice;
+import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
+import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneRequestUnmarshaller;
+import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneResponseMarshaller;
+import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
+import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneWebservice;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyServletBuilder;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
@@ -25,6 +25,15 @@ public class Wiring {
 
   private static Logger applicationLogger = getLogger(APPLICATION.name());
   public final Singletons singletons;
+
+  public static class Singletons {
+    //    public final DataSourceProvider dataSourceProvider; // To add
+    final Settings settings;
+    @SuppressWarnings({"PMD.ExcessiveParameterList"})
+    Singletons(Settings settings) {
+      this.settings = settings;
+    }
+  }
 
   private Wiring(Singletons singletons) {
     this.singletons = singletons;
@@ -51,15 +60,6 @@ public class Wiring {
     return new LandAirplaneRequestUnmarshaller();
   }
 
-  public static class Singletons {
-    //    public final DataSourceProvider dataSourceProvider; // To add
-    final Settings settings;
-    @SuppressWarnings({"PMD.ExcessiveParameterList"})
-    Singletons(Settings settings) {
-      this.settings = settings;
-    }
-  }
-
   public LandPlaneUseCase landPlaneUseCase() {
     return new LandPlaneUseCase(airportPlaneInventoryService(), applicationLogger);
   }
@@ -72,8 +72,8 @@ public class Wiring {
     return new AirportPlaneInventoryService(airportStorageRepository());
   }
   // TODO should separate to jdbc wiring class
-  private AirportStorageRepository airportStorageRepository() {
-    return new AirportStorageRepository(applicationLogger, databaseConnectionManager());
+  private AirportStorageJdbcRepository airportStorageRepository() {
+    return new AirportStorageJdbcRepository(applicationLogger, databaseConnectionManager());
   }
 
   private JDBCDatabaseConnectionManager databaseConnectionManager() {

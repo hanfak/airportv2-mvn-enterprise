@@ -1,7 +1,7 @@
 package com.hanfak.airport.infrastructure.dataproviders;
 
 import com.hanfak.airport.domain.plane.Plane;
-import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageRepository;
+import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 // Better test names
 public class AirportPlaneInventoryServiceTest {
-  private final AirportStorageRepository airportStorageRepository = mock(AirportStorageRepository.class);
+  private final AirportStorageJdbcRepository airportStorageRepository = mock(AirportStorageJdbcRepository.class);
 
   @Test
   public void canAddAPlaneToAHanger() {

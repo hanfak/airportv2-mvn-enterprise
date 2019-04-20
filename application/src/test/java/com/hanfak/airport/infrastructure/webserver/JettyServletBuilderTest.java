@@ -1,6 +1,6 @@
 package com.hanfak.airport.infrastructure.webserver;
 
-import com.hanfak.airport.infrastructure.entrypoints.LandAirplaneServlet;
+import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
 import org.assertj.core.api.WithAssertions;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;

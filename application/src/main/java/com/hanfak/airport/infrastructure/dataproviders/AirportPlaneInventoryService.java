@@ -1,15 +1,15 @@
 package com.hanfak.airport.infrastructure.dataproviders;
 
 import com.hanfak.airport.domain.plane.Plane;
-import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageRepository;
+import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
 import com.hanfak.airport.usecase.PlaneInventoryService;
 
 // Split into two classes, one for dataprovider dependency, this to call dataprovider and check logic
 public class AirportPlaneInventoryService implements PlaneInventoryService {
 
-  private final AirportStorageRepository airportStorageRepository;
+  private final AirportStorageJdbcRepository airportStorageRepository;
 
-  public AirportPlaneInventoryService(AirportStorageRepository airportStorageRepository) {
+  public AirportPlaneInventoryService(AirportStorageJdbcRepository airportStorageRepository) {
     this.airportStorageRepository = airportStorageRepository;
   }
 

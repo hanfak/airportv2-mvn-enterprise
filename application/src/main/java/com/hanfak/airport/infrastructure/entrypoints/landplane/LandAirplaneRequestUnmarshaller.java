@@ -1,4 +1,4 @@
-package com.hanfak.airport.infrastructure.entrypoints;
+package com.hanfak.airport.infrastructure.entrypoints.landplane;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.plane.PlaneId;

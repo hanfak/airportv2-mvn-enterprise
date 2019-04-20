@@ -14,9 +14,10 @@ import java.util.Optional;
 
 import static java.lang.String.format;
 
-// Split for each operation
+// TODO Split for each operation
+// TODO interface
 @SuppressWarnings({"PMD.PrematureDeclaration"})
-public class AirportStorageRepository {
+public class AirportStorageJdbcRepository {
 
   private static final String PLANE_BY_PLANE_ID = "SELECT PLANE_STATUS, PLANE_ID FROM airport WHERE PLANE_ID=?";
   private static final String INSERT_A_PLANE = "INSERT INTO airport (PLANE_ID, PLANE_STATUS) VALUES (?,?)";
@@ -25,7 +26,7 @@ public class AirportStorageRepository {
   private final Logger logger;
   private final JDBCDatabaseConnectionManager databaseConnectionManager;
 
-  public AirportStorageRepository(Logger logger, JDBCDatabaseConnectionManager databaseConnectionManager) {
+  public AirportStorageJdbcRepository(Logger logger, JDBCDatabaseConnectionManager databaseConnectionManager) {
     this.logger = logger;
     this.databaseConnectionManager = databaseConnectionManager;
   }

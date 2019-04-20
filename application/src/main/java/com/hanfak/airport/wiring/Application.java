@@ -24,6 +24,7 @@ public class Application {
   }
 // Example of running application, need to remove when better interface available
   public static void main(String... args) {
+    //TODO: get properties from path that docker can access
     Path appProperties = Paths.get("application/target/classes/localhost.application.properties");
     Path secretsProperties = Paths.get("unused");
     Settings settings = loadSettings(getLogger(Application.class), appProperties, secretsProperties);

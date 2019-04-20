@@ -1,4 +1,4 @@
-package com.hanfak.airport.infrastructure.entrypoints;
+package com.hanfak.airport.infrastructure.entrypoints.landplane;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus;

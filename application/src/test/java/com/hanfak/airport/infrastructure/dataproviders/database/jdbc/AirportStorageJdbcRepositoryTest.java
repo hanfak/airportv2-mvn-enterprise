@@ -22,7 +22,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AirportStorageRepositoryTest implements WithAssertions {
+public class AirportStorageJdbcRepositoryTest implements WithAssertions {
 
   @Test
   public void readsPlaneFromAirport() throws SQLException {
@@ -233,5 +233,5 @@ public class AirportStorageRepositoryTest implements WithAssertions {
   private final PreparedStatement insertPreparedStatement = mock(PreparedStatement.class);
   private final PreparedStatement deletePreparedStatement = mock(PreparedStatement.class);
   private final ResultSet resultSet = mock(ResultSet.class);
-  private final AirportStorageRepository repository = new AirportStorageRepository(logger, databaseConnectionProvider);
+  private final AirportStorageJdbcRepository repository = new AirportStorageJdbcRepository(logger, databaseConnectionProvider);
 }
