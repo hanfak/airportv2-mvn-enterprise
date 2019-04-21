@@ -117,6 +117,7 @@ Technical TODO:
     - interestingGivens.getType
     - plant uml for acceptance test
     - separate acceptance test  and end to end tests into module
+    - thens and whens methods, test state
 
 - Use third party weather service
     - https://fcc-weather-api.glitch.me/api/current?lat=51.4700&lon=0.4543

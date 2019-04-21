@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSettings;
+import static com.hanfak.airport.infrastructure.webserver.EndPoint.get;
 import static com.hanfak.airport.infrastructure.webserver.EndPoint.post;
 import static com.hanfak.airport.wiring.configuration.Wiring.wiring;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -35,6 +36,7 @@ public class Application {
 
   public void startWebserver() {
     webserver = wiring.jettyWebServerBuilder()
+            .registerReadyPageEndPoint(get("/ready"), wiring.readyPageServlet())
             .registerEndPoint(post("/landAirplane"), wiring.landAirplaneServlet())
             .build();
     webserver.startServer();
@@ -44,5 +46,4 @@ public class Application {
   public void stopWebServer() {
     webserver.stopServer();
   }
-
 }

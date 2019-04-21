@@ -1,6 +1,7 @@
 package com.hanfak.airport.infrastructure.webserver;
 
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
+import com.hanfak.airport.infrastructure.entrypoints.monitoring.ready.ReadyServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -21,6 +22,11 @@ public class JettyServletBuilder {
     }
 
     public JettyServletBuilder registerEndPoint(EndPoint endPoint, LandAirplaneServlet servlet) {
+        addServlet(servlet, endPoint);
+        return this;
+    }
+
+    public JettyServletBuilder registerReadyPageEndPoint(EndPoint endPoint, ReadyServlet servlet) {
         addServlet(servlet, endPoint);
         return this;
     }

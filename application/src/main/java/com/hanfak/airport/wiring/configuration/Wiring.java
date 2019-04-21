@@ -9,6 +9,7 @@ import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneReque
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneResponseMarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneWebservice;
+import com.hanfak.airport.infrastructure.entrypoints.monitoring.ready.ReadyServlet;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyServletBuilder;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
@@ -25,6 +26,10 @@ public class Wiring {
 
   private static Logger applicationLogger = getLogger(APPLICATION.name());
   public final Singletons singletons;
+
+  public ReadyServlet readyPageServlet() {
+    return new ReadyServlet();
+  }
 
   public static class Singletons {
     //    public final DataSourceProvider dataSourceProvider; // To add

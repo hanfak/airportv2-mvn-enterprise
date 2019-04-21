@@ -3,8 +3,8 @@ package integrationtests.rest;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import integrationtests.YatspecAcceptanceIntegrationTest;
 import org.junit.Test;
+import testinfrastructure.YatspecAcceptanceIntegrationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

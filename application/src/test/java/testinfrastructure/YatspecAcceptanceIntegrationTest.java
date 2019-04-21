@@ -1,4 +1,4 @@
-package integrationtests;
+package testinfrastructure;
 
 import com.googlecode.yatspec.junit.SpecResultListener;
 import com.googlecode.yatspec.junit.SpecRunner;
@@ -37,11 +37,13 @@ public abstract class YatspecAcceptanceIntegrationTest implements WithTestState,
     private Path appProperties = Paths.get("target/classes/localhost.application.properties");
     private Path secretsProperties = Paths.get("unused");
     private Settings settings = loadSettings(LoggerFactory.getLogger(Application.class), appProperties, secretsProperties);
-
     private final TestState testState = new TestState();
     private final Wiring wiring = Wiring.wiring(settings);
 
-    private final Application application = new Application(wiring);
+    private final HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);
+    private final PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling);
+
+    protected final Application application = new Application(wiring);
 
 
     @Before
@@ -87,9 +89,6 @@ public abstract class YatspecAcceptanceIntegrationTest implements WithTestState,
     }
 
     private void executeSQL(String sql) {
-        HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);
-        PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling);
-
         try (Connection connection = databaseConnectionManager.getDBConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.execute();
