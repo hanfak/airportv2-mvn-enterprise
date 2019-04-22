@@ -1,2 +1,4 @@
 - https://dzone.com/articles/concurrency-with-akka
 - https://dzone.com/articles/razorpay-payment-gateway-integration-in-ios-swift
+- https://www.ibm.com/support/knowledgecenter/en/SSAW57_8.5.5/com.ibm.websphere.nd.multiplatform.doc/ae/tmj_devcl.html
+- https://dzone.com/articles/building-active-mq-docker-image-on-k8s
