@@ -136,16 +136,27 @@ Technical TODO:
         - issues with findbugs???
     - mvn org.apache.maven.plugins:maven-pmd-plugin:3.6:pmd
 
-- Code coverage in build
+- ~~Code coverage in build~~
    - see application/target/site/jacoco/index.html
 
 - scheduler to check weather, and store in cache (Db - redis)
     - cache for weather service (in memory)
     - quartz, cron
+    
+- disaster recovery
+    - Fix issues that went wrong
+        - data fixes
+        - end point to fix issue 
+            - wrong plane status in db
+            - plane should not be in db if taken off
 
 - data warehouse views to build reports
     - sql queries to report on status of airport
 
+- end point for /planes/{A1009} to return status of specific plane
+    - use jersey
+    - 
+    
 - dockerise
     - use maven to dockerise , fabric8
     - run acceptance tests through image

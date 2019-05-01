@@ -38,6 +38,7 @@
         <log.slf4j.version>1.7.25</log.slf4j.version>
         <findbugs.annotations.version>3.0.1</findbugs.annotations.version>
         <json.version>20160212</json.version>
+        <jersey.version>2.28</jersey.version>
 
     </properties>
 
@@ -237,7 +238,8 @@
                             <trimStackTrace>false</trimStackTrace>
                             <systemPropertyVariables>
                                 <log4j.log.dir>${project.build.directory}/surefire-reports/logs</log4j.log.dir>
-                                <yatspec.output.dir>${project.build.directory}/surefire-reports/yatspec</yatspec.output.dir>
+                                <yatspec.output.dir>${project.build.directory}/surefire-reports/yatspec
+                                </yatspec.output.dir>
                             </systemPropertyVariables>
                             <environmentVariables>
                                 <NAMESPACE>surefireunittests</NAMESPACE>
@@ -286,7 +288,8 @@
                                     <classpathDependencyScopeExclude>compile</classpathDependencyScopeExclude>
                                     <systemPropertyVariables>
                                         <project.version>${project.version}</project.version>
-                                        <yatspec.output.dir>${project.build.directory}/failsafe-reports/yatspec</yatspec.output.dir>
+                                        <yatspec.output.dir>${project.build.directory}/failsafe-reports/yatspec
+                                        </yatspec.output.dir>
                                     </systemPropertyVariables>
                                 </configuration>
                             </execution>
@@ -441,12 +444,20 @@
                                         <exclude>**/com/hanfak/airport/wiring/*</exclude>
                                         <exclude>**/com/hanfak/airport/wiring/**/*</exclude>
                                         <exclude>**/com/hanfak/airport/infrastructure/logging/*</exclude>
-                                        <exclude>**/com/hanfak/airport/infrastructure/properties/SettingsLoader.*</exclude> <!-- Properties Object is not a dependency -->
-                                        <exclude>**/com/hanfak/airport/infrastructure/entrypoints/LandAirplaneServlet.*</exclude> <!--Todo: will be removed when end to end tests are created -->
-                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/RenderedContent.*</exclude> <!--Todo: will be removed when end to end tests are created -->
-                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/JettyWebServer.*</exclude> <!--Cannot mock final methods -->
-                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/InputStreamReader.*</exclude> <!--Cannot mock final methods -->
-                                        <exclude>**/com/hanfak/airport/infrastructure/dataproviders/database/databaseconnection/HikariDatabaseConnectionPooling.*</exclude> <!-- create db pool config-->
+                                        <exclude>**/com/hanfak/airport/infrastructure/properties/SettingsLoader.*
+                                        </exclude> <!-- Properties Object is not a dependency -->
+                                        <exclude>
+                                            **/com/hanfak/airport/infrastructure/entrypoints/LandAirplaneServlet.*
+                                        </exclude> <!--Todo: will be removed when end to end tests are created -->
+                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/RenderedContent.*
+                                        </exclude> <!--Todo: will be removed when end to end tests are created -->
+                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/JettyWebServer.*
+                                        </exclude> <!--Cannot mock final methods -->
+                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/InputStreamReader.*
+                                        </exclude> <!--Cannot mock final methods -->
+                                        <exclude>
+                                            **/com/hanfak/airport/infrastructure/dataproviders/database/databaseconnection/HikariDatabaseConnectionPooling.*
+                                        </exclude> <!-- create db pool config-->
                                     </excludes>
                                 </configuration>
                             </execution>
@@ -618,7 +629,27 @@
             <artifactId>json</artifactId>
             <version>20170516</version>
         </dependency>
-
+        <!--Rest-->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+            <version>${jersey.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!--Need for jersey 2.26 and later-->
+            <!--https://stackoverflow.com/questions/44088493/jersey-stopped-working-with-injectionmanagerfactory-not-found/51217530#51217530-->
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

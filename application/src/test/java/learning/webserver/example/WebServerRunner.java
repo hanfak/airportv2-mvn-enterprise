@@ -18,6 +18,8 @@ public class WebServerRunner {
         JettyWebServer server = new JettyWebServer(new Server(1234));
         webServer = new JettyServletBuilder(servletContextHandler, server)
                 .registerEndPoint(get("/test"), new TestServlet())
+                // query params endpoint example https://kodejava.org/how-do-i-get-servlet-request-url-information/
+                // path params endpoint example
                 .build();
         webServer.startServer();
     }
