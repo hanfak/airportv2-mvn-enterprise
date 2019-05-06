@@ -20,7 +20,7 @@ Flyway
 - https://flywaydb.org/getstarted/
 - Need to set up docker images, as above, and create the db
 
-- Commands
+- Commands (cd flyway-sql)
     - apply clean
         -  mvn compile flyway:clean
     - clean db, drop tables

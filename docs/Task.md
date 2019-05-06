@@ -42,14 +42,16 @@ Feature TODO:
 Technical TODO:
 
 - ~~clean architecture maintained~~
-    - domain-enforcer libray
+    - ~~domain-enforcer libray~~
     - domain objects - immutable
     - dependency inversion for inner layers to communicate with outer layers
     - use case - shows flow of single application action
 
 - Multiple maven modules
-    - app
-    - flyway
+    - ~~app~~
+    - ~~flyway~~
+    - acceptance, end to end, inyegration tests
+    - learning
 
 - Have an application start up
     - -simple wiring and application class-
@@ -67,6 +69,7 @@ Technical TODO:
     - ~~property loader~~
     - test and prod
     - ~~default & enhanced prop~~
+    - properties for docker
     - test properties
 
 - Add db, object pooling, property file
@@ -141,41 +144,56 @@ Technical TODO:
 
 - scheduler to check weather, and store in cache (Db - redis)
     - cache for weather service (in memory)
-    - quartz, cron
-    
-- disaster recovery
-    - Fix issues that went wrong
-        - data fixes
-        - end point to fix issue 
-            - wrong plane status in db
-            - plane should not be in db if taken off
-
-- data warehouse views to build reports
-    - sql queries to report on status of airport
+    - quartz, cron 
 
 - end point for /planes/{A1009} to return status of specific plane
     - use jersey
-    - 
+    
+- https tls
+    - jks
+    - keytool 
+    - openssl
+    - https://stackoverflow.com/questions/14362245/programmatically-configure-ssl-for-jetty-9-embedded
+    - https://wiki.eclipse.org/Jetty/Howto/Configure_SSL
+    
+- secruity measures
+    - 404 page
+    - sql injection
+    - robust error checking, log exceptions
+    - sanitise input
+    - suppress end points from 404 page
+    - no secure data in logs
+    - logs cannot be accessed
     
 - dockerise
     - use maven to dockerise , fabric8
     - run acceptance tests through image
     - start script and properties
 
-- Batch job of emails to send
-    - end of hour send report by email, get details from
+- data warehouse views to build reports
+    - sql queries to report on status of airport
 
+- disaster recovery
+    - Fix issues that went wrong
+        - data fixes
+        - end point to fix issue 
+            - wrong plane status in db
+            - plane should not be in db if taken off
+            
 - metrics end point
     - prometheues
+    - https://hellokoding.com/java-application-health-check-with-prometheus-grafana-mysql-and-docker-compose/
+    - https://github.com/RobustPerception/java_examples/tree/master/java_simple
+    
+- Batch job of emails to send
+    - end of hour send report by email, get details from
 
 - jenkins ci build
     - ci build, run tests
     - deploy to test
     - deploy to prod
 
-- Use Akka to make calls to db async
-
-- extract service to separate app (database & weather service)
+- extract service to  separate app (database & weather service)
     - use docker
     - kubernetes, multiple replicas
         - pre install hook for migrating and populating db
@@ -183,6 +201,8 @@ Technical TODO:
     - traceyId
     - wiremock
     - contract tests
+
+- Use Akka to make calls to db async
 
 - batch/aysnc jobs to other service
     - refuel, unload, clean up, inspect
