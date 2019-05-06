@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.hanfak.airport.infrastructure.webserver.InputStreamReader.readInputStream;
-
+// Not unit tested as tested in end to end tests see ApplicationServerTest.java
 public class LandAirplaneServlet extends HttpServlet {
 
     private final LandAirplaneWebservice webservice;

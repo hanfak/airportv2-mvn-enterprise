@@ -1,4 +1,4 @@
-package integrationtests.rest;
+package endtoendtests;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // TODO: move to end to end as easier to bring up whole app instead of webserver alone
 public class ApplicationServerTest extends YatspecAcceptanceIntegrationTest {
 
-  @Test
+  @Test // Testing the servlet class
   public void canLandPlaneViaRest() throws UnirestException {
     log("API Url", apiUrl);
     HttpResponse<String> httpResponse = Unirest.post(apiUrl)

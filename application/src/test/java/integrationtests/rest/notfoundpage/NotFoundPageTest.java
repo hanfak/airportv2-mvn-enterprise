@@ -1,29 +1,25 @@
-package integrationtests;
+package integrationtests.rest.notfoundpage;
 
-import com.googlecode.yatspec.junit.SpecRunner;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import testinfrastructure.YatspecAcceptanceIntegrationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("SameParameterValue") // readability
-@RunWith(SpecRunner.class)
-public class ReadyPageTest extends YatspecAcceptanceIntegrationTest {
+public class NotFoundPageTest extends YatspecAcceptanceIntegrationTest {
 
   @Test
-  public void readyPageRespondsWith200() throws UnirestException {
-    whenTheReadyPageIsRequested();
+  public void notFoundPageRespondsWith404() throws UnirestException {
+    whenTheANonAvailableEndpointIsRequested();
 
-    thenTheResponseHasStatusCode(200);
-    andTheResponseHasABodyContaining("OK");
+    thenTheResponseHasStatusCode(404);
+    andTheResponseHasABodyContaining("Not available");
   }
 
-  private void whenTheReadyPageIsRequested() throws UnirestException {
+  private void whenTheANonAvailableEndpointIsRequested() throws UnirestException {
     log("Request Path", apiUrl);
     HttpResponse<String> httpResponse = Unirest.get(apiUrl)
             .asString();
@@ -51,7 +47,7 @@ public class ReadyPageTest extends YatspecAcceptanceIntegrationTest {
 
   private int responseStatus;
   private String responseBody;
-  private final String apiPath = "/ready";
+  private final String apiPath = "/blah";
   @SuppressWarnings("FieldCanBeLocal") // readability
   private final String apiUrl = "http://localhost:5555" + apiPath;
 }

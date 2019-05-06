@@ -2,6 +2,7 @@ package com.hanfak.airport.infrastructure.webserver;
 
 import com.google.common.annotations.VisibleForTesting;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import static java.lang.String.format;
@@ -38,6 +39,11 @@ public class JettyWebServer  {
 
     public JettyWebServer withContext(ServletContextHandler servletHandler) {
         server.setHandler(servletHandler);
+        return this;
+    }
+
+    public JettyWebServer withBean(ErrorHandler errorHandler) {
+        server.addBean(errorHandler);
         return this;
     }
 }

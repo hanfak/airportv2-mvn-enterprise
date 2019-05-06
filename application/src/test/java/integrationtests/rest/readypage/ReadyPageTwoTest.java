@@ -1,4 +1,4 @@
-package integrationtests;
+package integrationtests.rest.readypage;
 
 import com.googlecode.yatspec.junit.SpecResultListener;
 import com.googlecode.yatspec.junit.SpecRunner;

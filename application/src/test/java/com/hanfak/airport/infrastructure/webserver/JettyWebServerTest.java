@@ -1,6 +1,7 @@
 package com.hanfak.airport.infrastructure.webserver;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.junit.Test;
 
@@ -53,5 +54,15 @@ public class JettyWebServerTest {
 
     assertThat(jettyWebServer).isInstanceOf(JettyWebServer.class);
     verify(server).setHandler(servletContextHandler);
+  }
+
+  @Test
+  public void shouldSetBeanToJettyServer() {
+    ErrorHandler errorHandler = mock(ErrorHandler.class);
+
+    JettyWebServer jettyWebServer = webServer.withBean(errorHandler);
+
+    assertThat(jettyWebServer).isInstanceOf(JettyWebServer.class);
+    verify(server).addBean(errorHandler);
   }
 }

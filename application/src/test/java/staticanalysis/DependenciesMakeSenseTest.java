@@ -2,13 +2,14 @@ package staticanalysis;
 
 import io.github.theangrydev.domainenforcer.DomainEnforcer;
 import org.assertj.core.api.WithAssertions;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Paths;
 import java.util.List;
 
 import static io.github.theangrydev.domainenforcer.DomainEnforcer.enforceSources;
-
+@Ignore
 public class DependenciesMakeSenseTest implements WithAssertions {
 
   @Test

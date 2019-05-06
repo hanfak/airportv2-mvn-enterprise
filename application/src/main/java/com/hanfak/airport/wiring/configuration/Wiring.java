@@ -93,11 +93,11 @@ public class Wiring {
     return new ServletContextHandler();
   }
 
-  JettyWebServer jettyWebServer(int port) {
+  public JettyWebServer jettyWebServer(int port) {
     return new JettyWebServer(port);
   }
 
   public JettyServletBuilder jettyWebServerBuilder() {
-    return new JettyServletBuilder(servletContextHandler(), jettyWebServer(5555));
+    return new JettyServletBuilder(servletContextHandler(), jettyWebServer(5555), applicationLogger);
   }
 }
