@@ -36,9 +36,10 @@ public class Application {
 
   public void startWebserver() {
     webserver = wiring.jettyWebServerBuilder()
-            // todo test paths
+            // TODO test paths
             .registerReadyPageEndPoint(get("/ready"), wiring.readyPageServlet())
-            .registerEndPoint(post("/landAirplane"), wiring.landAirplaneServlet())
+            .registerLandAirplaneEndPoint(post("/landAirplane"), wiring.landAirplaneServlet())
+            .registerAirplaneTakeOffEndPoint(post("/takeOffAirplane"), wiring.airplaneTakeOffServlet())
             .build();
     webserver.startServer();
   }

@@ -41,6 +41,15 @@ public class SettingsLoaderTest implements WithAssertions {
     assertEquals("aUrl", settings.databaseUrl());
   }
 
+  @Test
+  public void missingApplicationProperties() {
+    assertThatThrownBy(() -> loadSettings(logger, Paths.get("/doesNotExist"), null))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("Could not find application properties at '/doesNotExist'");
+  }
+
+  // TODO test for line 28
+
   private Path propertiesPath;
   private Path secretPropertiesPath;
   private final Logger logger = mock(Logger.class);

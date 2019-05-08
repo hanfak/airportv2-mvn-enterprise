@@ -31,7 +31,7 @@ public class TakeOffUseCase {
     // Or Throw exception for failure case?? but information will get lost
     // Or Use a map
     // Or Can think about using railway programming??
-    public PlaneTakeOffStatus instructPlaneToTakeOff(Plane plane) {
+    public PlaneTakeOffStatus instructPlaneToTakeOff(Plane plane) { // TODO use planeID instead
         if (FLYING.equals(plane.planeStatus)) {
             logger.info(format("Plane, '%s', cannot take off, status is '%s'", plane.planeId, plane.planeStatus.name()));
             return createPlaneTakeOffStatus(null,
@@ -50,12 +50,12 @@ public class TakeOffUseCase {
         }
     }
 
-    // better name
+    // TODO better name
     private SuccessfulPlaneTakeOffStatus getSuccessfulPlaneTakeOffStatus(Plane flyingPlane) {
         return successfulPlaneTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, NOT_IN_AIRPORT);
     }
 
-    // better name
+    // TODO better name
     private FailedPlaneTakeOffStatus getFailedPlaneTakeOffStatus(Plane plane, TakeOffFailureReason reason) {
         return failedPlaneTakeOffStatus(plane.planeId, plane.planeStatus, NOT_IN_AIRPORT, reason);
     }

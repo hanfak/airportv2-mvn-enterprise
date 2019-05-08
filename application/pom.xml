@@ -446,13 +446,8 @@
                                         <exclude>**/com/hanfak/airport/infrastructure/logging/*</exclude>
                                         <exclude>**/com/hanfak/airport/infrastructure/properties/SettingsLoader.*
                                         </exclude> <!-- Properties Object is not a dependency -->
-                                        <exclude>
-                                            **/com/hanfak/airport/infrastructure/entrypoints/LandAirplaneServlet.*
-                                        </exclude> <!--Todo: will be removed when end to end tests are created -->
-                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/RenderedContent.*
-                                        </exclude> <!--Todo: will be removed when end to end tests are created -->
                                         <exclude>**/com/hanfak/airport/infrastructure/webserver/JettyWebServer.*
-                                        </exclude> <!--Cannot mock final methods -->
+                                        </exclude> <!--unit tests are covering this, but not picked up by jacoco -->
                                         <exclude>**/com/hanfak/airport/infrastructure/webserver/InputStreamReader.*
                                         </exclude> <!--Cannot mock final methods -->
                                         <exclude>

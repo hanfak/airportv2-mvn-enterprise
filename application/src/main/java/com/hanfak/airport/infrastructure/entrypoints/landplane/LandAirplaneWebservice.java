@@ -18,6 +18,7 @@ public class LandAirplaneWebservice {
     this.marshaller = marshaller;
   }
 
+  // TODO: Catch error nad return 500 error
   public RenderedContent execute(String request) throws JsonProcessingException {
     Plane plane = unmarshaller.unmarshal(request);
 

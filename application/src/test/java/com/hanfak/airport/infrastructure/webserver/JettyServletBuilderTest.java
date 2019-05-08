@@ -16,19 +16,13 @@ import static org.mockito.Mockito.when;
 
 public class JettyServletBuilderTest implements WithAssertions {
 
-    private final ServletContextHandler servletHandler = mock(ServletContextHandler.class);
-    private final JettyWebServer webServer = mock(JettyWebServer.class);
-    private final LandAirplaneServlet servlet = mock(LandAirplaneServlet.class);
-
-    private final JettyServletBuilder JettyServletBuilder = new JettyServletBuilder(servletHandler, webServer, mock(Logger.class));
-    
     @Test
     public void shouldAddServletHandlerToServerWhenBuilt() {
         ArgumentCaptor<UncaughtErrorHandler> parameterCaptor = ArgumentCaptor
                 .forClass(UncaughtErrorHandler.class);
 
         when(webServer.withContext(any())).thenReturn(webServer);
-        JettyServletBuilder.registerEndPoint(EndPoint.get("/path"), servlet);
+        JettyServletBuilder.registerLandAirplaneEndPoint(EndPoint.get("/path"), servlet);
         JettyServletBuilder.build();
 
         verify(webServer).withContext(servletHandler);
@@ -37,9 +31,15 @@ public class JettyServletBuilderTest implements WithAssertions {
     
     @Test
     public void shouldAddServletToHandler() {
-        JettyServletBuilder.registerEndPoint(EndPoint.post("/path"), servlet);
+        JettyServletBuilder.registerLandAirplaneEndPoint(EndPoint.post("/path"), servlet);
 
         verify(servletHandler).addServlet(any(ServletHolder.class), anyString());
     }
+
+  private final ServletContextHandler servletHandler = mock(ServletContextHandler.class);
+  private final JettyWebServer webServer = mock(JettyWebServer.class);
+  private final LandAirplaneServlet servlet = mock(LandAirplaneServlet.class);
+
+  private final JettyServletBuilder JettyServletBuilder = new JettyServletBuilder(servletHandler, webServer, mock(Logger.class));
 }
 

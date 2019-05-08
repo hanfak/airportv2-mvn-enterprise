@@ -25,6 +25,7 @@ public class JettyWebServer  {
             server.start();
             //  System.out.println(server.getURI().toString()); // TODO add logger, instead of sout, and test
         } catch (Exception e) {
+            // Unit tests are testing this, but not being picked up with jacoco
             throw new IllegalStateException(format("Could not startServer server on port '%d'", server.getURI().getPort()), e);
         }
     }
@@ -33,6 +34,7 @@ public class JettyWebServer  {
         try {
             server.stop();
         } catch (Exception e) {
+            // Unit tests are testing this, but not being picked up with jacoco
             throw new IllegalStateException(format("Could not stop server on port '%d'", server.getURI().getPort()), e);
         }
     }

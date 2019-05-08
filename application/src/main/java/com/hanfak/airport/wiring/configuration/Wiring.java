@@ -10,6 +10,10 @@ import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneRespo
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneWebservice;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.ready.ReadyServlet;
+import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffRequestUnmarshaller;
+import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffResponseMarshaller;
+import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffServlet;
+import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffWebservice;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyServletBuilder;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
@@ -27,16 +31,14 @@ public class Wiring {
   private static Logger applicationLogger = getLogger(APPLICATION.name());
   public final Singletons singletons;
 
-  public ReadyServlet readyPageServlet() {
-    return new ReadyServlet();
-  }
-
   public static class Singletons {
-    //    public final DataSourceProvider dataSourceProvider; // To add
-    final Settings settings;
+    private final AirportStorageJdbcRepository airportStorageRepository;
+//    @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD") // Later fix this issue, getters or different type
+    private final JDBCDatabaseConnectionManager databaseConnectionManager;
     @SuppressWarnings({"PMD.ExcessiveParameterList"})
-    Singletons(Settings settings) {
-      this.settings = settings;
+    Singletons(JDBCDatabaseConnectionManager databaseConnectionManager, AirportStorageJdbcRepository airportStorageRepository) {
+      this.airportStorageRepository = airportStorageRepository;
+      this.databaseConnectionManager = databaseConnectionManager;
     }
   }
 
@@ -45,8 +47,17 @@ public class Wiring {
   }
 
   public static Wiring wiring(Settings settings) {
-    Singletons singletons = new Singletons(settings);
+    HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);
+    PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling);
+    Singletons singletons = new Singletons(
+            databaseConnectionManager,
+            new AirportStorageJdbcRepository(applicationLogger, databaseConnectionManager)
+    );
     return new Wiring(singletons);
+  }
+
+  public JDBCDatabaseConnectionManager databaseConnectionManager() {
+    return singletons.databaseConnectionManager;
   }
 
   public LandAirplaneServlet landAirplaneServlet() {
@@ -73,20 +84,8 @@ public class Wiring {
     return new TakeOffUseCase(airportPlaneInventoryService(), applicationLogger);
   }
 
-  private AirportPlaneInventoryService airportPlaneInventoryService() {
-    return new AirportPlaneInventoryService(airportStorageRepository());
-  }
-  // TODO should separate to jdbc wiring class
-  private AirportStorageJdbcRepository airportStorageRepository() {
-    return new AirportStorageJdbcRepository(applicationLogger, databaseConnectionManager());
-  }
-
-  private JDBCDatabaseConnectionManager databaseConnectionManager() {
-    return new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling());
-  }
-
-  private HikariDatabaseConnectionPooling databaseConnectionPooling() {
-    return new HikariDatabaseConnectionPooling(singletons.settings);
+  public AirportPlaneInventoryService airportPlaneInventoryService() {
+    return new AirportPlaneInventoryService(singletons.airportStorageRepository);
   }
 
   ServletContextHandler servletContextHandler() {
@@ -99,5 +98,13 @@ public class Wiring {
 
   public JettyServletBuilder jettyWebServerBuilder() {
     return new JettyServletBuilder(servletContextHandler(), jettyWebServer(5555), applicationLogger);
+  }
+
+  public ReadyServlet readyPageServlet() {
+    return new ReadyServlet();
+  }
+
+  public AirplaneTakeOffServlet airplaneTakeOffServlet() {
+    return new AirplaneTakeOffServlet(new AirplaneTakeOffWebservice(takeOffUseCase(), new AirplaneTakeOffRequestUnmarshaller(), new AirplaneTakeOffResponseMarshaller()));
   }
 }

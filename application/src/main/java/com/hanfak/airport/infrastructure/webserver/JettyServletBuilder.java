@@ -2,6 +2,7 @@ package com.hanfak.airport.infrastructure.webserver;
 
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.ready.ReadyServlet;
+import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffServlet;
 import com.hanfak.airport.infrastructure.webserver.notfound.NotFoundServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -28,7 +29,12 @@ public class JettyServletBuilder {
                 .withContext(servletContextHandler);
     }
 
-    public JettyServletBuilder registerEndPoint(EndPoint endPoint, LandAirplaneServlet servlet) {
+    public JettyServletBuilder registerLandAirplaneEndPoint(EndPoint endPoint, LandAirplaneServlet servlet) {
+        addServlet(servlet, endPoint);
+        return this;
+    }
+
+    public JettyServletBuilder registerAirplaneTakeOffEndPoint(EndPoint endPoint, AirplaneTakeOffServlet servlet) {
         addServlet(servlet, endPoint);
         return this;
     }

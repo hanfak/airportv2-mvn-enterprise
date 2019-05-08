@@ -157,7 +157,7 @@ Technical TODO:
     - https://wiki.eclipse.org/Jetty/Howto/Configure_SSL
     
 - secruity measures
-    - 404 page
+    - ~~404 page~~
     - sql injection
     - robust error checking, log exceptions
     - sanitise input

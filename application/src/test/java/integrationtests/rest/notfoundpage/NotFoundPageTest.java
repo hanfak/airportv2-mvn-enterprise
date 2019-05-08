@@ -3,7 +3,6 @@ package integrationtests.rest.notfoundpage;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.junit.Before;
 import org.junit.Test;
 import testinfrastructure.YatspecAcceptanceIntegrationTest;
 
@@ -38,11 +37,6 @@ public class NotFoundPageTest extends YatspecAcceptanceIntegrationTest {
     log("Response Body", responseBody);
 
     assertThat(responseBody).isEqualTo(body);
-  }
-
-  @Before
-  public void startup() {
-    super.application.startWebserver();
   }
 
   private int responseStatus;
