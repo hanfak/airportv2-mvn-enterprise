@@ -27,7 +27,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class DatabaseLearningTest implements WithAssertions {
   private final Logger applicationLogger = getLogger(APPLICATION.name());
-  Path appProperties = Paths.get("target/classes/localhost.application.properties");
+  Path appProperties = Paths.get("target/test-classes/localhost.test.properties");
   Path secretsProperties = Paths.get("unused");
   Settings settings = loadSettings(LoggerFactory.getLogger(Application.class), appProperties, secretsProperties);
   private final HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);

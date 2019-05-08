@@ -85,7 +85,7 @@ public class AirportRepositoryTest {
   }
 
   private final Logger applicationLogger = getLogger(APPLICATION.name());
-  private final Path appProperties = Paths.get("target/classes/localhost.application.properties");
+  private final Path appProperties = Paths.get("target/test-classes/localhost.test.properties");
   private final Path secretsProperties = Paths.get("unused");
   private final Settings settings = loadSettings(LoggerFactory.getLogger(Application.class), appProperties, secretsProperties);
   private final HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);

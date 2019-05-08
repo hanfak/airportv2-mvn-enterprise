@@ -25,7 +25,7 @@ public class DatabaseProbe implements Job {
   private final Logger logger;
   private final Settings settings;
   private final static Path secretsProperties = Paths.get("unused");
-  private final static Path appProperties = Paths.get("application/target/classes/localhost.application.properties");
+  private final static Path appProperties = Paths.get("target/test-classes/localhost.test.properties");
   private final static HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(loadSettings(getLogger(APPLICATION.name()), appProperties, secretsProperties));
 
   private final static PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(getLogger(APPLICATION.name()), databaseConnectionPooling);

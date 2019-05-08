@@ -34,7 +34,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public abstract class YatspecAcceptanceIntegrationTest implements WithTestState, WithCustomResultListeners {
 
     private Logger applicationLogger = getLogger(APPLICATION.name());
-    private Path appProperties = Paths.get("target/classes/localhost.application.properties");
+    private Path appProperties = Paths.get("target/test-classes/localhost.test.properties");
     private Path secretsProperties = Paths.get("unused");
     private Settings settings = loadSettings(LoggerFactory.getLogger(Application.class), appProperties, secretsProperties);
     private final TestState testState = new TestState();

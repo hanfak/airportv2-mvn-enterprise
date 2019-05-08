@@ -91,7 +91,7 @@ public class ReadyPageTwoTest extends TestState implements WithCustomResultListe
   }
 
   private Logger applicationLogger = getLogger(APPLICATION.name());
-  private Path appProperties = Paths.get("target/classes/localhost.application.properties");
+  private Path appProperties = Paths.get("target/test-classes/localhost.test.properties");
   private Path secretsProperties = Paths.get("unused");
   private Settings settings = loadSettings(applicationLogger, appProperties, secretsProperties);
 
