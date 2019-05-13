@@ -30,7 +30,7 @@ hs_err_pid*
 /.idea/
 /log
 
-/application/.surefire-354D0E1A8C5BA12D2DD7F841C464235487D7B8F7
+/application/.surefire-*
 /application/dependency-reduced-pom.xml
 /application/target/
 *.iml

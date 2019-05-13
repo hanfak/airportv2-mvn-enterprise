@@ -110,6 +110,15 @@ Technical TODO:
     - Access and audit logging
     - Logback to config logging
     - logback add logs to file, and append
+    - What to log
+        - input validation failures
+        - sensitive information
+        - access to app, ip add and routes
+        - stack traces/errors
+        - actions taken (or use event sourcing)
+    - Dont log
+        - passwords - hash them instead
+        - session id
 
 - Yatspec
     - dictionary (see shelf)
@@ -158,12 +167,22 @@ Technical TODO:
     
 - secruity measures
     - ~~404 page~~
-    - sql injection
+    - Use json validator when handling request body from entrypoint and services (ie at webservice level)
+        - https://github.com/everit-org/json-schema
+    - Throttle ip for request flooding
+        - https://github.com/vladimir-bukhtoyarov/bucket4j 
+        - https://www.eclipse.org/jetty/documentation/current/dos-filter.html
+    - Store secrets ie database passwrods, in environment variable and access them via property files using maven or other
+    - sql injection- paramtised querie
+    - https
+        - use serlvet filter to enforce https apart for localhost etc
+        - https://github.com/jamesward/springmvc-https-enforcer/blob/master/src/main/java/com/jamesward/HttpsEnforcer.java
     - robust error checking, log exceptions
     - sanitise input
     - suppress end points from 404 page
     - no secure data in logs
     - logs cannot be accessed
+   
     
 - dockerise
     - use maven to dockerise , fabric8

@@ -6,11 +6,10 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 
 public class Plane extends ValueType {
-  // Add static types for Landed and Flying
 
   public final PlaneId planeId;
   public final PlaneStatus planeStatus;
-
+  // TODO validate planeId and static types for Landed and Flying
   private Plane(PlaneId planeId, PlaneStatus planeStatus) {
     this.planeId = planeId;
     this.planeStatus = planeStatus;

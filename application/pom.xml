@@ -31,15 +31,14 @@
         <required.maven.version>3.0.5</required.maven.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.23.4</mockito.version>
-        <assertj.version>3.4.1</assertj.version>
+        <assertj.version>3.12.2</assertj.version>
         <yatspec.version>1.22</yatspec.version>
-        <commons.lang.version>3.4</commons.lang.version>
-        <jetty.version>9.4.15.v20190215</jetty.version>
-        <log.slf4j.version>1.7.25</log.slf4j.version>
+        <commons.lang.version>3.9</commons.lang.version>
+        <jetty.version>>9.4.18.v20190429</jetty.version>
+        <log.slf4j.version>1.7.26</log.slf4j.version>
         <findbugs.annotations.version>3.0.1</findbugs.annotations.version>
         <json.version>20160212</json.version>
         <jersey.version>2.28</jersey.version>
-
     </properties>
 
     <build>
@@ -468,10 +467,13 @@
             <id>repo.bodar.com</id>
             <url>http://repo.bodar.com</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
-
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -482,7 +484,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>2.6.1</version>
+            <version>3.3.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
@@ -542,7 +544,7 @@
             <!-- This is to make yatspec sequence diagram generator happy -->
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
-            <version>8039</version>
+            <version>8059</version>
             <scope>test</scope>
         </dependency>
 
@@ -583,13 +585,13 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>${jetty.version}</version>
+            <version>9.4.18.v20190429</version>
         </dependency>
 
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
-            <version>${jetty.version}</version>
+            <version>9.4.18.v20190429</version>
         </dependency>
         <!-- Http client - https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java -->
         <dependency>
@@ -603,26 +605,26 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>logbook-core</artifactId>
-            <version>1.4.0</version>
+            <version>1.13.0</version>
         </dependency>
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>logbook-servlet</artifactId>
-            <version>1.4.0</version>
+            <version>1.13.0</version>
         </dependency>
 
         <!--scheduling-->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>2.3.0</version>
+            <version>2.3.1</version>
         </dependency>
 
         <!--Json serializing -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20170516</version>
+            <version>20180813</version>
         </dependency>
         <!--Rest-->
         <dependency>

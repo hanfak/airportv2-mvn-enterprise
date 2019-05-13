@@ -5,7 +5,7 @@ import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.TakeOffUseCase;
-
+// TODO apply to what is in land plane webservice
 public class AirplaneTakeOffWebservice {
 
   private final TakeOffUseCase useCase;

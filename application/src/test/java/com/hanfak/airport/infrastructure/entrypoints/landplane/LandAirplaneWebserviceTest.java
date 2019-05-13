@@ -2,9 +2,14 @@ package com.hanfak.airport.infrastructure.entrypoints.landplane;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
+import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
+import org.slf4j.Logger;
+
+import java.util.Optional;
 
 import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
@@ -15,7 +20,9 @@ import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.fa
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
 import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPlaneLandStatus;
 import static com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus.successfulPlaneLandStatus;
+import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,6 +37,7 @@ public class LandAirplaneWebserviceTest {
     when(unmarshaller.unmarshal(request)).thenReturn(plane(planeId("A0001"), FLYING));
     when(marshaller.marshall(successfulPlaneLandStatus(planeId("A0001"),
             FLYING, IN_AIRPORT))).thenReturn(expectedSuccessfulResponse);
+    when(jsonValidator.validate(request)).thenReturn(Optional.empty());
 
     RenderedContent successfulResponse = webservice.execute(request);
 
@@ -49,6 +57,7 @@ public class LandAirplaneWebserviceTest {
     when(unmarshaller.unmarshal(request2)).thenReturn(plane(planeId("A0001"), LANDED));
     when(marshaller.marshall(failedPlaneLandStatus(planeId("A0001"),
             LANDED, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT))).thenReturn(expectedFailedResponse);
+    when(jsonValidator.validate(request)).thenReturn(Optional.empty());
 
     RenderedContent failedResponse = webservice.execute(request2);
 
@@ -57,6 +66,23 @@ public class LandAirplaneWebserviceTest {
     verify(unmarshaller).unmarshal(request2);
     verify(marshaller).marshall(failedPlaneLandStatus(planeId("A0001"),
             LANDED, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT));
+  }
+
+  @Test
+  public void createErrorResponseForInvalidJson() throws JsonProcessingException {
+    when(jsonValidator.validate(request)).thenReturn(Optional.of(new ExceptionMock("Blah")));
+
+    RenderedContent errorResponse = webservice.execute(request);
+
+    verify(logger).error(format("Request body is %s", request));
+    verify(logger).error(ArgumentMatchers.eq("Exception"), any(ExceptionMock.class));
+    assertThat(errorResponse).isEqualTo(new RenderedContent("Error with JSON Body in request", "text/plain", 500 ));
+  }
+
+  class ExceptionMock extends JsonProcessingException {
+    ExceptionMock(String msg) {
+      super(msg);
+    }
   }
 
   private final String request =
@@ -85,8 +111,10 @@ public class LandAirplaneWebserviceTest {
   private final RenderedContent expectedSuccessfulResponse = new RenderedContent(expectedSuccessfulBody, "application/json", 200);
   private final RenderedContent expectedFailedResponse = new RenderedContent(expectedFailedResponseBody, "application/json", 404);
 
-  private LandPlaneUseCase usecase = mock(LandPlaneUseCase.class);
-  private LandAirplaneRequestUnmarshaller unmarshaller = mock(LandAirplaneRequestUnmarshaller.class);
-  private LandAirplaneResponseMarshaller marshaller = mock(LandAirplaneResponseMarshaller.class);
-  private final LandAirplaneWebservice webservice = new LandAirplaneWebservice(usecase, unmarshaller, marshaller);
+  private final LandPlaneUseCase usecase = mock(LandPlaneUseCase.class);
+  private final LandAirplaneRequestUnmarshaller unmarshaller = mock(LandAirplaneRequestUnmarshaller.class);
+  private final LandAirplaneResponseMarshaller marshaller = mock(LandAirplaneResponseMarshaller.class);
+  private final Logger logger = mock(Logger.class);
+  private final JsonValidator jsonValidator = mock(JsonValidator.class);
+  private final LandAirplaneWebservice webservice = new LandAirplaneWebservice(usecase, unmarshaller, marshaller, jsonValidator, logger);
 }

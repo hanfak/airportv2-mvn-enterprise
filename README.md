@@ -19,3 +19,8 @@ or
 In progress,,,,
  - From Jar file
  - From Docker
+
+
+Using Intellij
+
+- right click test > Create ... and in pop up window, add under build a maven command for test-compile, delete main  and 

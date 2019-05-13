@@ -1,10 +1,12 @@
 package com.hanfak.airport.wiring.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanfak.airport.infrastructure.dataproviders.AirportPlaneInventoryService;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.HikariDatabaseConnectionPooling;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
+import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneRequestUnmarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneResponseMarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
@@ -28,7 +30,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @SuppressWarnings({"PMD.TooManyMethods"})
 public class Wiring {
 
-  private static Logger applicationLogger = getLogger(APPLICATION.name());
+  private static Logger applicationLogger = getLogger(APPLICATION.name()); // add to singletons
   public final Singletons singletons;
 
   public static class Singletons {
@@ -65,7 +67,11 @@ public class Wiring {
   }
 
   private LandAirplaneWebservice landAirplaneWebservice() {
-    return new LandAirplaneWebservice(landPlaneUseCase(), landAirplaneUnmarshaller(), landAirplaneMarshaller());
+    return new LandAirplaneWebservice(landPlaneUseCase(), landAirplaneUnmarshaller(), landAirplaneMarshaller(), jsonValidator(), applicationLogger);
+  }
+
+  private JsonValidator jsonValidator() {
+    return new JsonValidator(new ObjectMapper());
   }
 
   private LandAirplaneResponseMarshaller landAirplaneMarshaller() {

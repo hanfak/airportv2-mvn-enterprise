@@ -53,6 +53,7 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     "com.hanfak.airport.infrastructure",
                     "org.eclipse.jetty.servlet",
                     "com.google.common.annotations.VisibleForTesting",
+                    "com.fasterxml.jackson",
                     LOGGER, "java");
 
     assertThat(violations).describedAs("Violations").isEmpty();
