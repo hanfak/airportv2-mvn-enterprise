@@ -12,11 +12,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import static com.hanfak.airport.domain.plane.Plane.plane;
+import static com.hanfak.airport.domain.plane.PlaneId.planeId;
+import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
+import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static java.lang.String.format;
+import static java.util.Optional.empty;
 
 // TODO Split for each operation
 // TODO interface
-@SuppressWarnings({"PMD.PrematureDeclaration"})
+// TooManyStaticImports - Acceptable for this class, only using domain objects (static factories and enums)
+// PrematureDeclaration - Acceptable for this class, due to iterator pattern of ResultSet
+@SuppressWarnings({"PMD.TooManyStaticImports", "PMD.PrematureDeclaration"})
 public class AirportStorageJdbcRepository {
 
   private static final String PLANE_BY_PLANE_ID = "SELECT PLANE_STATUS, PLANE_ID FROM airport WHERE PLANE_ID=?";
@@ -43,17 +50,20 @@ public class AirportStorageJdbcRepository {
       try (ResultSet resultSet = queryStatement.executeQuery()) {
         if (!resultSet.next()) {
           logger.info(format("Could not find 'plane' for '%s'", lookupId));
-          return Optional.empty();
+          return empty();
         }
 
         Optional<String> planeStatusDb = Optional.ofNullable(resultSet.getString("PLANE_STATUS"));
-        PlaneId planeId = PlaneId.planeId(resultSet.getString("PLANE_ID"));
-        PlaneStatus planeStatus =  planeStatusDb.map(status -> "FLYING".equals(status) ? PlaneStatus.FLYING : PlaneStatus.LANDED).orElse(null);
+        PlaneId planeId = planeId(resultSet.getString("PLANE_ID"));
+        PlaneStatus planeStatus = planeStatusDb
+                .map(status -> "FLYING".equals(status) ? FLYING : LANDED)
+                .orElse(null);
 
         if (resultSet.next()) {
           throw new IllegalStateException(format("Found more than one 'plane' for '%s'", lookupId));
         }
-        Plane planeInAirport = Plane.plane(planeId, planeStatus);
+
+        Plane planeInAirport = plane(planeId, planeStatus);
         logger.info(format("Found '%s' for '%s'", planeInAirport, lookupId));
         return Optional.of(planeInAirport);
       }

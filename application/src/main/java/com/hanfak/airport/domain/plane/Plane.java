@@ -9,7 +9,7 @@ public class Plane extends ValueType {
 
   public final PlaneId planeId;
   public final PlaneStatus planeStatus;
-  // TODO validate planeId and static types for Landed and Flying
+  // TODO static types for Landed and Flying
   private Plane(PlaneId planeId, PlaneStatus planeStatus) {
     this.planeId = planeId;
     this.planeStatus = planeStatus;
@@ -20,7 +20,6 @@ public class Plane extends ValueType {
   }
 
   public Plane land() {
-    // Check for status is not Landed, through assertion?? but already checked in usecase, so do i need it?
     return plane(this.planeId, LANDED);
   }
 

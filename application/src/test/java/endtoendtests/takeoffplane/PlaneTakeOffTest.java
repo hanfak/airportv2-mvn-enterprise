@@ -33,7 +33,7 @@ public class PlaneTakeOffTest extends YatspecAcceptanceIntegrationTest {
     log("API Url", apiUrl);
     HttpResponse<String> httpResponse = Unirest.post(apiUrl)
             .header("accept", "application/json")
-            .body(format("{\"PlaneId\": \"%s\", \"PlaneStatus\": \"%s\"}", plane.planeId, plane.planeStatus.name()))
+            .body(format("{\"PlaneId\": \"%s\", \"PlaneStatus\": \"%s\"}", "A199234", "LANDED"))
             .asString();
 
     responseStatus = httpResponse.getStatus();

@@ -1,6 +1,8 @@
 package com.hanfak.airport.infrastructure.entrypoints.landplane;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hanfak.airport.domain.plane.IllegalCharacterException;
+import com.hanfak.airport.domain.plane.IllegalLengthException;
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
 import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
@@ -26,19 +28,33 @@ public class LandAirplaneWebservice {
     this.logger = logger;
   }
 
-  // TODO test
   public RenderedContent execute(String request) throws JsonProcessingException {
-    if (jsonValidator.validate(request).isPresent()) {
-      logger.error(format("Request body is %s", request)); // The logging can be placed in the JsonValidator class
-      logger.error("Exception", jsonValidator.validate(request).get());
-      return new RenderedContent("Error with JSON Body in request", "text/plain", 500);
+    if (jsonValidator.checkForInvalidJson(request).isPresent()) {
+      return createRenderedContentForInvalidJson(request);
     }
 
-    Plane plane = unmarshaller.unmarshal(request); // Optional<plane> to handle invalid json contents
+    try {
+      Plane plane = unmarshaller.unmarshal(request); // Optional<plane> to handle invalid json contents
 
-    PlaneLandStatus planeLandStatus = useCase.instructPlaneToLand(plane);
+      PlaneLandStatus planeLandStatus = useCase.instructPlaneToLand(plane);
 
-    return marshallLandedPlaneStatus(planeLandStatus);
+      return marshallLandedPlaneStatus(planeLandStatus);
+    } catch (IllegalCharacterException e) {
+      return createRenderedContentForRequestContent("Error with content in body of request: planeId contains illegal character", request, e);
+    } catch (IllegalLengthException e) {
+      return createRenderedContentForRequestContent("Error with content in body of request: planeId is wrong length", request, e);
+    }
+  }
+
+  private RenderedContent createRenderedContentForRequestContent(String body, String request, IllegalArgumentException exception) {
+    logger.error(format("Request body is %s", request), exception);
+    return new RenderedContent(body, "text/plain", 500);
+  }
+
+  private RenderedContent createRenderedContentForInvalidJson(String request) {
+    logger.error(format("Request body is %s", request)); // The logging can be placed in the JsonValidator class
+    logger.error("Exception", jsonValidator.checkForInvalidJson(request).get());
+    return new RenderedContent("Error with JSON Body in request", "text/plain", 500);
   }
 
   private RenderedContent marshallLandedPlaneStatus(PlaneLandStatus planeLandStatus) throws JsonProcessingException {

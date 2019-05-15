@@ -1,6 +1,8 @@
 package com.hanfak.airport.infrastructure.entrypoints.landplane;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hanfak.airport.domain.plane.IllegalCharacterException;
+import com.hanfak.airport.domain.plane.IllegalLengthException;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
 import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
@@ -37,7 +39,7 @@ public class LandAirplaneWebserviceTest {
     when(unmarshaller.unmarshal(request)).thenReturn(plane(planeId("A0001"), FLYING));
     when(marshaller.marshall(successfulPlaneLandStatus(planeId("A0001"),
             FLYING, IN_AIRPORT))).thenReturn(expectedSuccessfulResponse);
-    when(jsonValidator.validate(request)).thenReturn(Optional.empty());
+    when(jsonValidator.checkForInvalidJson(request)).thenReturn(Optional.empty());
 
     RenderedContent successfulResponse = webservice.execute(request);
 
@@ -57,7 +59,7 @@ public class LandAirplaneWebserviceTest {
     when(unmarshaller.unmarshal(request2)).thenReturn(plane(planeId("A0001"), LANDED));
     when(marshaller.marshall(failedPlaneLandStatus(planeId("A0001"),
             LANDED, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT))).thenReturn(expectedFailedResponse);
-    when(jsonValidator.validate(request)).thenReturn(Optional.empty());
+    when(jsonValidator.checkForInvalidJson(request)).thenReturn(Optional.empty());
 
     RenderedContent failedResponse = webservice.execute(request2);
 
@@ -70,13 +72,43 @@ public class LandAirplaneWebserviceTest {
 
   @Test
   public void createErrorResponseForInvalidJson() throws JsonProcessingException {
-    when(jsonValidator.validate(request)).thenReturn(Optional.of(new ExceptionMock("Blah")));
+    when(jsonValidator.checkForInvalidJson(request)).thenReturn(Optional.of(new ExceptionMock("Blah")));
 
     RenderedContent errorResponse = webservice.execute(request);
 
     verify(logger).error(format("Request body is %s", request));
     verify(logger).error(ArgumentMatchers.eq("Exception"), any(ExceptionMock.class));
     assertThat(errorResponse).isEqualTo(new RenderedContent("Error with JSON Body in request", "text/plain", 500 ));
+  }
+
+  @Test
+  public void createErrorResponseForWrongLengthValueInPlaneIdfield() throws JsonProcessingException {
+    IllegalLengthException illegalLengthException = new IllegalLengthException("blah");
+    when(jsonValidator.checkForInvalidJson(request)).thenReturn(Optional.empty());
+    when(unmarshaller.unmarshal(request)).thenThrow(illegalLengthException);
+
+    RenderedContent errorResponse = webservice.execute(request);
+
+    verify(logger).error(format("Request body is %s", request), illegalLengthException);
+    assertThat(errorResponse)
+            .isEqualTo(new RenderedContent("Error with content in body of request: planeId is wrong length",
+                    "text/plain",
+                    500 ));
+  }
+
+  @Test
+  public void createErrorResponseForIllegalCharacterInPlaneIdfield() throws JsonProcessingException {
+    IllegalCharacterException illegalCharacterException = new IllegalCharacterException("blah");
+    when(jsonValidator.checkForInvalidJson(request)).thenReturn(Optional.empty());
+    when(unmarshaller.unmarshal(request)).thenThrow(illegalCharacterException);
+
+    RenderedContent errorResponse = webservice.execute(request);
+
+    verify(logger).error(format("Request body is %s", request), illegalCharacterException);
+    assertThat(errorResponse)
+            .isEqualTo(new RenderedContent("Error with content in body of request: planeId contains illegal character",
+                    "text/plain",
+                    500 ));
   }
 
   class ExceptionMock extends JsonProcessingException {

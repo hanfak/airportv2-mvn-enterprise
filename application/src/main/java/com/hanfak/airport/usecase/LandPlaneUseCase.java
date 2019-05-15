@@ -43,6 +43,7 @@ public class LandPlaneUseCase {
 
       return getSuccessfulPlaneLandStatus(landedPlane);
     } catch (Exception e) {
+      // Instead of returning object for sad path, can throw an exception and in webservice it will render code in catch block
       logger.error(String.format("Plane, '%s', is at airport", plane.planeId), e);
       return getFailurePlaneLandStatus(plane, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);
     }

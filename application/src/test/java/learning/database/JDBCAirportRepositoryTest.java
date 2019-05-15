@@ -32,7 +32,7 @@ public class JDBCAirportRepositoryTest implements WithAssertions {
 
     when(resultSet.next()).thenReturn(true, true, false);
     when(resultSet.getString("PLANE_STATUS")).thenReturn("FLYING").thenReturn("LANDED");
-    when(resultSet.getString("PLANE_ID")).thenReturn("A0001").thenReturn("B003");
+    when(resultSet.getString("PLANE_ID")).thenReturn("A0001").thenReturn("B0013");
 
     List<Plane> result =
             repository.getAllPlanesFromAirport();
@@ -155,7 +155,7 @@ public class JDBCAirportRepositoryTest implements WithAssertions {
   private final ResultSet resultSet = mock(ResultSet.class);
 
   private Plane plane1 = plane(planeId("A0001"), FLYING);
-  private Plane plane2 = plane(planeId("B003"), LANDED);
+  private Plane plane2 = plane(planeId("B0013"), LANDED);
 
   private final JDBCAirportRepository repository = new JDBCAirportRepository(logger, databaseConnectionProvider);
 }

@@ -84,8 +84,8 @@ public class AirportStorageJdbcRepositoryTest implements WithAssertions {
     when(databaseConnectionProvider.getDBConnection()).thenReturn(connection);
     when(connection.prepareStatement(anyString())).thenReturn(queryPreparedStatement);
     when(queryPreparedStatement.executeQuery()).thenReturn(resultSet);
-
     when(resultSet.next()).thenReturn(true, true);
+    when(resultSet.getString("PLANE_ID")).thenReturn("A0001");
 
     assertThatThrownBy(() -> repository.read(planeId("A0001")))
             .isInstanceOf(IllegalStateException.class)
@@ -217,7 +217,6 @@ public class AirportStorageJdbcRepositoryTest implements WithAssertions {
     when(databaseConnectionProvider.getDBConnection()).thenReturn(connection);
     when(connection.prepareStatement(anyString())).thenReturn(deletePreparedStatement);
     when(deletePreparedStatement.executeUpdate()).thenThrow(new SQLException("blah"));
-
 
     assertThatThrownBy(() -> repository.delete(plane1.planeId.value))
             .isInstanceOf(IllegalStateException.class)

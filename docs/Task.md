@@ -91,6 +91,7 @@ Technical TODO:
     - acceptance tests are run via server then docker container
     - post req for takeoff and landing
     - get req for plane status
+    - timeouts
     - ready page
     - ~~logging using logbook~~
         - ~~log incoming and outgoing requests~~
@@ -142,6 +143,9 @@ Technical TODO:
     - traceyid
     - audit, store weather in db
     - cache by storing result in db, update every hour
+    
+- Feature toggle
+    - For either weather service via cache or web, or other
 
 - ~~find bugs Static analysis via maven~~
     - mvn findbugs:findbugs
