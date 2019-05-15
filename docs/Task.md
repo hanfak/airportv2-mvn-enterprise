@@ -87,12 +87,12 @@ Technical TODO:
 
 - Add Jetty server, split up usecase into several classes
     - property file
-    - respond with xml, custom marshaller and unmarshaller
     - acceptance tests are run via server then docker container
     - post req for takeoff and landing
     - get req for plane status
     - timeouts
-    - ready page
+    - respond with xml, custom marshaller and unmarshaller
+    - ~~ready page~~
     - ~~logging using logbook~~
         - ~~log incoming and outgoing requests~~
     - 404 page with links for all endpoints
@@ -171,22 +171,30 @@ Technical TODO:
     
 - secruity measures
     - ~~404 page~~
-    - Use json validator when handling request body from entrypoint and services (ie at webservice level)
+    - sanitise data ie PlaneId if less length add charctrs
+    - ~~Use json validator when handling request body from entrypoint and services (ie at webservice level)~~
         - https://github.com/everit-org/json-schema
+        - done manually
     - Throttle ip for request flooding
         - https://github.com/vladimir-bukhtoyarov/bucket4j 
         - https://www.eclipse.org/jetty/documentation/current/dos-filter.html
     - Store secrets ie database passwrods, in environment variable and access them via property files using maven or other
-    - sql injection- paramtised querie
+    - ~~sql injection- paramtised querie~~
     - https
         - use serlvet filter to enforce https apart for localhost etc
         - https://github.com/jamesward/springmvc-https-enforcer/blob/master/src/main/java/com/jamesward/HttpsEnforcer.java
     - robust error checking, log exceptions
-    - sanitise input
+    - ~~sanitise input~~ Done for land plane, for json and request content
     - suppress end points from 404 page
     - no secure data in logs
-    - logs cannot be accessed
+    - logs cannot be accessed by user
+    - Only allowed users can access bash in running docker container
    
+- Performance
+    - get rid of regex, cache it 
+    - ~~Optimise equals and Hash~~
+    - In running jar , set the memory limits
+    - https://blog.jooq.org/2015/02/05/top-10-easy-performance-optimisations-in-java/
     
 - dockerise
     - use maven to dockerise , fabric8

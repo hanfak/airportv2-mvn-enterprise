@@ -11,6 +11,9 @@ import java.nio.file.Paths;
 import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSettings;
 import static com.hanfak.airport.infrastructure.webserver.EndPoint.get;
 import static com.hanfak.airport.infrastructure.webserver.EndPoint.post;
+import static com.hanfak.airport.wiring.ApplicationUrls.LAND_AIRPLANE;
+import static com.hanfak.airport.wiring.ApplicationUrls.READY_PAGE;
+import static com.hanfak.airport.wiring.ApplicationUrls.TAKE_OFF_AIRPLANE;
 import static com.hanfak.airport.wiring.configuration.Wiring.wiring;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -36,10 +39,9 @@ public class Application {
 
   public void startWebserver() {
     webserver = wiring.jettyWebServerBuilder()
-            // TODO test paths
-            .registerReadyPageEndPoint(get("/ready"), wiring.readyPageServlet())
-            .registerLandAirplaneEndPoint(post("/landAirplane"), wiring.landAirplaneServlet())
-            .registerAirplaneTakeOffEndPoint(post("/takeOffAirplane"), wiring.airplaneTakeOffServlet())
+            .registerReadyPageEndPoint(get(READY_PAGE), wiring.readyPageServlet())
+            .registerLandAirplaneEndPoint(post(LAND_AIRPLANE), wiring.landAirplaneServlet())
+            .registerAirplaneTakeOffEndPoint(post(TAKE_OFF_AIRPLANE), wiring.airplaneTakeOffServlet())
             .build();
     webserver.startServer();
   }

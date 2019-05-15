@@ -9,7 +9,7 @@ public class Plane extends ValueType {
 
   public final PlaneId planeId;
   public final PlaneStatus planeStatus;
-  // TODO static types for Landed and Flying
+
   private Plane(PlaneId planeId, PlaneStatus planeStatus) {
     this.planeId = planeId;
     this.planeStatus = planeStatus;

@@ -1,6 +1,5 @@
-- validate json for takeoff
 - test end point paths
-- validate and sanitise plane object
+- sanitise plane object
 - metrics page
 6. status page
 - filter to log audits

@@ -5,7 +5,7 @@ import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.TakeOffUseCase;
-// TODO apply to what is in land plane webservice
+
 public class AirplaneTakeOffWebservice {
 
   private final TakeOffUseCase useCase;
@@ -18,9 +18,9 @@ public class AirplaneTakeOffWebservice {
     this.marshaller = marshaller;
   }
 
-  // TODO: Catch error nad return 500 error
+  // TODO: Apply validation to json and planeid like in LandAirplaneWebservice
   public RenderedContent execute(String request) throws JsonProcessingException {
-    Plane plane = unmarshaller.unmarshal(request);
+    Plane plane = unmarshaller.unmarshal(request); // Invalid PlaneId will be handled by Jetty UncaughtErrorPage
 
     PlaneTakeOffStatus planeTakeOffStatus = useCase.instructPlaneToTakeOff(plane);
 
