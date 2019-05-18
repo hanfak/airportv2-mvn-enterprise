@@ -108,7 +108,10 @@ Technical TODO:
 - Logging
     - ~~use testlogger~~
     - ~~slf4j~~
-    - Access and audit logging
+    - Access logging 
+    - Audit logging
+        - ~~audit incoming and outgoing requsts to app~~
+        - audit 3rd party req/resp logs
     - Logback to config logging
     - logback add logs to file, and append
     - What to log
@@ -158,6 +161,7 @@ Technical TODO:
 - scheduler to check weather, and store in cache (Db - redis)
     - cache for weather service (in memory)
     - quartz, cron 
+    - https://examples.javacodegeeks.com/enterprise-java/quartz/java-quartz-with-mysql-example/
 
 - end point for /planes/{A1009} to return status of specific plane
     - use jersey

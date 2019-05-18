@@ -30,7 +30,7 @@ public class LandPlaneUseCase {
 
   // What to return for application output, specific type to include plane, status, inAirport and inHanger (later specific hanger)
   public PlaneLandStatus instructPlaneToLand(Plane plane) {
-    if (LANDED.equals(plane.planeStatus)) {
+    if (LANDED.equals(plane.planeStatus)) { // TODO: could check the airport via planeInventoryService like a bug
       logger.info(String.format("Plane, '%s', cannot land, status is '%s'", plane.planeId, plane.planeStatus.name()));
       return getFailurePlaneLandStatus(plane, NOT_IN_AIRPORT, PLANE_IS_LANDED);
     }
@@ -42,7 +42,7 @@ public class LandPlaneUseCase {
       logger.info(String.format("Plane, '%s', has successfully landed at the airport", plane.planeId));
 
       return getSuccessfulPlaneLandStatus(landedPlane);
-    } catch (Exception e) {
+    } catch (Exception e) { // TODO catch exception from jdbc and log & return getFailurePlaneLandStatus, bug not correct meesage
       // Instead of returning object for sad path, can throw an exception and in webservice it will render code in catch block
       logger.error(String.format("Plane, '%s', is at airport", plane.planeId), e);
       return getFailurePlaneLandStatus(plane, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);

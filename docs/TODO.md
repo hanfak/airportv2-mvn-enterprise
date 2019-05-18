@@ -1,9 +1,26 @@
-- test end point paths
-- sanitise plane object
-- metrics page
-6. status page
-- filter to log audits
+- metrics 
+    - https://metrics.dropwizard.io/3.1.0/getting-started/
+    - https://www.baeldung.com/dropwizard-metrics
+    - Java metrics
+    - db metrics
+        - https://github.com/brettwooldridge/HikariCP/wiki/Dropwizard-Metrics
+    - jetty metrics
+        - https://metrics.dropwizard.io/3.1.0/manual/jetty/
+- status page/ health checks
+    - https://dzone.com/articles/monitoring-your-java-services-with-dropwizard-health-checks
+    - https://github.com/Netflix/runtime-health
+    - https://hellokoding.com/java-application-health-check-with-prometheus-grafana-mysql-and-docker-compose/
+    - Manual
+    - Contents
+        - Application version
+        - Database is up
+        - 3rd party app is up
+        - Https cert expiry
+        - scheduled jobs fired
+- ~~filter to log audits~~
 - -organise wiring, split out jdbc, more singletons, set up for test
+- refactor repository class
+- sanitise plane object
 - Fix intellij to compile tests
 - https port
 - dockerise, fabric8, porperties

@@ -6,6 +6,12 @@
         </encoder>
     </appender>
 
+    <appender name="AUDIT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[LOG_START] [LOG_TYPE=AUDIT] %date{ISO8601} [%thread] %-5level\(%class{0}: %L\) - %msg %ex{full}[LOG_END]%n</pattern>
+        </encoder>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="APPLICATION"/>
     </root>
@@ -14,6 +20,10 @@
 
     <logger name="APPLICATION" level="INFO" additivity="false">
         <appender-ref ref="APPLICATION"/>
+    </logger>
+
+    <logger name="AUDIT" level="INFO" additivity="false">
+        <appender-ref ref="AUDIT"/>
     </logger>
 
 </configuration>

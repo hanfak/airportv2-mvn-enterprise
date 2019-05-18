@@ -40,6 +40,7 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     "org.eclipse.jetty.server",
                     "org.json.JSONObject",
                     "com.fasterxml.jackson",
+                    "org.zalando.logbook",
                     FINDBUGS,
                     "java");
     assertThat(violations).describedAs("Violations").isEmpty();
