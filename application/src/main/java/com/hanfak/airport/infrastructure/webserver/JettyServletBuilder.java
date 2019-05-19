@@ -1,9 +1,12 @@
 package com.hanfak.airport.infrastructure.webserver;
 
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
+import com.hanfak.airport.infrastructure.entrypoints.monitoring.metrics.PrometheusMetricsServlet;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.ready.ReadyServlet;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffServlet;
 import com.hanfak.airport.infrastructure.webserver.notfound.NotFoundServlet;
+import io.prometheus.client.CollectorRegistry;
+import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -35,11 +38,12 @@ public class JettyServletBuilder {
     this.logger = logger;
   }
 
-  public JettyWebServer build() {
+  public JettyWebServer build(StatisticsHandler statisticsHandler) {
     addLoggingFilter();
     addServlet(new NotFoundServlet(), "/");
     addErrorHandler(new UncaughtErrorHandler(logger));
-    return webServer.withContext(servletContextHandler);
+    statisticsHandler.setHandler(servletContextHandler);
+    return webServer.withHandler(statisticsHandler);
   }
 
   public JettyServletBuilder registerLandAirplaneEndPoint(EndPoint endPoint, LandAirplaneServlet servlet) {
@@ -54,6 +58,11 @@ public class JettyServletBuilder {
 
   public JettyServletBuilder registerReadyPageEndPoint(EndPoint endPoint, ReadyServlet servlet) {
     addServlet(servlet, endPoint);
+    return this;
+  }
+
+  public JettyServletBuilder registerMetricsEndPoint(EndPoint endPoint, CollectorRegistry registry) {
+    addServlet(new PrometheusMetricsServlet(registry, logger), endPoint);
     return this;
   }
 

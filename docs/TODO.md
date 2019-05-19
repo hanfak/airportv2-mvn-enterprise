@@ -1,11 +1,3 @@
-- metrics 
-    - https://metrics.dropwizard.io/3.1.0/getting-started/
-    - https://www.baeldung.com/dropwizard-metrics
-    - Java metrics
-    - db metrics
-        - https://github.com/brettwooldridge/HikariCP/wiki/Dropwizard-Metrics
-    - jetty metrics
-        - https://metrics.dropwizard.io/3.1.0/manual/jetty/
 - status page/ health checks
     - https://filippobuletto.github.io/prometheus-healthchecks/#custom-collector
     - https://dzone.com/articles/monitoring-your-java-services-with-dropwizard-health-checks
@@ -18,9 +10,9 @@
         - 3rd party app is up
         - Https cert expiry
         - scheduled jobs fired
-- ~~filter to log audits~~
 - -organise wiring, split out jdbc, more singletons, set up for test
 - refactor repository class
+- grafana script to show metrics in dashboard
 - sanitise plane object
 - Fix intellij to compile tests
 - https port

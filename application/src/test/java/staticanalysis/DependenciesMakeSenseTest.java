@@ -41,6 +41,7 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     "org.json.JSONObject",
                     "com.fasterxml.jackson",
                     "org.zalando.logbook",
+                    "io.prometheus.client",
                     FINDBUGS,
                     "java");
     assertThat(violations).describedAs("Violations").isEmpty();
@@ -55,6 +56,8 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     "org.eclipse.jetty.servlet",
                     "com.google.common.annotations.VisibleForTesting",
                     "com.fasterxml.jackson",
+                    "io.prometheus.client",
+                    "org.eclipse.jetty.server",
                     LOGGER, "java");
 
     assertThat(violations).describedAs("Violations").isEmpty();

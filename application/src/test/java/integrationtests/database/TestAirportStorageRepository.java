@@ -3,7 +3,7 @@ package integrationtests.database;
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.plane.PlaneId;
 import com.hanfak.airport.domain.plane.PlaneStatus;
-import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
+import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
 import org.slf4j.Logger;
 
@@ -25,9 +25,9 @@ public class TestAirportStorageRepository extends AirportStorageJdbcRepository {
   private static final String ALL_PLANES = "SELECT * FROM airport";
 
   private final Logger logger;
-  private final PoolingJDBCDatabasConnectionManager databaseConnectionManager;
+  private final JDBCDatabaseConnectionManager databaseConnectionManager;
 
-  public TestAirportStorageRepository(Logger logger, PoolingJDBCDatabasConnectionManager databaseConnectionManager) {
+  public TestAirportStorageRepository(Logger logger, JDBCDatabaseConnectionManager databaseConnectionManager) {
     super(logger, databaseConnectionManager);
     this.logger = logger;
     this.databaseConnectionManager = databaseConnectionManager;

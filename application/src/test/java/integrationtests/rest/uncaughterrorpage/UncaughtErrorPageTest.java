@@ -10,13 +10,13 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.junit.After;
 import org.junit.Test;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -46,11 +46,16 @@ public class UncaughtErrorPageTest {
     responseBody = httpResponse.getBody();
   }
 
-  public void startWebServer() {
+  private void startWebServer() {
     servletContextHandler.addServlet(new ServletHolder(errorServlet), "/errorendpoint");
     jettyWebServer.withBean(new UncaughtErrorHandler(getLogger(APPLICATION.name())))
             .withContext(servletContextHandler);
     jettyWebServer.startServer();
+  }
+
+  @After
+  public void teardown() {
+    jettyWebServer.stopServer();
   }
 
   private int responseStatus;
@@ -70,7 +75,7 @@ public class UncaughtErrorPageTest {
 
   private class ErrorServlet extends HttpServlet {
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse response) throws IOException, ServletException {
+    public void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException {
       throw new ServletException("GET method is not supported.");
     }
   }

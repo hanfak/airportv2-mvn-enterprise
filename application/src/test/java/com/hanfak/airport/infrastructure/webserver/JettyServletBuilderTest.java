@@ -2,6 +2,7 @@ package com.hanfak.airport.infrastructure.webserver;
 
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
 import org.assertj.core.api.WithAssertions;
+import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.Test;
@@ -16,30 +17,31 @@ import static org.mockito.Mockito.when;
 
 public class JettyServletBuilderTest implements WithAssertions {
 
-    @Test
-    public void shouldAddServletHandlerToServerWhenBuilt() {
-        ArgumentCaptor<UncaughtErrorHandler> parameterCaptor = ArgumentCaptor
-                .forClass(UncaughtErrorHandler.class);
+  @Test
+  public void shouldAddServletHandlerToServerWhenBuilt() {
+    ArgumentCaptor<UncaughtErrorHandler> parameterCaptor = ArgumentCaptor
+            .forClass(UncaughtErrorHandler.class);
 
-        when(webServer.withContext(any())).thenReturn(webServer);
-        JettyServletBuilder.registerLandAirplaneEndPoint(EndPoint.get("/path"), servlet);
-        JettyServletBuilder.build();
+    when(webServer.withHandler(any())).thenReturn(webServer);
+    JettyServletBuilder.registerLandAirplaneEndPoint(EndPoint.get("/path"), servlet);
+    JettyServletBuilder.build(handler);
 
-        verify(webServer).withContext(servletHandler);
-        verify(webServer).withBean(parameterCaptor.capture());
-    }
-    
-    @Test
-    public void shouldAddServletToHandler() {
-        JettyServletBuilder.registerLandAirplaneEndPoint(EndPoint.post("/path"), servlet);
+    verify(handler).setHandler(servletHandler);
+    verify(webServer).withHandler(handler);
+    verify(webServer).withBean(parameterCaptor.capture());
+  }
 
-        verify(servletHandler).addServlet(any(ServletHolder.class), anyString());
-    }
+  @Test
+  public void shouldAddServletToHandler() {
+    JettyServletBuilder.registerLandAirplaneEndPoint(EndPoint.post("/path"), servlet);
+
+    verify(servletHandler).addServlet(any(ServletHolder.class), anyString());
+  }
 
   private final ServletContextHandler servletHandler = mock(ServletContextHandler.class);
   private final JettyWebServer webServer = mock(JettyWebServer.class);
   private final LandAirplaneServlet servlet = mock(LandAirplaneServlet.class);
-
+  private final StatisticsHandler handler = mock(StatisticsHandler.class);
   private final JettyServletBuilder JettyServletBuilder = new JettyServletBuilder(servletHandler, webServer, mock(Logger.class));
 }
 

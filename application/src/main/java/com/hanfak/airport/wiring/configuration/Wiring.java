@@ -11,6 +11,7 @@ import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneReque
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneResponseMarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneWebservice;
+import com.hanfak.airport.infrastructure.entrypoints.monitoring.metrics.RegisterMetrics;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.ready.ReadyServlet;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffRequestUnmarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffResponseMarshaller;
@@ -21,6 +22,8 @@ import com.hanfak.airport.infrastructure.webserver.JettyServletBuilder;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import com.hanfak.airport.usecase.TakeOffUseCase;
+import io.prometheus.client.CollectorRegistry;
+import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;
 
@@ -31,7 +34,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class Wiring {
 
   private static Logger applicationLogger = getLogger(APPLICATION.name()); // add to singletons
-  public final Singletons singletons;
+  private final Singletons singletons;
 
   public static class Singletons {
     private final AirportStorageJdbcRepository airportStorageRepository;
@@ -50,7 +53,7 @@ public class Wiring {
 
   public static Wiring wiring(Settings settings) {
     HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);
-    PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling);
+    JDBCDatabaseConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling);
     Singletons singletons = new Singletons(
             databaseConnectionManager,
             new AirportStorageJdbcRepository(applicationLogger, databaseConnectionManager)
@@ -82,11 +85,11 @@ public class Wiring {
     return new LandAirplaneRequestUnmarshaller();
   }
 
-  public LandPlaneUseCase landPlaneUseCase() {
+  private LandPlaneUseCase landPlaneUseCase() {
     return new LandPlaneUseCase(airportPlaneInventoryService(), applicationLogger);
   }
 
-  public TakeOffUseCase takeOffUseCase() {
+  private TakeOffUseCase takeOffUseCase() {
     return new TakeOffUseCase(airportPlaneInventoryService(), applicationLogger);
   }
 
@@ -94,7 +97,7 @@ public class Wiring {
     return new AirportPlaneInventoryService(singletons.airportStorageRepository);
   }
 
-  ServletContextHandler servletContextHandler() {
+  private ServletContextHandler servletContextHandler() {
     return new ServletContextHandler();
   }
 
@@ -112,5 +115,13 @@ public class Wiring {
 
   public AirplaneTakeOffServlet airplaneTakeOffServlet() {
     return new AirplaneTakeOffServlet(new AirplaneTakeOffWebservice(takeOffUseCase(), new AirplaneTakeOffRequestUnmarshaller(), new AirplaneTakeOffResponseMarshaller()));
+  }
+
+  public CollectorRegistry registerMetrics() {
+    return RegisterMetrics.registerMetrics(statisticsHandler(), new CollectorRegistry(true));
+  }
+
+  public StatisticsHandler statisticsHandler() {
+    return new StatisticsHandler();
   }
 }

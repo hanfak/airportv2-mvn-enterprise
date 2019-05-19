@@ -31,7 +31,7 @@ public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
   private void whenUserInstructsPlaneToLand() throws UnirestException {
     log("API Url", apiUrl);
     HttpResponse<String> httpResponse = Unirest.post(apiUrl)
-            .header("accept", "application/json")
+            .header("content-type", "application/json")
             .body(format("{\"PlaneId\": \"%s\", \"PlaneStatus\": \"%s\"}", "A199234", "FLYING"))
             .asString();
 

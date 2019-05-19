@@ -12,6 +12,7 @@ import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSe
 import static com.hanfak.airport.infrastructure.webserver.EndPoint.get;
 import static com.hanfak.airport.infrastructure.webserver.EndPoint.post;
 import static com.hanfak.airport.wiring.ApplicationUrls.LAND_AIRPLANE;
+import static com.hanfak.airport.wiring.ApplicationUrls.METRICS_PAGE;
 import static com.hanfak.airport.wiring.ApplicationUrls.READY_PAGE;
 import static com.hanfak.airport.wiring.ApplicationUrls.TAKE_OFF_AIRPLANE;
 import static com.hanfak.airport.wiring.configuration.Wiring.wiring;
@@ -42,7 +43,8 @@ public class Application {
             .registerReadyPageEndPoint(get(READY_PAGE), wiring.readyPageServlet())
             .registerLandAirplaneEndPoint(post(LAND_AIRPLANE), wiring.landAirplaneServlet())
             .registerAirplaneTakeOffEndPoint(post(TAKE_OFF_AIRPLANE), wiring.airplaneTakeOffServlet())
-            .build();
+            .registerMetricsEndPoint(get(METRICS_PAGE), wiring.registerMetrics())
+            .build(wiring.statisticsHandler());
     webserver.startServer();
   }
 

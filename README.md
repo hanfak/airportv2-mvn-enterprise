@@ -24,3 +24,8 @@ In progress,,,,
 Using Intellij
 
 - right click test > Create ... and in pop up window, add under build a maven command for test-compile, delete main  and 
+
+Address in use
+
+- lsof -i tcp:1234
+- kill -9 <PID>

@@ -219,7 +219,15 @@ Technical TODO:
     - prometheues
     - https://hellokoding.com/java-application-health-check-with-prometheus-grafana-mysql-and-docker-compose/
     - https://github.com/RobustPerception/java_examples/tree/master/java_simple
-    
+    - metrics 
+        - https://metrics.dropwizard.io/3.1.0/getting-started/
+        - https://www.baeldung.com/dropwizard-metrics
+        - Java metrics
+        - db metrics
+            - https://github.com/brettwooldridge/HikariCP/wiki/Dropwizard-Metrics
+        - jetty metrics
+            - https://metrics.dropwizard.io/3.1.0/manual/jetty/
+
 - Batch job of emails to send
     - end of hour send report by email, get details from
 

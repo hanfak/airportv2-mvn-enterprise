@@ -20,4 +20,11 @@ public class InputStreamReaderTest implements WithAssertions {
     String string = InputStreamReader.readInputStream(new ByteArrayInputStream("hello world".getBytes(UTF_8)));
     assertThat(string).isEqualTo("hello world");
   }
+
+  @Test
+  public void forCodeCoverage() {
+    InputStreamReader inputStreamReader = new InputStreamReader();
+
+    assertThat(inputStreamReader).isInstanceOf(InputStreamReader.class);
+  }
 }

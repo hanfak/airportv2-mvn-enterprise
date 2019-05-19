@@ -2,34 +2,23 @@ package integrationtests.database;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.plane.PlaneId;
-import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.HikariDatabaseConnectionPooling;
-import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
-import com.hanfak.airport.infrastructure.properties.Settings;
-import com.hanfak.airport.wiring.Application;
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
-import static com.hanfak.airport.infrastructure.logging.LoggingCategory.APPLICATION;
-import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSettings;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.slf4j.LoggerFactory.getLogger;
 
-// This might be redundent with end to end tests
+// This is redundent with end to end tests testing the database is working
+// Here to show how an end to end test might work
+// TODO fix when running in build
 // TODO Use yatspec and BDD language
-public class AirportRepositoryTest {
+@Ignore
+public class AirportRepositoryTest extends YatspecAcceptanceDatabaseTest {
 
   @Test
   public void writeAPlaneToAirportDatabase() {
@@ -62,34 +51,6 @@ public class AirportRepositoryTest {
     assertThat(allPlanesFromAirport).doesNotContain(plane1);
   }
 
-  @Before
-  public void setUp() throws Exception {
-    deleteTableContents("airport");
-  }
-
-  protected void deleteTableContents(String tableName) throws SQLException {
-    executeSQL("TRUNCATE " + tableName);
-  }
-
-  private void executeSQL(String sql) {
-    try (Connection connection = databaseConnectionManager.getDBConnection();
-         PreparedStatement statement = connection.prepareStatement(sql)) {
-      statement.execute();
-      if (statement.execute()) {
-        throw new IllegalArgumentException(sql);
-      }
-      connection.commit();
-    } catch (SQLException e) {
-      throw new IllegalArgumentException(e);
-    }
-  }
-
-  private final Logger applicationLogger = getLogger(APPLICATION.name());
-  private final Path appProperties = Paths.get("target/test-classes/localhost.test.properties");
-  private final Path secretsProperties = Paths.get("unused");
-  private final Settings settings = loadSettings(LoggerFactory.getLogger(Application.class), appProperties, secretsProperties);
-  private final HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);
-  private final PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling);
   private final Plane plane1 = plane(planeId("A00015"), FLYING);
   private final TestAirportStorageRepository repository = new TestAirportStorageRepository(applicationLogger, databaseConnectionManager);
 }

@@ -255,8 +255,8 @@
                                     <excludes>
                                         <exclude>${acceptance.tests}</exclude>
                                         <exclude>${project.groupId}.integrationtests/**/*.java</exclude>
-                                        <!--TODO: Not working???-->
-                                        <exclude>${learning.tests}</exclude>
+                                        <exclude>${project.groupId}.endtoendtests/**/*.java</exclude>
+                                        <exclude>${learning.tests}</exclude>  <!--TODO: Not working???-->
                                     </excludes>
                                 </configuration>
                             </execution>
@@ -297,6 +297,7 @@
                             <includes>
                                 <include>${acceptance.tests}</include>
                                 <include>${project.groupId}.integrationtests/**/*.java</include>
+                                <include>${project.groupId}.endtoendtests/**/*.java</include>
                             </includes>
                         </configuration>
                     </plugin>
@@ -447,8 +448,6 @@
                                         </exclude> <!-- Properties Object is not a dependency -->
                                         <exclude>**/com/hanfak/airport/infrastructure/webserver/JettyWebServer.*
                                         </exclude> <!--unit tests are covering this, but not picked up by jacoco -->
-                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/InputStreamReader.*
-                                        </exclude> <!--Cannot mock final methods -->
                                         <exclude>
                                             **/com/hanfak/airport/infrastructure/dataproviders/database/databaseconnection/HikariDatabaseConnectionPooling.*
                                         </exclude> <!-- create db pool config-->
@@ -518,12 +517,6 @@
             <artifactId>metrics-jvm</artifactId>
             <version>4.1.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-logback -->
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-logback</artifactId>
-            <version>4.1.0</version>
-        </dependency>
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient</artifactId>
@@ -545,8 +538,6 @@
             <artifactId>simpleclient_jetty</artifactId>
             <version>0.6.0</version>
         </dependency>
-
-
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>

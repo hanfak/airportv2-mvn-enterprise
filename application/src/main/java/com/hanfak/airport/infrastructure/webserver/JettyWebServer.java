@@ -1,6 +1,7 @@
 package com.hanfak.airport.infrastructure.webserver;
 
 import com.google.common.annotations.VisibleForTesting;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -38,7 +39,7 @@ public class JettyWebServer  {
             throw new IllegalStateException(format("Could not stop server on port '%d'", server.getURI().getPort()), e);
         }
     }
-
+    // Test only, can remove later
     public JettyWebServer withContext(ServletContextHandler servletHandler) {
         server.setHandler(servletHandler);
         return this;
@@ -46,6 +47,11 @@ public class JettyWebServer  {
 
     public JettyWebServer withBean(ErrorHandler errorHandler) {
         server.addBean(errorHandler);
+        return this;
+    }
+
+    JettyWebServer withHandler(Handler handler) {
+        server.setHandler(handler);
         return this;
     }
 }
