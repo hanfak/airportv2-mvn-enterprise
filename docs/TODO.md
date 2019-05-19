@@ -7,6 +7,7 @@
     - jetty metrics
         - https://metrics.dropwizard.io/3.1.0/manual/jetty/
 - status page/ health checks
+    - https://filippobuletto.github.io/prometheus-healthchecks/#custom-collector
     - https://dzone.com/articles/monitoring-your-java-services-with-dropwizard-health-checks
     - https://github.com/Netflix/runtime-health
     - https://hellokoding.com/java-application-health-check-with-prometheus-grafana-mysql-and-docker-compose/
