@@ -10,7 +10,7 @@
         - 3rd party app is up
         - Https cert expiry
         - scheduled jobs fired
-- -organise wiring, split out jdbc, more singletons, set up for test
+- organise wiring, split out jdbc, more singletons, set up for test
 - refactor repository class
 - grafana script to show metrics in dashboard
 - sanitise plane object
