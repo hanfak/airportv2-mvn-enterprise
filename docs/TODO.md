@@ -1,15 +1,4 @@
-- status page/ health checks
-    - https://filippobuletto.github.io/prometheus-healthchecks/#custom-collector
-    - https://dzone.com/articles/monitoring-your-java-services-with-dropwizard-health-checks
-    - https://github.com/Netflix/runtime-health
-    - https://hellokoding.com/java-application-health-check-with-prometheus-grafana-mysql-and-docker-compose/
-    - Manual
-    - Contents
-        - Application version
-        - Database is up
-        - 3rd party app is up
-        - Https cert expiry
-        - scheduled jobs fired
+- Schedule job for accessing /health endpoint
 - organise wiring, split out jdbc, more singletons, set up for test
 - refactor repository class
 - grafana script to show metrics in dashboard
@@ -17,3 +6,6 @@
 - Fix intellij to compile tests
 - https port
 - dockerise, fabric8, porperties
+- Call another probe, to monitor weather service is up - use concurrency
+- Call another probe, to monitor airport is full
+

@@ -15,7 +15,18 @@
         - high latency of SLA paths
 - Different levels of status
  
- 
+ - status page/ health checks
+    - https://filippobuletto.github.io/prometheus-healthchecks/#custom-collector
+    - https://dzone.com/articles/monitoring-your-java-services-with-dropwizard-health-checks
+    - https://github.com/Netflix/runtime-health
+    - https://hellokoding.com/java-application-health-check-with-prometheus-grafana-mysql-and-docker-compose/
+    - Manual
+    - Contents
+        - Application version
+        - Database is up
+        - 3rd party app is up
+        - Https cert expiry
+        - scheduled jobs fired
  
 Metrics
 

@@ -1,5 +1,7 @@
-package com.hanfak.airport.domain.helper;
+package com.hanfak.airport.domain.monitoring;
 
+
+import com.hanfak.airport.domain.helper.ValueType;
 
 import java.util.List;
 

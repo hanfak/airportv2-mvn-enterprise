@@ -1,7 +1,7 @@
 package com.hanfak.airport.infrastructure.healthchecks;
 
-import com.hanfak.airport.domain.helper.HealthCheckProbe;
-import com.hanfak.airport.domain.helper.ProbeResult;
+import com.hanfak.airport.domain.monitoring.HealthCheckProbe;
+import com.hanfak.airport.domain.monitoring.ProbeResult;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import com.hanfak.airport.infrastructure.properties.DatabaseSettings;
 import org.slf4j.Logger;
@@ -11,8 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.hanfak.airport.domain.helper.ProbeResult.failure;
-import static com.hanfak.airport.domain.helper.ProbeResult.success;
+import static com.hanfak.airport.domain.monitoring.ProbeResult.failure;
+import static com.hanfak.airport.domain.monitoring.ProbeResult.success;
 import static java.lang.String.format;
 
 public class DatabaseHealthCheck implements HealthCheckProbe {

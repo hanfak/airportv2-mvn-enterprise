@@ -10,10 +10,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.hanfak.airport.wiring.ApplicationUrls.LAND_AIRPLANE;
-import static com.hanfak.airport.wiring.ApplicationUrls.METRICS_PAGE;
-import static com.hanfak.airport.wiring.ApplicationUrls.READY_PAGE;
-import static com.hanfak.airport.wiring.ApplicationUrls.TAKE_OFF_AIRPLANE;
+import static com.hanfak.airport.wiring.ApplicationUrls.*;
 import static java.util.Arrays.stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,11 +21,14 @@ public class ApplicationUrlsTest {
   private static final String INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_METRICS_PAGE = "/me" + "tri" + "cs";
   private static final String INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_LAND_AIRPLANE = "/lan" + "dAirp" +"lane";
   private static final String INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_TAKE_OFF_AIRPLANE = "/tak" +"eOf" + "fAirp" +"lane";
+  private static final String INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_HEALTH_CHECKS_PAGE = "/he" +"a" + "lth";
 
   @Table({@Row({READY_PAGE, INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_READY_PAGE}),
           @Row({LAND_AIRPLANE, INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_LAND_AIRPLANE}),
           @Row({TAKE_OFF_AIRPLANE, INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_TAKE_OFF_AIRPLANE}),
-          @Row({METRICS_PAGE, INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_METRICS_PAGE})})
+          @Row({METRICS_PAGE, INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_METRICS_PAGE}),
+          @Row({HEALTH_CHECKS_PAGE, INTENTIONALLY_SPLIT_UP_TO_AVOID_REFACTORING_HEALTH_CHECKS_PAGE})
+  })
   @Test
   public void thirdPartyInternalEndpointsShouldNotChangeWithoutUpdatingTheStubAndThePactContract(String actual, String expected) {
     assertThat(actual).isEqualTo(expected);

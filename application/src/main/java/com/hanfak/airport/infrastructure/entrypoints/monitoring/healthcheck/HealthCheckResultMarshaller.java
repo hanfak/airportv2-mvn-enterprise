@@ -1,6 +1,6 @@
 package com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck;
 
-import com.hanfak.airport.domain.helper.HealthCheckResult;
+import com.hanfak.airport.domain.monitoring.HealthCheckResult;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 
 public class HealthCheckResultMarshaller {

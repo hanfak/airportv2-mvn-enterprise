@@ -1,14 +1,8 @@
 package com.hanfak.airport.wiring;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckPageServlet;
-import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckResultJsonBuilder;
-import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckResultMarshaller;
-import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckWebService;
-import com.hanfak.airport.infrastructure.healthchecks.DatabaseHealthCheck;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
-import com.hanfak.airport.usecase.HealthChecksUseCase;
 import com.hanfak.airport.wiring.configuration.Wiring;
 
 import java.nio.file.Path;
@@ -17,12 +11,8 @@ import java.nio.file.Paths;
 import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSettings;
 import static com.hanfak.airport.infrastructure.webserver.EndPoint.get;
 import static com.hanfak.airport.infrastructure.webserver.EndPoint.post;
-import static com.hanfak.airport.wiring.ApplicationUrls.LAND_AIRPLANE;
-import static com.hanfak.airport.wiring.ApplicationUrls.METRICS_PAGE;
-import static com.hanfak.airport.wiring.ApplicationUrls.READY_PAGE;
-import static com.hanfak.airport.wiring.ApplicationUrls.TAKE_OFF_AIRPLANE;
+import static com.hanfak.airport.wiring.ApplicationUrls.*;
 import static com.hanfak.airport.wiring.configuration.Wiring.wiring;
-import static java.util.Collections.singletonList;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @SuppressWarnings({"PMD.TooManyStaticImports", "PMD.SystemPrintln"}) // These all refer to domain objects
@@ -51,14 +41,7 @@ public class Application {
             .registerLandAirplaneEndPoint(post(LAND_AIRPLANE), wiring.landAirplaneServlet())
             .registerAirplaneTakeOffEndPoint(post(TAKE_OFF_AIRPLANE), wiring.airplaneTakeOffServlet())
             .registerMetricsEndPoint(get(METRICS_PAGE), wiring.registerMetrics())
-            .registerStatusEndPoint(get("/health"),
-                    new HealthCheckPageServlet(
-                            new HealthCheckWebService(
-                                    new HealthCheckResultMarshaller(new HealthCheckResultJsonBuilder()),
-                                    new HealthChecksUseCase(
-                                            singletonList(new DatabaseHealthCheck(
-                                                    wiring.databaseConnectionManager(), wiring.settings(),
-                                                    Wiring.APPLICATION_LOGGER)))), Wiring.APPLICATION_LOGGER))
+            .registerStatusEndPoint(get(HEALTH_CHECKS_PAGE), wiring.healthCheckPageServlet())
             .build(wiring.statisticsHandler());
     webserver.startServer();
   }

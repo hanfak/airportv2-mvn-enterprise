@@ -1,8 +1,8 @@
 package com.hanfak.airport.usecase;
 
-import com.hanfak.airport.domain.helper.HealthCheckProbe;
-import com.hanfak.airport.domain.helper.HealthCheckResult;
-import com.hanfak.airport.domain.helper.ProbeResult;
+import com.hanfak.airport.domain.monitoring.HealthCheckProbe;
+import com.hanfak.airport.domain.monitoring.HealthCheckResult;
+import com.hanfak.airport.domain.monitoring.ProbeResult;
 
 import java.util.List;
 

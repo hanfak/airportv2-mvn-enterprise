@@ -1,6 +1,6 @@
 package com.hanfak.airport.infrastructure.healthchecks;
 
-import com.hanfak.airport.domain.helper.ProbeResult;
+import com.hanfak.airport.domain.monitoring.ProbeResult;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import org.junit.Test;
@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.hanfak.airport.domain.helper.ProbeStatus.FAIL;
+import static com.hanfak.airport.domain.monitoring.ProbeStatus.FAIL;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;

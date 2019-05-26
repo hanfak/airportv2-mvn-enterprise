@@ -1,4 +1,6 @@
-package com.hanfak.airport.domain.helper;
+package com.hanfak.airport.domain.monitoring;
+
+import com.hanfak.airport.domain.helper.ValueType;
 
 public class ProbeResult extends ValueType {
     public final String name;

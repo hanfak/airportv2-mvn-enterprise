@@ -11,15 +11,21 @@ import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneReque
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneResponseMarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneWebservice;
+import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckPageServlet;
+import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckResultJsonBuilder;
+import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckResultMarshaller;
+import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckWebService;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.metrics.RegisterMetrics;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.ready.ReadyServlet;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffRequestUnmarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffResponseMarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffServlet;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffWebservice;
+import com.hanfak.airport.infrastructure.healthchecks.DatabaseHealthCheck;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyServletBuilder;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
+import com.hanfak.airport.usecase.HealthChecksUseCase;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import com.hanfak.airport.usecase.TakeOffUseCase;
 import io.prometheus.client.CollectorRegistry;
@@ -28,17 +34,17 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;
 
 import static com.hanfak.airport.infrastructure.logging.LoggingCategory.APPLICATION;
+import static java.util.Collections.singletonList;
 import static org.slf4j.LoggerFactory.getLogger;
-
-@SuppressWarnings({"PMD.TooManyMethods"})
+// Expected for this class
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.CouplingBetweenObjects"})
 public class Wiring {
 
-  public final static Logger APPLICATION_LOGGER = getLogger(APPLICATION.name()); // add to singletons
+  private final static Logger APPLICATION_LOGGER = getLogger(APPLICATION.name()); // add to singletons
   private final Singletons singletons;
 
   public static class Singletons {
     private final AirportStorageJdbcRepository airportStorageRepository;
-//    @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD") // Later fix this issue, getters or different type
     private final JDBCDatabaseConnectionManager databaseConnectionManager;
     private final Settings settings;
 
@@ -72,6 +78,7 @@ public class Wiring {
   public Settings settings() {
     return singletons.settings;
   }
+
   public LandAirplaneServlet landAirplaneServlet() {
     return new LandAirplaneServlet(landAirplaneWebservice());
   }
@@ -130,5 +137,23 @@ public class Wiring {
 
   public StatisticsHandler statisticsHandler() {
     return new StatisticsHandler();
+  }
+
+  public HealthCheckPageServlet healthCheckPageServlet() {
+    return new HealthCheckPageServlet(healthCheckWebService(), APPLICATION_LOGGER);
+  }
+
+  private HealthCheckWebService healthCheckWebService() {
+    return new HealthCheckWebService(healthCheckResultMarshaller(), healthChecksUseCase());
+  }
+
+  private HealthCheckResultMarshaller healthCheckResultMarshaller() {
+    return new HealthCheckResultMarshaller(new HealthCheckResultJsonBuilder());
+  }
+
+  private HealthChecksUseCase healthChecksUseCase() {
+    return new HealthChecksUseCase(
+            singletonList(new DatabaseHealthCheck(databaseConnectionManager(), settings(), APPLICATION_LOGGER))
+    );
   }
 }

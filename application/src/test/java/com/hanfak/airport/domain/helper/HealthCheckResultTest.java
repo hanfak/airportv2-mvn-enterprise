@@ -1,11 +1,14 @@
 package com.hanfak.airport.domain.helper;
 
 
+import com.hanfak.airport.domain.monitoring.HealthCheckResult;
+import com.hanfak.airport.domain.monitoring.ProbeResult;
+import com.hanfak.airport.domain.monitoring.ProbeStatus;
 import org.junit.Test;
 
-import static com.hanfak.airport.domain.helper.ProbeResult.failure;
-import static com.hanfak.airport.domain.helper.ProbeResult.success;
-import static com.hanfak.airport.domain.helper.ProbeResult.warn;
+import static com.hanfak.airport.domain.monitoring.ProbeResult.failure;
+import static com.hanfak.airport.domain.monitoring.ProbeResult.success;
+import static com.hanfak.airport.domain.monitoring.ProbeResult.warn;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 

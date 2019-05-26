@@ -1,16 +1,16 @@
 package com.hanfak.airport.usecase;
 
-import com.hanfak.airport.domain.helper.HealthCheckProbe;
-import com.hanfak.airport.domain.helper.HealthCheckResult;
-import com.hanfak.airport.domain.helper.ProbeResult;
-import com.hanfak.airport.domain.helper.ProbeStatus;
+import com.hanfak.airport.domain.monitoring.HealthCheckProbe;
+import com.hanfak.airport.domain.monitoring.HealthCheckResult;
+import com.hanfak.airport.domain.monitoring.ProbeResult;
+import com.hanfak.airport.domain.monitoring.ProbeStatus;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.hanfak.airport.domain.helper.ProbeResult.failure;
-import static com.hanfak.airport.domain.helper.ProbeResult.success;
+import static com.hanfak.airport.domain.monitoring.ProbeResult.failure;
+import static com.hanfak.airport.domain.monitoring.ProbeResult.success;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

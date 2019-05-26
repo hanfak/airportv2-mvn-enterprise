@@ -69,7 +69,7 @@ Technical TODO:
     - ~~property loader~~
     - test and prod
     - ~~default & enhanced prop~~
-    - properties for docker
+    - properties for docker/jar
     - test properties
 
 - Add db, object pooling, property file
@@ -99,7 +99,7 @@ Technical TODO:
         - hide links
 
 - status page,
-    - check db & weather service is up,
+    - ~~check db &~~ weather service is up,
     - scheduled job every minute
     - use in memory cache to store result
     - use executor service to do concurrent checks

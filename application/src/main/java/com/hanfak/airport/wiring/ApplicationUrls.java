@@ -5,4 +5,5 @@ class ApplicationUrls {
   static final String LAND_AIRPLANE = "/landAirplane";
   static final String TAKE_OFF_AIRPLANE = "/takeOffAirplane";
   static final String METRICS_PAGE = "/metrics";
+  static final String HEALTH_CHECKS_PAGE = "/health";
 }

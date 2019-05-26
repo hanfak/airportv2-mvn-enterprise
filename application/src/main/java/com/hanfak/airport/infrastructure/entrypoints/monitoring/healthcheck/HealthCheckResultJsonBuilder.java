@@ -1,7 +1,7 @@
 package com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck;
 
-import com.hanfak.airport.domain.helper.HealthCheckResult;
-import com.hanfak.airport.domain.helper.ProbeResult;
+import com.hanfak.airport.domain.monitoring.HealthCheckResult;
+import com.hanfak.airport.domain.monitoring.ProbeResult;
 import org.json.JSONObject;
 
 import java.util.List;
