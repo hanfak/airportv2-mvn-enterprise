@@ -1,6 +1,7 @@
 package com.hanfak.airport.infrastructure.webserver;
 
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
+import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckPageServlet;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.metrics.PrometheusMetricsServlet;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.ready.ReadyServlet;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffServlet;
@@ -57,6 +58,11 @@ public class JettyServletBuilder {
   }
 
   public JettyServletBuilder registerReadyPageEndPoint(EndPoint endPoint, ReadyServlet servlet) {
+    addServlet(servlet, endPoint);
+    return this;
+  }
+
+  public JettyServletBuilder registerStatusEndPoint(EndPoint endPoint, HealthCheckPageServlet servlet) {
     addServlet(servlet, endPoint);
     return this;
   }

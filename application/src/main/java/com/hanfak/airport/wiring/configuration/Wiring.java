@@ -33,17 +33,20 @@ import static org.slf4j.LoggerFactory.getLogger;
 @SuppressWarnings({"PMD.TooManyMethods"})
 public class Wiring {
 
-  private static Logger applicationLogger = getLogger(APPLICATION.name()); // add to singletons
+  public final static Logger APPLICATION_LOGGER = getLogger(APPLICATION.name()); // add to singletons
   private final Singletons singletons;
 
   public static class Singletons {
     private final AirportStorageJdbcRepository airportStorageRepository;
 //    @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD") // Later fix this issue, getters or different type
     private final JDBCDatabaseConnectionManager databaseConnectionManager;
+    private final Settings settings;
+
     @SuppressWarnings({"PMD.ExcessiveParameterList"})
-    Singletons(JDBCDatabaseConnectionManager databaseConnectionManager, AirportStorageJdbcRepository airportStorageRepository) {
+    Singletons(JDBCDatabaseConnectionManager databaseConnectionManager, AirportStorageJdbcRepository airportStorageRepository, Settings settings) {
       this.airportStorageRepository = airportStorageRepository;
       this.databaseConnectionManager = databaseConnectionManager;
+      this.settings = settings;
     }
   }
 
@@ -53,10 +56,11 @@ public class Wiring {
 
   public static Wiring wiring(Settings settings) {
     HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);
-    JDBCDatabaseConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(applicationLogger, databaseConnectionPooling);
+    JDBCDatabaseConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(APPLICATION_LOGGER, databaseConnectionPooling);
     Singletons singletons = new Singletons(
             databaseConnectionManager,
-            new AirportStorageJdbcRepository(applicationLogger, databaseConnectionManager)
+            new AirportStorageJdbcRepository(APPLICATION_LOGGER, databaseConnectionManager),
+            settings
     );
     return new Wiring(singletons);
   }
@@ -65,12 +69,15 @@ public class Wiring {
     return singletons.databaseConnectionManager;
   }
 
+  public Settings settings() {
+    return singletons.settings;
+  }
   public LandAirplaneServlet landAirplaneServlet() {
     return new LandAirplaneServlet(landAirplaneWebservice());
   }
 
   private LandAirplaneWebservice landAirplaneWebservice() {
-    return new LandAirplaneWebservice(landPlaneUseCase(), landAirplaneUnmarshaller(), landAirplaneMarshaller(), jsonValidator(), applicationLogger);
+    return new LandAirplaneWebservice(landPlaneUseCase(), landAirplaneUnmarshaller(), landAirplaneMarshaller(), jsonValidator(), APPLICATION_LOGGER);
   }
 
   private JsonValidator jsonValidator() {
@@ -86,11 +93,11 @@ public class Wiring {
   }
 
   private LandPlaneUseCase landPlaneUseCase() {
-    return new LandPlaneUseCase(airportPlaneInventoryService(), applicationLogger);
+    return new LandPlaneUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER);
   }
 
   private TakeOffUseCase takeOffUseCase() {
-    return new TakeOffUseCase(airportPlaneInventoryService(), applicationLogger);
+    return new TakeOffUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER);
   }
 
   public AirportPlaneInventoryService airportPlaneInventoryService() {
@@ -106,7 +113,7 @@ public class Wiring {
   }
 
   public JettyServletBuilder jettyWebServerBuilder() {
-    return new JettyServletBuilder(servletContextHandler(), jettyWebServer(5555), applicationLogger);
+    return new JettyServletBuilder(servletContextHandler(), jettyWebServer(5555), APPLICATION_LOGGER);
   }
 
   public ReadyServlet readyPageServlet() {
