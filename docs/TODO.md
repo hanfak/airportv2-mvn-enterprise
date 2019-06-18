@@ -1,11 +1,21 @@
-- Schedule job for accessing /health endpoint
-- organise wiring, split out jdbc, more singletons, set up for test
-- refactor repository class
-- grafana script to show metrics in dashboard
-- sanitise plane object
-- Fix intellij to compile tests
-- https port
-- dockerise, fabric8, porperties
+- implement weather service
 - Call another probe, to monitor weather service is up - use concurrency
 - Call another probe, to monitor airport is full
+- Find a way to add a scheduled job(quartz) into the app
+    - Schedule job for accessing airport is full
+- Find a way to do batching multiple to do later jobs
+- Find a way to use a message broker/ queue
 
+
+- organise wiring, split out jdbc, more singletons, set up for test
+- refactor repository class
+- sanitise plane object
+- access logs
+- 404 page with links for all endpoints
+- https port
+- dockerise, fabric8, porperties
+- scheduler to check weather, and store in cache
+- memory cache for status page
+- split acceptance tests to another module
+- grafana script to show metrics in dashboard
+- Fix intellij to compile tests

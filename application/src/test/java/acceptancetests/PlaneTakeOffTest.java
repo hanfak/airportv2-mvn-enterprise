@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import testinfrastructure.TestAirportPlaneInventoryService;
 import testinfrastructure.TestLogger;
+import testinfrastructure.WeatherServiceStub;
 
 import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
@@ -31,6 +32,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   public void aPlaneCanTakeOff() {
     givenAPlaneHasLanded();
     andPlaneIsInTheAirport();
+    andTheWeatherIsNotStormy();
 
     whenAPlaneIsInstructedToTakeOff();
 
@@ -42,6 +44,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   @Test
   public void aPlaneCannotTakeOffIfNotAtAirport() {
     givenAPlaneHasLandedSomewhereOutsideTheAirport();
+    andTheWeatherIsNotStormy();
 
     whenAPlaneNotInTheAirportIsInstructedToTakeOff();
 
@@ -49,13 +52,17 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void givenAPlaneHasLandedSomewhereOutsideTheAirport() {
-    takeOffUseCase = new TakeOffUseCase(testHangerService, logger);
+    takeOffUseCase = new TakeOffUseCase(testHangerService, logger, notStormyWeatherService);
     plane = plane(planeId("A0001"), LANDED);
     interestingGivens.add("plane", plane);
   }
 
+  private void andTheWeatherIsNotStormy() {
+
+  }
+
   private void givenAPlaneHasLanded() {
-    takeOffUseCase = new TakeOffUseCase(testHangerService, logger);
+    takeOffUseCase = new TakeOffUseCase(testHangerService, logger, notStormyWeatherService);
     plane = plane(planeId("A0001"), FLYING);
     interestingGivens.add("plane", plane);
   }
@@ -89,8 +96,9 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
 
   private final TestLogger logger = new TestLogger();
   private final TestAirportPlaneInventoryService testHangerService = new TestAirportPlaneInventoryService();
+  private WeatherServiceStub notStormyWeatherService = new WeatherServiceStub(false);
 
-  private final LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(testHangerService, logger);
+  private final LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(testHangerService, logger, notStormyWeatherService);
   private final SuccessfulPlaneTakeOffStatus expectedSuccessfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT);
   private final FailedPlaneTakeOffStatus expectedFailedPlaneTakeOffStatusForNotPresentPlane = failedPlaneTakeOffStatus(planeId("A0001"), LANDED, NOT_IN_AIRPORT, PLANE_IS_NOT_AT_THE_AIRPORT);
   private TakeOffUseCase takeOffUseCase;

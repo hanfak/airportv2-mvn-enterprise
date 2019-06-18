@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import testinfrastructure.TestAirportPlaneInventoryService;
 import testinfrastructure.TestLogger;
+import testinfrastructure.WeatherServiceStub;
 
 import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
@@ -28,6 +29,7 @@ public class LandPlaneTest extends TestState implements WithAssertions {
   public void aPlaneCanLand() {
     givenAPlaneIsFlying();
     andAnAirportHasCapacity();
+    andTheWeatherIsNotStormy();
 
     whenAPlaneIsInstructedToLand();
 
@@ -36,19 +38,23 @@ public class LandPlaneTest extends TestState implements WithAssertions {
   }
 
   // Move to module test so that plane service is active, or move to documentation test and use a stub
+
   @Test
   public void aPlaneCannotLandWhenPlaneIsInTheAirport() {
     givenAPlaneIsAtTheAirport();
+    andTheWeatherIsNotStormy();
 
     whenAPlaneIsInstructedToLand();
 
     thenThereIsAFailureInstructingThePlaneToLand();
   }
+  private void andTheWeatherIsNotStormy() {
+  }
 
   private void givenAPlaneIsAtTheAirport() {
     plane = plane(planeId("A0001"), FLYING);
     interestingGivens.add("plane", plane);
-    airport = new LandPlaneUseCase(testHangerService, logger);
+    airport = new LandPlaneUseCase(testHangerService, logger, notStormyWeatherService);
     airport.instructPlaneToLand(plane);
   }
 
@@ -58,7 +64,7 @@ public class LandPlaneTest extends TestState implements WithAssertions {
   }
 
   private void andAnAirportHasCapacity() {
-    airport = new LandPlaneUseCase(testHangerService, logger);
+    airport = new LandPlaneUseCase(testHangerService, logger, notStormyWeatherService);
   }
 
   private void whenAPlaneIsInstructedToLand() {
@@ -89,4 +95,5 @@ public class LandPlaneTest extends TestState implements WithAssertions {
   private Plane plane;
   private PlaneLandStatus planeLandStatus;     // better variable name
   private TestAirportPlaneInventoryService testHangerService = new TestAirportPlaneInventoryService();
+  private WeatherServiceStub notStormyWeatherService = new WeatherServiceStub(false);
 }

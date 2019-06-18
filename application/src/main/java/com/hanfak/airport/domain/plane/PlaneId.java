@@ -5,7 +5,7 @@ import com.hanfak.airport.domain.helper.SingleValueType;
 import static java.lang.String.format;
 
 public class PlaneId extends SingleValueType<String> {
-
+  // TODO remove logic from constructor
   private PlaneId(String planeId) {
     super(validate(planeId));
   }
@@ -13,7 +13,7 @@ public class PlaneId extends SingleValueType<String> {
   public static PlaneId planeId(String planeId) {
     return new PlaneId(planeId);
   }
-
+  // TODO change to return planeID, and no args, use current object
   private static String validate(String planeId) {
     boolean planeIdContainsRequiredCharacters = planeId.matches("[a-zA-Z0-9]+");
     if (!planeIdContainsRequiredCharacters) {

@@ -28,6 +28,7 @@ import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
 import com.hanfak.airport.usecase.HealthChecksUseCase;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import com.hanfak.airport.usecase.TakeOffUseCase;
+import com.hanfak.airport.usecase.WeatherService;
 import io.prometheus.client.CollectorRegistry;
 import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -100,11 +101,15 @@ public class Wiring {
   }
 
   private LandPlaneUseCase landPlaneUseCase() {
-    return new LandPlaneUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER);
+    return new LandPlaneUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER, weatherService());
   }
 
   private TakeOffUseCase takeOffUseCase() {
-    return new TakeOffUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER);
+    return new TakeOffUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER, weatherService());
+  }
+
+  private WeatherService weatherService() {
+    return null;
   }
 
   public AirportPlaneInventoryService airportPlaneInventoryService() {

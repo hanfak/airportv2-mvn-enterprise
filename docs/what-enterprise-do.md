@@ -1,0 +1,50 @@
+# What could be found in Enterprise software
+
+- Transforming input 
+    - via business rules
+    - via intertactions with external services, internal data
+    - Check input
+- Being able to communicate with it
+    - TCP/IP
+    - Http
+    - object serialisation
+    - Messaging protocols
+    - REST/SOAP/GraphQL
+    - Files (FTP)
+- Communicate with other services
+    - Queues
+    - Message Brokers
+    - email
+    - shared databases
+- Storing Data
+    - Databasess (Sql, no sql)
+    - Files
+    - in memory (lifetime of app or cluster or vm)
+- Monitoring Application
+    - check it is healthy
+    - check performance
+    - Logging of activities (users, flows, failures, req/resp)
+- Async or sync processes
+- Allow for non user activities
+    - tech support can access to perform some correction to failed flows
+- Batching jobs 
+  -   Perform jobs after some min amount of actions/data stored, on all
+      these at the same time(concurrent) on specific time (Scheduling)
+- Scheduling jobs
+    - running specific tasks automatically
+- Providing data for business
+    - data warehouse views
+    - internal gui to access api
+- Cache expensive tasks
+    - store responses from external services and update on a schedule
+- Security
+    - authentication and authorisation
+    - certificates
+    - encrypted data and secrets
+- Documented
+    - Wiki
+    - exposed tests
+- Increase performance
+    - Decrease latency
+    - Increase throughput
+

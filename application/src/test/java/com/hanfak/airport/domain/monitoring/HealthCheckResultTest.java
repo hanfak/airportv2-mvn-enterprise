@@ -1,9 +1,5 @@
-package com.hanfak.airport.domain.helper;
+package com.hanfak.airport.domain.monitoring;
 
-
-import com.hanfak.airport.domain.monitoring.HealthCheckResult;
-import com.hanfak.airport.domain.monitoring.ProbeResult;
-import com.hanfak.airport.domain.monitoring.ProbeStatus;
 import org.junit.Test;
 
 import static com.hanfak.airport.domain.monitoring.ProbeResult.failure;

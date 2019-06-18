@@ -29,3 +29,9 @@ Address in use
 
 - lsof -i tcp:1234
 - kill -9 <PID>
+
+Useful
+
+- mvn findbugs:findbugs
+- mvn org.apache.maven.plugins:maven-pmd-plugin:3.6:pmd
+- view code coverage application/target/site/jacoco/index.html

@@ -48,7 +48,8 @@ public class LandPlaneUseCaseTest implements WithAssertions {
 
   private final PlaneInventoryService planeInventoryService = mock(PlaneInventoryService.class);
   private final Logger logger = mock(Logger.class);
-  private final LandPlaneUseCase airport = new LandPlaneUseCase(planeInventoryService, logger);
+  private final WeatherService notStormyWeatherService = mock(WeatherService.class);
+  private final LandPlaneUseCase airport = new LandPlaneUseCase(planeInventoryService, logger, notStormyWeatherService);
   private final Plane flyingPlane = plane(planeId("A0001"), FLYING);
   private final Plane landedPlane = plane(planeId("A0001"), LANDED);
 }

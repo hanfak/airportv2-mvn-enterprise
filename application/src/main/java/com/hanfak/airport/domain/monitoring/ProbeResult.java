@@ -21,7 +21,7 @@ public class ProbeResult extends ValueType {
         return new ProbeResult(name, description, ProbeStatus.FAIL);
     }
 
-    static ProbeResult warn(String name, String description) {
+    public static ProbeResult warn(String name, String description) {
         return new ProbeResult(name, description, ProbeStatus.WARN);
     }
 }

@@ -24,16 +24,13 @@ public class DatabaseProbe implements Job {
 
   private final Logger logger;
   private final Settings settings;
-  private final static Path secretsProperties = Paths.get("unused");
-  private final static Path appProperties = Paths.get("target/test-classes/localhost.test.properties");
-  private final static HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(loadSettings(getLogger(APPLICATION.name()), appProperties, secretsProperties));
-
-  private final static PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(getLogger(APPLICATION.name()), databaseConnectionPooling);
+  private final Path secretsProperties;
+  private final Path appProperties;
 
   public DatabaseProbe() {
     this.logger = getLogger(APPLICATION.name());
-    Path secretsProperties = Paths.get("unused");
-    Path appProperties = Paths.get("application/target/classes/localhost.application.properties");
+    this.secretsProperties = Paths.get("unused");
+    this.appProperties = Paths.get("application/target/classes/localhost.application.properties");
     this.settings = loadSettings(logger, appProperties, secretsProperties);
   }
 
@@ -46,6 +43,9 @@ public class DatabaseProbe implements Job {
   }
 
   private  ProbeResult excuteProbe() {
+    HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);
+    PoolingJDBCDatabasConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(logger, databaseConnectionPooling);
+
     String query = "SELECT count(*);";
     logger.info(format("Check database connection"));
     logger.debug(format("Using SQL:%n%s", query));

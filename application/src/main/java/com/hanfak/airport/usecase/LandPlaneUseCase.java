@@ -21,11 +21,13 @@ import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPl
 public class LandPlaneUseCase {
 
   private final PlaneInventoryService planeInventoryService;
-  private Logger logger;
+  private final Logger logger;
+  private final WeatherService weatherService;
 
-  public LandPlaneUseCase(PlaneInventoryService hangerService, Logger logger) {
+  public LandPlaneUseCase(PlaneInventoryService hangerService, Logger logger, WeatherService weatherService) {
     this.planeInventoryService = hangerService;
     this.logger = logger;
+    this.weatherService = weatherService;
   }
 
   // What to return for application output, specific type to include plane, status, inAirport and inHanger (later specific hanger)

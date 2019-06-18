@@ -67,7 +67,7 @@ Technical TODO:
 
 - properties
     - ~~property loader~~
-    - test and prod
+    - ~~test and prod~~
     - ~~default & enhanced prop~~
     - properties for docker/jar
     - test properties
@@ -76,7 +76,7 @@ Technical TODO:
     - ~~postgres~~
     - ~~c3po or hikari for object pooling~~
     - use in memory db ie H2 and properties and code (extra methods on db) just for tests
-    - use stub (list) for database in test
+    - ~~use stub (list) for database in test~~
     - editioning and views
 
 - flyway db to setup database
@@ -215,7 +215,7 @@ Technical TODO:
             - wrong plane status in db
             - plane should not be in db if taken off
             
-- metrics end point
+- ~~metrics end point~~
     - prometheues
     - https://hellokoding.com/java-application-health-check-with-prometheus-grafana-mysql-and-docker-compose/
     - https://github.com/RobustPerception/java_examples/tree/master/java_simple
