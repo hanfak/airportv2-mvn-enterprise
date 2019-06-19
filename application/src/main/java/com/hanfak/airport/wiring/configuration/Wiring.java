@@ -57,7 +57,7 @@ public class Wiring {
     }
   }
 
-  private Wiring(Singletons singletons) {
+  protected Wiring(Singletons singletons) {
     this.singletons = singletons;
   }
 

@@ -18,6 +18,7 @@ public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
   @Test // Testing the servlet class
   public void canLandPlaneViaRest() throws UnirestException {
     givenAFlyingPlane();
+    // todo: use wiremock stub
 
     whenUserInstructsPlaneToLand();
 

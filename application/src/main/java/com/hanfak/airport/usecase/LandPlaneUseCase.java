@@ -13,6 +13,7 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.failedPlaneLandStatus;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_LANDED;
+import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.WEATHER_IS_STORMY;
 import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPlaneLandStatus;
 
 // New Usecase for airport controller to use, to assess the state of the plane by accessing the
@@ -32,6 +33,11 @@ public class LandPlaneUseCase {
 
   // What to return for application output, specific type to include plane, status, inAirport and inHanger (later specific hanger)
   public PlaneLandStatus instructPlaneToLand(Plane plane) {
+    if (weatherService.isStormy()) {
+      logger.info(String.format("Plane, '%s', could not land at the airport as it is stormy", plane.planeId));
+      return getFailurePlaneLandStatus(plane, NOT_IN_AIRPORT, WEATHER_IS_STORMY);
+    }
+
     if (LANDED.equals(plane.planeStatus)) { // TODO: could check the airport via planeInventoryService like a bug
       logger.info(String.format("Plane, '%s', cannot land, status is '%s'", plane.planeId, plane.planeStatus.name()));
       return getFailurePlaneLandStatus(plane, NOT_IN_AIRPORT, PLANE_IS_LANDED);
