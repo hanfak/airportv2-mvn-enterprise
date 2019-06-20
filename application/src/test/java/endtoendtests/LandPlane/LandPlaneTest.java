@@ -15,14 +15,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
 
-  @Test // Testing the servlet class
+  @Test // Testing the servlet class too
+  // @Ignore // TODO: remove when implementing webservice via http
   public void canLandPlaneViaRest() throws UnirestException {
     givenAFlyingPlane();
+    andTheWeatherIsNotStormy();
     // todo: use wiremock stub
 
     whenUserInstructsPlaneToLand();
 
     thenPlaneHasLandedAndInTheAirport();
+  }
+
+  private void andTheWeatherIsNotStormy() {
+    //https://github.com/wojciechbulaty/examples/blob/master/weather-yatspec-example/src/test/java/com/wbsoftwareconsutlancy/WeatherApplicationTest.java
   }
 
   private void givenAFlyingPlane() {

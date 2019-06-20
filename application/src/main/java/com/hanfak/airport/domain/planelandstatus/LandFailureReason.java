@@ -4,7 +4,7 @@ public enum LandFailureReason {
 
   PLANE_IS_LANDED("Plane could not land as it is still on land"),
   PLANE_IS_AT_THE_AIRPORT("Plane could not land as it is in the airport"),
-  WEATHER_IS_STORMY("blah");
+  WEATHER_IS_STORMY("Plane could not land as it is stormy weather");
 
   private final String reason;
 

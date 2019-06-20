@@ -4,9 +4,9 @@ import com.hanfak.airport.usecase.WeatherService;
 
 public class WeatherServiceStub implements WeatherService {
 
-  private final boolean isStormy;
+  private final Boolean isStormy;
 
-  public WeatherServiceStub(boolean isStormy) {
+  public WeatherServiceStub(Boolean isStormy) {
     this.isStormy = isStormy;
   }
 

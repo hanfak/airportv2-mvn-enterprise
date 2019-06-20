@@ -1,4 +1,8 @@
 - implement weather service
+    - ~~use stub to return true or false~~ used in acceptance test
+    - implement service in infrastructure to return random weather
+    - use wiremock to return actual response from weather service, for integration test
+    - implement client to get weather from service
 - Call another probe, to monitor weather service is up - use concurrency
 - Call another probe, to monitor airport is full
 - Find a way to add a scheduled job(quartz) into the app

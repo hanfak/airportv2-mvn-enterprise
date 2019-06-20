@@ -6,6 +6,7 @@ import com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
 import com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus;
 import org.assertj.core.api.WithAssertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 
@@ -22,6 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class LandPlaneUseCaseTest implements WithAssertions {
 
@@ -41,6 +43,13 @@ public class LandPlaneUseCaseTest implements WithAssertions {
     verify(planeInventoryService, never()).addPlane(landedPlane);
     verify(logger).info("Plane, 'A0001', cannot land, status is 'LANDED'");
     assertThat(actionUnderTest.failedPlaneLandStatus).isEqualTo(expectedFailedPlaneLandStatusForLandedPlane);
+  }
+
+  @Before
+  public void setUp() {
+    // Not needed, as the method returns a primitive in WeatherService, which mockito automatically returns a default
+    // But for readability, better to show the priming
+    when(notStormyWeatherService.isStormy()).thenReturn(false);
   }
 
   private final SuccessfulPlaneLandStatus expectedSuccessfulPlaneLandStatus = successfulPlaneLandStatus(planeId("A0001"), LANDED, IN_AIRPORT);
