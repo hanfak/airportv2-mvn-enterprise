@@ -44,7 +44,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.CouplingBetweenObjects"})
 public class Wiring {
 
-  private final static Logger APPLICATION_LOGGER = getLogger(APPLICATION.name()); // add to singletons
+  protected
+  final static Logger APPLICATION_LOGGER = getLogger(APPLICATION.name()); // add to singletons
   private final Singletons singletons;
 
   public static class Singletons {
@@ -53,7 +54,7 @@ public class Wiring {
     private final Settings settings;
 
     @SuppressWarnings({"PMD.ExcessiveParameterList"})
-    Singletons(JDBCDatabaseConnectionManager databaseConnectionManager, AirportStorageJdbcRepository airportStorageRepository, Settings settings) {
+    public Singletons(JDBCDatabaseConnectionManager databaseConnectionManager, AirportStorageJdbcRepository airportStorageRepository, Settings settings) {
       this.airportStorageRepository = airportStorageRepository;
       this.databaseConnectionManager = databaseConnectionManager;
       this.settings = settings;
@@ -111,7 +112,7 @@ public class Wiring {
     return new TakeOffUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER, weatherService());
   }
 
-  private WeatherService weatherService() {
+  protected WeatherService weatherService() {
     return new RandomWeatherService(new Random()); // TODO: Use a real web service
   }
 

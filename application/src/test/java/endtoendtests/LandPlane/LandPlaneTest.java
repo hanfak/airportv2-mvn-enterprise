@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
 
   @Test // Testing the servlet class too
-  // @Ignore // TODO: remove when implementing webservice via http
   public void canLandPlaneViaRest() throws UnirestException {
     givenAFlyingPlane();
     andTheWeatherIsNotStormy();

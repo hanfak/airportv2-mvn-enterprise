@@ -12,13 +12,13 @@ public class NotFoundPageTest extends YatspecAcceptanceIntegrationTest {
 
   @Test
   public void notFoundPageRespondsWith404() throws UnirestException {
-    whenTheANonAvailableEndpointIsRequested();
+    whenANonAvailableEndpointIsRequested();
 
     thenTheResponseHasStatusCode(404);
     andTheResponseHasABodyContaining("Not available");
   }
 
-  private void whenTheANonAvailableEndpointIsRequested() throws UnirestException {
+  private void whenANonAvailableEndpointIsRequested() throws UnirestException {
     log("Request Path", apiUrl);
     HttpResponse<String> httpResponse = Unirest.get(apiUrl)
             .asString();

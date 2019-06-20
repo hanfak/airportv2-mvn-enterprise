@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MetricsPageTest extends YatspecAcceptanceIntegrationTest {
 
   @Test
-  public void metricsPagehowsJvmAndHttpMetrics0() throws UnirestException {
+  public void metricsPageShowsJvmAndHttpMetrics() throws UnirestException {
     whenTheMetricsEndpointIsRequested();
 
     thenTheResponseHasStatusCode(200);

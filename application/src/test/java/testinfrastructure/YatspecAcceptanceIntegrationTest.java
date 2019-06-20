@@ -9,7 +9,6 @@ import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.wiring.Application;
-import com.hanfak.airport.wiring.configuration.Wiring;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSettings;
-import static com.hanfak.airport.wiring.configuration.Wiring.wiring;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @RunWith(SpecRunner.class)
@@ -33,7 +31,7 @@ public abstract class YatspecAcceptanceIntegrationTest implements WithTestState,
     private Path secretsProperties = Paths.get("unused");
     private Settings settings = loadSettings(getLogger(Application.class), appProperties, secretsProperties);
     private final TestState testState = new TestState();
-    protected final Wiring wiring = wiring(settings);
+    protected final TestWiring wiring = TestWiring.testWiring(settings);
 
     protected final Application application = new Application(wiring);
 
