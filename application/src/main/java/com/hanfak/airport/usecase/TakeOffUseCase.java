@@ -20,12 +20,10 @@ public class TakeOffUseCase {
 
     private final PlaneInventoryService planeInventoryService;
     private final Logger logger;
-    private final WeatherService weatherService;
 
-    public TakeOffUseCase(PlaneInventoryService hangerService, Logger logger, WeatherService weatherService) {
+    public TakeOffUseCase(PlaneInventoryService hangerService, Logger logger) {
         this.planeInventoryService = hangerService;
         this.logger = logger;
-        this.weatherService = weatherService;
     }
 
     // return tuple with new types SuccessfulPlaneTakeOffStatus &

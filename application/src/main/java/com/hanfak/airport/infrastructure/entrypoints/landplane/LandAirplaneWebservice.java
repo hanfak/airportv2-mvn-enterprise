@@ -43,7 +43,7 @@ public class LandAirplaneWebservice {
       return createRenderedContentForRequestContent("Error with content in body of request: planeId contains illegal character", request, e);
     } catch (IllegalLengthException e) {
       return createRenderedContentForRequestContent("Error with content in body of request: planeId is wrong length", request, e);
-    }
+    } // Catch runtime and set as technical failure
   }
 
   private RenderedContent createRenderedContentForRequestContent(String body, String request, IllegalArgumentException exception) {

@@ -109,7 +109,7 @@ public class Wiring {
   }
 
   private TakeOffUseCase takeOffUseCase() {
-    return new TakeOffUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER, weatherService());
+    return new TakeOffUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER);
   }
 
   protected WeatherService weatherService() {

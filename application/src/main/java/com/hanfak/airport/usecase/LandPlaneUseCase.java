@@ -4,7 +4,6 @@ import com.hanfak.airport.domain.AirportStatus;
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.planelandstatus.LandFailureReason;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
-import com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus;
 import org.slf4j.Logger;
 
 import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
@@ -15,6 +14,8 @@ import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_LANDED;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.WEATHER_IS_STORMY;
 import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPlaneLandStatus;
+import static com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus.successfulPlaneLandStatus;
+import static java.lang.String.format;
 
 // New Usecase for airport controller to use, to assess the state of the plane by accessing the
 // AirportHangerService using the planeId to get the its flight status
@@ -33,13 +34,13 @@ public class LandPlaneUseCase {
 
   // What to return for application output, specific type to include plane, status, inAirport and inHanger (later specific hanger)
   public PlaneLandStatus instructPlaneToLand(Plane plane) {
-    if (weatherService.isStormy()) {
-      logger.info(String.format("Plane, '%s', could not land at the airport as it is stormy", plane.planeId));
+    if (weatherService.isStormy()) { // bubble up exception
+      logger.info(format("Plane, '%s', could not land at the airport as it is stormy", plane.planeId));
       return getFailurePlaneLandStatus(plane, NOT_IN_AIRPORT, WEATHER_IS_STORMY);
     }
 
     if (LANDED.equals(plane.planeStatus)) { // TODO: could check the airport via planeInventoryService like a bug
-      logger.info(String.format("Plane, '%s', cannot land, status is '%s'", plane.planeId, plane.planeStatus.name()));
+      logger.info(format("Plane, '%s', cannot land, status is '%s'", plane.planeId, plane.planeStatus.name()));
       return getFailurePlaneLandStatus(plane, NOT_IN_AIRPORT, PLANE_IS_LANDED);
     }
 
@@ -47,12 +48,12 @@ public class LandPlaneUseCase {
     try {
       Plane landedPlane = plane.land();
       planeInventoryService.addPlane(landedPlane);
-      logger.info(String.format("Plane, '%s', has successfully landed at the airport", plane.planeId));
+      logger.info(format("Plane, '%s', has successfully landed at the airport", plane.planeId));
 
       return getSuccessfulPlaneLandStatus(landedPlane);
     } catch (Exception e) { // TODO catch exception from jdbc and log & return getFailurePlaneLandStatus, bug not correct meesage
       // Instead of returning object for sad path, can throw an exception and in webservice it will render code in catch block
-      logger.error(String.format("Plane, '%s', is at airport", plane.planeId), e);
+      logger.error(format("Plane, '%s', is at airport", plane.planeId), e);
       return getFailurePlaneLandStatus(plane, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);
     }
   }
@@ -63,7 +64,7 @@ public class LandPlaneUseCase {
   }
 
   private PlaneLandStatus getSuccessfulPlaneLandStatus(Plane landedPlane) {
-    return createPlaneLandStatus(SuccessfulPlaneLandStatus.successfulPlaneLandStatus(landedPlane.planeId, landedPlane.planeStatus, IN_AIRPORT)
+    return createPlaneLandStatus(successfulPlaneLandStatus(landedPlane.planeId, landedPlane.planeStatus, IN_AIRPORT)
             , null);
   }
 }

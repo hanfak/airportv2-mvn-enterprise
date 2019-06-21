@@ -52,7 +52,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void givenAPlaneHasLandedSomewhereOutsideTheAirport() {
-    takeOffUseCase = new TakeOffUseCase(testHangerService, logger, notStormyWeatherService);
+    takeOffUseCase = new TakeOffUseCase(testHangerService, logger);
     plane = plane(planeId("A0001"), LANDED);
     interestingGivens.add("plane", plane);
   }
@@ -62,7 +62,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void givenAPlaneHasLanded() {
-    takeOffUseCase = new TakeOffUseCase(testHangerService, logger, notStormyWeatherService);
+    takeOffUseCase = new TakeOffUseCase(testHangerService, logger);
     plane = plane(planeId("A0001"), FLYING);
     interestingGivens.add("plane", plane);
   }
