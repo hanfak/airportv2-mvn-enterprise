@@ -4,7 +4,8 @@ Prerequisites
 
 1. mkdir -p $HOME/docker/volumes/postgres
 2. docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data  postgres:11
-3. mvn compile flyway:migrate
+3. cd flyway-sql
+4. mvn compile flyway:migrate
 
 To run build:
 

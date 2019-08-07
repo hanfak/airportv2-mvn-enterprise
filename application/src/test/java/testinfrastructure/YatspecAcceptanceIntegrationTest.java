@@ -24,6 +24,7 @@ import java.util.List;
 import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSettings;
 import static org.slf4j.LoggerFactory.getLogger;
 
+// TODO html output should show call to weatherservice
 @RunWith(SpecRunner.class)
 public abstract class YatspecAcceptanceIntegrationTest implements WithTestState, WithCustomResultListeners {
 
@@ -73,7 +74,7 @@ public abstract class YatspecAcceptanceIntegrationTest implements WithTestState,
         }
     }
 
-    protected void deleteTableContents(String tableName) throws SQLException {
+    protected void deleteTableContents(String tableName) {
         executeSQL("TRUNCATE " + tableName);
     }
 

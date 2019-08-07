@@ -36,12 +36,13 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     HIKARI,
                     APACHE_COMMONS_STRING_UTILS,
                     GUAVA_VISIBLE_FOR_TESTING,
-                    "org.eclipse.jetty.servlet",
-                    "org.eclipse.jetty.server",
-                    "org.json.JSONObject",
+                    "org.eclipse.jetty",
+                    "org.json",
                     "com.fasterxml.jackson",
                     "org.zalando.logbook",
                     "io.prometheus.client",
+                    "com.mashape.unirest.http",
+                    "com.google.common.collect.ImmutableMap",
                     FINDBUGS,
                     "java");
     assertThat(violations).describedAs("Violations").isEmpty();

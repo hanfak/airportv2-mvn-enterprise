@@ -6,7 +6,9 @@ import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionMan
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.HikariDatabaseConnectionPooling;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
-import com.hanfak.airport.infrastructure.dataproviders.weather.RandomWeatherService;
+import com.hanfak.airport.infrastructure.dataproviders.weather.OpenWeatherMapService;
+import com.hanfak.airport.infrastructure.dataproviders.weather.UnirestHttpClient;
+import com.hanfak.airport.infrastructure.dataproviders.weather.WeatherClient;
 import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneRequestUnmarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneResponseMarshaller;
@@ -34,8 +36,6 @@ import io.prometheus.client.CollectorRegistry;
 import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;
-
-import java.util.Random;
 
 import static com.hanfak.airport.infrastructure.logging.LoggingCategory.APPLICATION;
 import static java.util.Collections.singletonList;
@@ -113,7 +113,8 @@ public class Wiring {
   }
 
   protected WeatherService weatherService() {
-    return new RandomWeatherService(new Random()); // TODO: Use a real web service
+//    return new RandomWeatherService(new Random()); // TODO: Use a real web service
+    return new OpenWeatherMapService(new WeatherClient(new UnirestHttpClient()));
   }
 
   public AirportPlaneInventoryService airportPlaneInventoryService() {

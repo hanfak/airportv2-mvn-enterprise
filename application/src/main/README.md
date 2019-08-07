@@ -1,13 +1,45 @@
+# Clean architecture
+
+* This application follows the guidelines of a clean architecture. 
+* The aim is to separate concerns, by dividing the software into layers
+* This helps keep business/core rules/logic independent
+    * framework independent
+    * Testable
+    * UI Independent (Web server or console)
+    * Database Independent
+    * 3rd party or internal api independent 
+* The Inner layers know nothing of the outer layers
+    * For this app the it follows from inner to outer layer: 
+        * Core layer
+            * Domain/Entity
+            * Usecases/Application
+        * Outer layer
+            * Infrastructure
+            * Wiring & configuration
+    * The inner layers communicate with outer layers via interfaces (ports) using polymorphism and dependency inversion
+    * Inner layer should not be affected by changes in the outer layers
+  
+    
+
+
 # Domain/Entity Layer
 
 - Domain objects
+    - can validate, normalise, santise data
+- Are immutable, no setters, fields are final
+    - helps with concurrency
 - Validation on creation if necessary
+    - Avoid using primitive types or inbuilt library types
+- The least likely to change
+- Encapsulate the business rules
 - Can be used through application
 - Depend on nothing outside of package
 - Conform to business language used through business or application
 - Use of tiny types instead of String
 - can have methods or just be a data structure
 - No frameworks
+- Improve readability of code
+- No confusing when passing arguments (when primitives) to method or constructor, as they must be wrapped in a type
 
 # Usecases/Application Layer
 
@@ -24,8 +56,9 @@
         - But be careful if library goes out of date
     - no frameworks
 - Single method interfaces (interface segration/ command pattern)
-- interface adapters
+- interface adapters (ports)
     - Allow use case to communicate with database, third party api etc
+    - change data from outer layer to inner layer, that is most convienent for inner layer
 
 # Infrastructure
 

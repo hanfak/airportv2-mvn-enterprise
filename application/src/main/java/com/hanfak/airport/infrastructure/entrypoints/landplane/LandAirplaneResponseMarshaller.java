@@ -20,7 +20,7 @@ public class LandAirplaneResponseMarshaller {
   }
 
   private String createSuccesfulResponseBodyJson(SuccessfulPlaneLandStatus successfulPlaneLandStatus) throws JsonProcessingException {
-    LinkedHashMap<String, String> jsonBody = new LinkedHashMap<>();
+    LinkedHashMap<String, String> jsonBody = new LinkedHashMap<>(); // TODO use interface as type
     jsonBody.put("PlaneId", successfulPlaneLandStatus.planeId.value);
     jsonBody.put("PlaneStatus", successfulPlaneLandStatus.planeStatus.name());
     jsonBody.put("AirportStatus", successfulPlaneLandStatus.airportStatus.name());

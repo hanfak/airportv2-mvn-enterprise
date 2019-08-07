@@ -26,7 +26,7 @@
     </dependencies>
 
     <profiles>
-        <profile>
+    <profile>
             <id>dbRecreate</id>
             <build>
                 <plugins>

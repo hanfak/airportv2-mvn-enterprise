@@ -138,7 +138,9 @@ Technical TODO:
 - Use third party weather service
     - https://fcc-weather-api.glitch.me/api/current?lat=51.4700&lon=0.4543
     - https://www.metaweather.com/api/
+    - https://openweathermap.org/weather-conditions
     - http client
+        - http://httpbin.org/#/Status_codes
     - marshalling request & unmarshalling response (json)
     - wiremock
     - logging

@@ -5,7 +5,6 @@ import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnecti
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
 import com.hanfak.airport.infrastructure.properties.Settings;
-import com.hanfak.airport.usecase.WeatherService;
 import com.hanfak.airport.wiring.configuration.Wiring;
 
 public class TestWiring extends Wiring {
@@ -24,9 +23,9 @@ public class TestWiring extends Wiring {
     return new TestWiring(singletons);
   }
 
-  @Override
-  protected WeatherService weatherService() {
-    return new WeatherServiceStub(false);
-  }
+//  @Override
+//  protected WeatherService weatherService() {
+//    return new WeatherServiceStub(false);
+//  }
 
 }

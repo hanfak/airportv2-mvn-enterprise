@@ -16,7 +16,7 @@ import static com.hanfak.airport.wiring.configuration.Wiring.wiring;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @SuppressWarnings({"PMD.TooManyStaticImports", "PMD.SystemPrintln"}) // These all refer to domain objects
-public class Application {
+public class  Application {
 
   private final Wiring wiring;
   private JettyWebServer webserver;

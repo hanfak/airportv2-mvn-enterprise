@@ -3,8 +3,11 @@
     - implement service in infrastructure to return random weather
     - use wiremock to return actual response from weather service, for integration test
     - implement client to get weather from service
+    - sequence diagram for yatspec
+- Handle jsonprocessing exception as runtime, what to do?
 - Split learning into seperate module
 - Call another probe, to monitor weather service is up - use concurrency
+- Use story 5 and 6
 - Call another probe, to monitor airport is full
 - Find a way to add a scheduled job(quartz) into the app
     - Schedule job for accessing airport is full
