@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 
 import java.util.Properties;
 
-public class Settings implements DatabaseSettings{
+public class Settings implements DatabaseSettings, WeatherApiSettings{
 
   private final EnhancedProperties properties;
 
@@ -32,5 +32,25 @@ public class Settings implements DatabaseSettings{
   @Override
   public String databaseConnectTimeout() {
     return properties.getPropertyOrThrowRuntimeException("database.connect.timeout");
+  }
+
+  @Override
+  public String locationLatitude() {
+    return properties.getPropertyOrThrowRuntimeException("open.weather.param.latitude");
+  }
+
+  @Override
+  public String locationLongitude() {
+    return properties.getPropertyOrThrowRuntimeException("open.weather.param.longitude");
+  }
+
+  @Override
+  public String weatherUrl() {
+    return properties.getPropertyOrThrowRuntimeException("open.weather.service.url");
+  }
+
+  @Override
+  public String appId() {
+    return properties.getPropertyOrThrowRuntimeException("open.weather.param.appid");
   }
 }

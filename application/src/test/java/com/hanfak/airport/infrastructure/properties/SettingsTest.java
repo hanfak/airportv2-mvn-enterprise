@@ -24,6 +24,19 @@ public class SettingsTest implements WithAssertions {
   }
 
   @Test
+  public void weatherApiProperties() {
+    properties.put("open.weather.service.url", "some url");
+    properties.put("open.weather.param.longitude", "some longitude");
+    properties.put("open.weather.param.latitude", "some latitude");
+    properties.put("open.weather.param.appid", "some appid");
+
+    assertThat(settings.weatherUrl()).isEqualTo("some url");
+    assertThat(settings.locationLatitude()).isEqualTo("some latitude");
+    assertThat(settings.locationLongitude()).isEqualTo("some longitude");
+    assertThat(settings.appId()).isEqualTo("some appid");
+  }
+
+  @Test
   public void dataSourceMaxIdleTimeInSeconds() {
     properties.put("database.connect.timeout", "4");
     assertThat(settings.databaseConnectTimeout()).isEqualTo("4");

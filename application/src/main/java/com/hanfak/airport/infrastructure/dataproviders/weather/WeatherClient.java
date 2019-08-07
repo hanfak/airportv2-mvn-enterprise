@@ -1,35 +1,36 @@
 package com.hanfak.airport.infrastructure.dataproviders.weather;
 
+import com.hanfak.airport.infrastructure.properties.WeatherApiSettings;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
 
 public class WeatherClient {
-  // Use interface
-  private final UnirestHttpClient unirestHttpClient;
+  private final UnirestHttpClient unirestHttpClient;   // Use interface
+  private final WeatherApiSettings settings;
+  private final Logger logger;
 
-  public WeatherClient(UnirestHttpClient unirestHttpClient) {
+  public WeatherClient(UnirestHttpClient unirestHttpClient, WeatherApiSettings settings, Logger logger) {
     this.unirestHttpClient = unirestHttpClient;
+    this.settings = settings;
+    this.logger = logger;
   }
 
   public int getWeatherId() {
     try {
-      // TODO: Use a map, or properties
-      // TODO Add to properties§
-      String locationLatitude = "51.470020";
-      String locationLongitude = "-0.454296";
-      String url = "http://api.openweathermap.org/data/2.5/weather?";
-      String appId = "42f829d2049915097be4c996d1275d8d";
-
-      HttpResponse<JsonNode> response = unirestHttpClient.submitGetRequest(url, locationLongitude, locationLatitude, appId);
+      HttpResponse<JsonNode> response = unirestHttpClient.submitGetRequest(settings.weatherUrl(),
+              settings.locationLongitude(),
+              settings.locationLatitude(),
+              settings.appId());
 
       return unmarshallResponse(response);
 
       // TODO deal with not correct response (response status code not 200)
     } catch (UnirestException e) {
-      // TODO Logging & delegate
+      logger.error("Unexpected exception when getting weather from api", e);
       throw new IllegalStateException("Unexpected exception when getting weather from api", e);
     }
   }

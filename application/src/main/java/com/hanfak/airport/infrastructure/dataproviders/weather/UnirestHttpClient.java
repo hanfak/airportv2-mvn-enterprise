@@ -1,17 +1,20 @@
 package com.hanfak.airport.infrastructure.dataproviders.weather;
 
-import com.google.common.collect.ImmutableMap;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UnirestHttpClient {
   // TODO test via integration test
   HttpResponse<JsonNode> submitGetRequest(String url, String locationLongitude, String locationLatitude, String appId) throws UnirestException {
-    ImmutableMap<String, Object> queryParameters = ImmutableMap.of("lat", locationLatitude,
-            "lon", locationLongitude,
-            "appid", appId);
+    Map<String, Object> queryParameters = new HashMap<>();
+    queryParameters.put("lat", locationLatitude);
+    queryParameters.put("lon", locationLongitude);
+    queryParameters.put("appid", appId);
     return Unirest.get(url).queryString(queryParameters).asJson();
   }
 }

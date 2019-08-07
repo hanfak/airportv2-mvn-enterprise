@@ -1,7 +1,7 @@
 package com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection;
 
 
-import com.hanfak.airport.infrastructure.properties.Settings;
+import com.hanfak.airport.infrastructure.properties.DatabaseSettings;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -11,9 +11,9 @@ import javax.sql.DataSource;
 public class HikariDatabaseConnectionPooling {
 
   private final DataSource datasource;
-  private final Settings settings;
+  private final DatabaseSettings settings;
 
-  public HikariDatabaseConnectionPooling(Settings settings) {
+  public HikariDatabaseConnectionPooling(DatabaseSettings settings) {
     this.settings = settings;
     this.datasource = initDataSource();
   }

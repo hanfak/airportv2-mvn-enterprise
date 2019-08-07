@@ -9,7 +9,6 @@ import com.hanfak.airport.domain.plane.Plane;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.junit.Ignore;
 import org.junit.Test;
 import testinfrastructure.YatspecAcceptanceIntegrationTest;
 
@@ -19,7 +18,6 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Ignore
 public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
 
   @Test // Testing the servlet class too
@@ -31,14 +29,13 @@ public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
 
     thenPlaneHasLandedAndInTheAirport();
   }
-// Not using it
 
   private void andTheWeatherIsNotStormy() {
     //https://github.com/wojciechbulaty/examples/blob/master/weather-yatspec-example/src/test/java/com/wbsoftwareconsutlancy/WeatherApplicationTest.java
     WireMockServer wireMockServer = new WireMockServer(WIREMOCK_PORT);
     wireMockServer.start();
     new WireMock(WIREMOCK_PORT)
-            // TODO use explicit pattern -  urlEqualTo("/forecast/e67b0e3784104669340c3cb089412b67/51.507253,-0.127755")
+            // TODO use explicit pattern -  urlEqualTo("/data/2.5/weather?")
             .register(WireMock.any(new UrlPattern(new AnythingPattern(), true))
                     .willReturn(new ResponseDefinitionBuilder()
                             .withBody(weatherServiceOutput)
@@ -51,8 +48,8 @@ public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
   }
 
   private void whenUserInstructsPlaneToLand() throws UnirestException {
-    log("API Url", apiUrl);
-    HttpResponse<String> httpResponse = Unirest.post(apiUrl)
+    log("API Url", appUrl);
+    HttpResponse<String> httpResponse = Unirest.post(appUrl)
             .header("content-type", "application/json")
             .body(format("{\"PlaneId\": \"%s\", \"PlaneStatus\": \"%s\"}", "A199234", "FLYING"))
             .asString();
@@ -77,7 +74,7 @@ public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
   private String responseBody;
   private Plane plane;
   private final String apiPath = "/landAirplane";
-  private final String apiUrl = "http://localhost:5555" + apiPath; // TODO change
+  private final String appUrl = "http://localhost:5555" + apiPath;
 
   private final String weatherServiceOutput = "{\n" +
           "  \"visibility\": 10000,\n" +
