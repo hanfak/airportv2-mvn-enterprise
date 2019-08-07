@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UnirestHttpClient {
-  // TODO test via integration test
   public HttpResponse<JsonNode> submitGetRequest(String url, String locationLongitude, String locationLatitude, String appId) throws UnirestException {
     Map<String, Object> queryParameters = new HashMap<>();
     queryParameters.put("lat", locationLatitude);

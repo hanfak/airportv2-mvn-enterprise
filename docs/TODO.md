@@ -1,8 +1,11 @@
 - implement weather service
     - ~~use stub to return true or false~~ used in acceptance test
-    - implement service in infrastructure to return random weather
-    - use wiremock to return actual response from weather service, for integration test
-    - implement client to get weather from service
+    - ~~implement service in infrastructure to return random weather~~
+    - ~~use wiremock to return actual response from weather service, for integration test~~
+    - ~~implement client to get weather from service~~
+    - health check for endpoint
+    - Deal with bad response from api
+    - 
     - sequence diagram for yatspec
 - Handle jsonprocessing exception as runtime, what to do?
 - Split learning into seperate module

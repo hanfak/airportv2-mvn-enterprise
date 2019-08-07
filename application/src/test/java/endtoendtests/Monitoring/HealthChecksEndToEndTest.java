@@ -1,5 +1,10 @@
 package endtoendtests.Monitoring;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.matching.AnythingPattern;
+import com.github.tomakehurst.wiremock.matching.UrlPattern;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -7,21 +12,44 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Condition;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Test;
 import testinfrastructure.YatspecAcceptanceIntegrationTest;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("SameParameterValue")
+@SuppressWarnings("SameParameterValue") // For readability
 public class HealthChecksEndToEndTest extends YatspecAcceptanceIntegrationTest {
+
+  private final WireMockServer wireMockServer = new WireMockServer(8888);
 
   @Test
   public void healthChecksPageChecksAllProbes() throws UnirestException {
+    givenAllStatusProbesAreSuccessful();
+
     whenUserChecksHealthOfApplication();
 
     thenTheHealthCheckIsSuccessful();
     andTheHealthCheckResponseHasProbe(withName("Database Connection to 'jdbc:postgresql://.*'"), withStatus("OK"), withDescription("Database test query 'SELECT count(*);' was successful"));
+    andTheHealthCheckResponseHasProbe(withName("Weather Api Connection to 'http://localhost:8888/data/2.5/weather?.*'"), withStatus("OK"), withDescription("Call to Weather Api was successful"));
+  }
+
+  // TODO one probe is failing = overal status is failing
+
+  // TODO one probe is warning = overal status is warning
+
+  private void givenAllStatusProbesAreSuccessful() {
+    theWeatherApiRespondsSuccessfully();
+  }
+
+  private void theWeatherApiRespondsSuccessfully() {
+    wireMockServer.start();
+    new WireMock(8888)
+            .register(WireMock.any(new UrlPattern(new AnythingPattern(), true))
+                    .willReturn(new ResponseDefinitionBuilder()
+                            .withBody("")
+                            .withStatus(200)));
   }
 
   private void whenUserChecksHealthOfApplication() throws UnirestException {
@@ -33,6 +61,7 @@ public class HealthChecksEndToEndTest extends YatspecAcceptanceIntegrationTest {
     responseStatus = httpResponse.getStatus();
     responseBody = httpResponse.getBody();
     log("Response Status", responseStatus);
+    log("Response Body", responseBody);
   }
 
   private void thenTheHealthCheckIsSuccessful() {
@@ -76,6 +105,12 @@ public class HealthChecksEndToEndTest extends YatspecAcceptanceIntegrationTest {
     probe.put("description", descriptionRegex);
     probe.put("status", status);
     return probe.toString();
+  }
+
+  @After
+  public void teardown() {
+    application.stopWebServer();
+    wireMockServer.stop();
   }
 
   private int responseStatus;

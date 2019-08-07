@@ -9,6 +9,7 @@ import com.hanfak.airport.domain.plane.Plane;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.junit.After;
 import org.junit.Test;
 import testinfrastructure.YatspecAcceptanceIntegrationTest;
 
@@ -19,6 +20,8 @@ import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
+
+  private final WireMockServer wireMockServer = new WireMockServer(WIREMOCK_PORT);
 
   @Test // Testing the servlet class too
   public void canLandPlaneViaRest() throws UnirestException {
@@ -32,7 +35,6 @@ public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
 
   private void andTheWeatherIsNotStormy() {
     //https://github.com/wojciechbulaty/examples/blob/master/weather-yatspec-example/src/test/java/com/wbsoftwareconsutlancy/WeatherApplicationTest.java
-    WireMockServer wireMockServer = new WireMockServer(WIREMOCK_PORT);
     wireMockServer.start();
     new WireMock(WIREMOCK_PORT)
             // TODO use explicit pattern -  urlEqualTo("/data/2.5/weather?")
@@ -40,7 +42,6 @@ public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
                     .willReturn(new ResponseDefinitionBuilder()
                             .withBody(weatherServiceOutput)
                             .withStatus(200)));
-    // TODO Stop wiremock
   }
 
   private void givenAFlyingPlane() {
@@ -66,6 +67,12 @@ public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
             "  \"PlaneStatus\" : \"LANDED\",\n" +
             "  \"AirportStatus\" : \"IN_AIRPORT\"\n" +
             "}");
+  }
+
+  @After
+  public void teardown() {
+    application.stopWebServer();
+    wireMockServer.stop();
   }
 
   private static final int WIREMOCK_PORT = 8888;

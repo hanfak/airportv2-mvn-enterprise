@@ -25,6 +25,7 @@ import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOf
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffServlet;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffWebservice;
 import com.hanfak.airport.infrastructure.healthchecks.DatabaseHealthCheck;
+import com.hanfak.airport.infrastructure.healthchecks.WeatherApiHealthCheck;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyServletBuilder;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
@@ -37,8 +38,9 @@ import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;
 
+import java.util.Arrays;
+
 import static com.hanfak.airport.infrastructure.logging.LoggingCategory.APPLICATION;
-import static java.util.Collections.singletonList;
 import static org.slf4j.LoggerFactory.getLogger;
 // Expected for this class
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.CouplingBetweenObjects"})
@@ -163,7 +165,8 @@ public class Wiring {
 
   private HealthChecksUseCase healthChecksUseCase() {
     return new HealthChecksUseCase(
-            singletonList(new DatabaseHealthCheck(databaseConnectionManager(), settings(), APPLICATION_LOGGER))
+            Arrays.asList(new DatabaseHealthCheck(databaseConnectionManager(), settings(), APPLICATION_LOGGER),
+            new WeatherApiHealthCheck(settings(), new UnirestHttpClient()))
     );
   }
 }
