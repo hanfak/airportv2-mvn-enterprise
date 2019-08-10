@@ -8,6 +8,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class WeatherClient {
   private final UnirestHttpClient unirestHttpClient;   // Use interface
   private final WeatherApiSettings settings;
@@ -21,10 +26,9 @@ public class WeatherClient {
 
   public int getWeatherId() {
     try {
-      HttpResponse<JsonNode> response = unirestHttpClient.submitGetRequest(settings.weatherUrl(),
-              settings.locationLongitude(),
-              settings.locationLatitude(),
-              settings.appId());
+      Map<String, Object> queryDetails = createQueryDetails();
+      HttpResponse<JsonNode> response =
+              unirestHttpClient.submitGetRequest(settings.weatherUrl(), queryDetails);
 
       return unmarshallResponse(response);
 
@@ -33,6 +37,14 @@ public class WeatherClient {
       logger.error("Unexpected exception when getting weather from api", e);
       throw new IllegalStateException("Unexpected exception when getting weather from api", e);
     }
+  }
+
+  private Map<String, Object> createQueryDetails() {
+    return Stream.of(
+            new AbstractMap.SimpleEntry<>("lat", settings.locationLatitude()),
+            new AbstractMap.SimpleEntry<>("long", settings.locationLongitude()),
+            new AbstractMap.SimpleEntry<>("appid", settings.appId()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
   // TODO: extract out unmarshaller

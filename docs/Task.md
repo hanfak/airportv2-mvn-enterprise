@@ -51,6 +51,7 @@ Technical TODO:
     - ~~app~~
     - ~~flyway~~
     - acceptance, end to end, inyegration tests
+    - internal modules for infrastructure and for inner modules for db, http client etc
     - learning
 
 - Have an application start up

@@ -4,12 +4,11 @@
     - ~~use wiremock to return actual response from weather service, for integration test~~
     - ~~implement client to get weather from service~~
     - health check for endpoint
+    - Probes run concurrently
     - Deal with bad response from api
-    - 
-    - sequence diagram for yatspec
+    - sequence diagram for yatspec include internal api calls
 - Handle jsonprocessing exception as runtime, what to do?
 - Split learning into seperate module
-- Call another probe, to monitor weather service is up - use concurrency
 - Use story 5 and 6
 - Call another probe, to monitor airport is full
 - Find a way to add a scheduled job(quartz) into the app

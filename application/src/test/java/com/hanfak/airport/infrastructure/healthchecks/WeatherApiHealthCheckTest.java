@@ -23,7 +23,7 @@ public class WeatherApiHealthCheckTest {
 
   private Settings settings() {
     Settings settings = mock(Settings.class);
-    when(settings.databaseUrl()).thenReturn(WEATHER_API_URL);
+    when(settings.weatherUrl()).thenReturn(WEATHER_API_URL);
     return settings;
   }
 

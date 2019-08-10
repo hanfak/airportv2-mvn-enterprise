@@ -16,7 +16,10 @@ public class WeatherClientTest {
   @Test
   public void throwExceptionWithNetworkProblem() throws Exception {
     UnirestException cause = new UnirestException("blah");
-    when(unirestHttpClient.submitGetRequest(any(), any(), any(), any()))
+    when(settings.appId()).thenReturn("blahSettings");
+    when(settings.locationLongitude()).thenReturn("blahSettings");
+    when(settings.locationLatitude()).thenReturn("blahSettings");
+    when(unirestHttpClient.submitGetRequest(any(), any()))
             .thenThrow(cause);
 
     assertThatThrownBy(weatherClient::getWeatherId)
@@ -29,6 +32,7 @@ public class WeatherClientTest {
 
   private final UnirestHttpClient unirestHttpClient = mock(UnirestHttpClient.class);
   private final TestLogger logger = new TestLogger();
-  private final WeatherClient weatherClient = new WeatherClient(unirestHttpClient, mock(Settings.class), logger);
+  private final Settings settings = mock(Settings.class);
+  private final WeatherClient weatherClient = new WeatherClient(unirestHttpClient, settings, logger);
 
 }
