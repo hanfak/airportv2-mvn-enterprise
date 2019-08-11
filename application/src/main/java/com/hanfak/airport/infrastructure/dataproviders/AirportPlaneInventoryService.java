@@ -12,7 +12,21 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
   public AirportPlaneInventoryService(AirportStorageJdbcRepository airportStorageRepository) {
     this.airportStorageRepository = airportStorageRepository;
   }
+  /**
+      TODO:
+      instead of addPlane checking plane is here, upstream should do the check and avoid using
+      exception to dictate the flow of the app
 
+      OR
+
+      return true/false dependent on success
+
+      But from business prospective,
+          if a plane trying to land is in airport, thus plane is using wrong id or fake
+              or user of app passed in wrong input
+          thus exceptionally
+
+   */
   @Override
   public void addPlane(Plane plane) {
     if (airportStorageRepository.read(plane.planeId).isPresent()) {

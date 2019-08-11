@@ -58,6 +58,7 @@ public class LandPlaneTest extends YatspecAcceptanceIntegrationTest {
     responseStatus = httpResponse.getStatus();
     responseBody = httpResponse.getBody();
     log("Response Status", responseStatus);
+    log("Response body", responseBody);
   }
 
   private void thenPlaneHasLandedAndInTheAirport() {

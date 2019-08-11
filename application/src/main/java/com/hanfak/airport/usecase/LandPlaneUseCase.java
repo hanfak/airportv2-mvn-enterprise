@@ -51,7 +51,7 @@ public class LandPlaneUseCase {
       logger.info(format("Plane, '%s', has successfully landed at the airport", plane.planeId));
 
       return getSuccessfulPlaneLandStatus(landedPlane);
-    } catch (Exception e) { // TODO catch exception from jdbc and log & return getFailurePlaneLandStatus, bug not correct meesage
+    } catch (Exception e) { // TODO catch custom exception from jdbc and log & return getFailurePlaneLandStatus, bug not correct meesage
       // Instead of returning object for sad path, can throw an exception and in webservice it will render code in catch block
       logger.error(format("Plane, '%s', is at airport", plane.planeId), e);
       return getFailurePlaneLandStatus(plane, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT);

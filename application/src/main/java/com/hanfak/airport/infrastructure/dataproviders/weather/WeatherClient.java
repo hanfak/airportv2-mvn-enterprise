@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.lang.String.format;
+
 public class WeatherClient {
   private final UnirestHttpClient unirestHttpClient;   // Use interface
   private final WeatherApiSettings settings;
@@ -26,15 +28,15 @@ public class WeatherClient {
 
   public int getWeatherId() {
     try {
-      Map<String, Object> queryDetails = createQueryDetails();
       HttpResponse<JsonNode> response =
-              unirestHttpClient.submitGetRequest(settings.weatherUrl(), queryDetails);
-
-      return unmarshallResponse(response);
-
-      // TODO deal with not correct response (response status code not 200)
+              unirestHttpClient.submitGetRequest(settings.weatherUrl(), createQueryDetails());
+      if (response.getStatus() == 200) {
+        return unmarshallResponse(response);
+      } else {
+        throw new IllegalStateException(format("Unexpected HTTP status '%s' received when getting weather from api", response.getStatus()));
+      }
     } catch (UnirestException e) {
-      logger.error("Unexpected exception when getting weather from api", e);
+      logger.error("Unexpected exception when getting weather from api", e); // This is not needed as logs are caught by error handler stage
       throw new IllegalStateException("Unexpected exception when getting weather from api", e);
     }
   }

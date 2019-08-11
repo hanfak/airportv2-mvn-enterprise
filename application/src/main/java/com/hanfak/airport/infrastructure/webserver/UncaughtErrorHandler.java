@@ -27,3 +27,19 @@ public class UncaughtErrorHandler extends ErrorHandler {
         writer.append("Technical Failure. Please contact the system administrator.");
     }
 }
+
+/**
+
+ All exceptions thrown with the app, that are not dealt with are caught here.
+
+ We send back a standard message, Technical Failure..., and they will contact someone
+ to investigate.
+
+ The team investigating this message, will have the stack trace in the logs which is caught here.
+
+ This prevents any sort of sensitive data or how the app works from getting to
+ malicious users.
+
+ Any exception that is caught else where will be treated differently and a better message
+ will be returned
+*/

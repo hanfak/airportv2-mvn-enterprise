@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.hanfak.airport.domain.monitoring.ProbeResult.failure;
 import static com.hanfak.airport.domain.monitoring.ProbeResult.success;
 import static java.lang.String.format;
 
@@ -25,7 +26,6 @@ public class WeatherApiHealthCheck implements HealthCheckProbe {
     this.client = client;
   }
 
-  @SuppressWarnings("PMD.AvoidPrintStackTrace") // TODO remove when finished status probe
   @Override
   public ProbeResult probe() {
     try {
@@ -33,11 +33,12 @@ public class WeatherApiHealthCheck implements HealthCheckProbe {
               createQueryDetails());
       if (jsonNodeHttpResponse.getStatus() == 200) {
         return success(name(), "Call to Weather Api was successful");
+      } else {
+        return failure(name(), format("Call to Weather Api returned unexpected status code '%s'", jsonNodeHttpResponse.getStatus()));
       }
     } catch (UnirestException e) {
-      e.printStackTrace();
+      return failure(name(), format("Call to Weather Api threw an exception, %s", e.getMessage()));
     }
-    return null;
   }
 
   @Override
