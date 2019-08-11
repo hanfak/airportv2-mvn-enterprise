@@ -5,7 +5,7 @@ import com.hanfak.airport.domain.helper.SingleValueType;
 import static java.lang.String.format;
 
 public class PlaneId extends SingleValueType<String> {
-  // TODO remove logic from constructor
+  // TODO remove logic from constructor???
   private PlaneId(String planeId) {
     super(validate(planeId));
   }

@@ -7,8 +7,8 @@ import com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus;
 import com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class LandAirplaneResponseMarshaller {
 
@@ -21,7 +21,7 @@ public class LandAirplaneResponseMarshaller {
   }
 
   private String createSuccesfulResponseBodyJson(SuccessfulPlaneLandStatus successfulPlaneLandStatus) throws JsonProcessingException {
-    HashMap<String, String> jsonBody = new LinkedHashMap<>(); // TODO use interface as type
+    Map<String, String> jsonBody = new LinkedHashMap<>();
     jsonBody.put("PlaneId", successfulPlaneLandStatus.planeId.value);
     jsonBody.put("PlaneStatus", successfulPlaneLandStatus.planeStatus.name());
     jsonBody.put("AirportStatus", successfulPlaneLandStatus.airportStatus.name());
@@ -31,7 +31,7 @@ public class LandAirplaneResponseMarshaller {
   }
 
   private String createFailedResponseBodyJson(FailedPlaneLandStatus failedPlaneLandStatus) throws JsonProcessingException {
-    HashMap<String, String> jsonBody = new LinkedHashMap<>();
+    Map<String, String> jsonBody = new LinkedHashMap<>();
     jsonBody.put("PlaneId", failedPlaneLandStatus.planeId.value);
     jsonBody.put("PlaneStatus", failedPlaneLandStatus.planeStatus.name());
     jsonBody.put("AirportStatus", failedPlaneLandStatus.airportStatus.name());

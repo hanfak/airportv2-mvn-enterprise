@@ -3,7 +3,7 @@ package com.hanfak.airport.infrastructure.dataproviders.weather;
 import com.hanfak.airport.usecase.WeatherService;
 
 import java.util.Random;
-// TODO could use this or actual weather api depending on a toggle set in the properties file
+// could use this or actual weather api depending on a toggle set in the properties file
 // To use in different env ie stage
 public class RandomWeatherService implements WeatherService {
 

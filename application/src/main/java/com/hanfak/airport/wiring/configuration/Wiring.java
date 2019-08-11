@@ -115,7 +115,6 @@ public class Wiring {
   }
 
   protected WeatherService weatherService() {
-//    return new RandomWeatherService(new Random()); // TODO: Use a real web service
     return new OpenWeatherMapService(new WeatherClient(new UnirestHttpClient(), settings(), APPLICATION_LOGGER));
   }
 

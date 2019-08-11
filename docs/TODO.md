@@ -3,7 +3,7 @@
     - ~~implement service in infrastructure to return random weather~~
     - ~~use wiremock to return actual response from weather service, for integration test~~
     - ~~implement client to get weather from service~~
-    - health check for endpoint
+    - ~~health check for endpoint~~
     - Probes run concurrently
     - Deal with bad response from api
     - sequence diagram for yatspec include internal api calls
