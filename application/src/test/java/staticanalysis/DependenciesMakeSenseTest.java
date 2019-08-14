@@ -35,7 +35,9 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     LOGGER,
                     HIKARI,
                     APACHE_COMMONS_STRING_UTILS,
-                    GUAVA_VISIBLE_FOR_TESTING,
+                    GUAVA,
+                    "com.google.common.util.concurrent.ThreadFactoryBuilder",
+                    "com.google.common.base.Suppliers",
                     "org.eclipse.jetty",
                     "org.json",
                     "com.fasterxml.jackson",
@@ -69,5 +71,5 @@ public class DependenciesMakeSenseTest implements WithAssertions {
   private static final String LOGGER = "org.slf4j.Logger";
   private static final String FINDBUGS = "edu.umd.cs.findbugs.annotations.SuppressFBWarnings";
   private static final String HIKARI = "com.zaxxer.hikari";
-  private static final String GUAVA_VISIBLE_FOR_TESTING = "com.google.common.annotations.VisibleForTesting";
+  private static final String GUAVA = "com.google.common";
 }

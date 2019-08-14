@@ -1,6 +1,11 @@
 package com.hanfak.airport.wiring.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hanfak.airport.domain.crosscutting.logging.LoggingUncaughtExceptionHandler;
+import com.hanfak.airport.domain.monitoring.HealthCheckProbe;
+import com.hanfak.airport.infrastructure.crosscutting.ExecutorServiceConcurrently;
+import com.hanfak.airport.infrastructure.crosscutting.GuavaSupplierCaching;
+import com.hanfak.airport.infrastructure.crosscutting.TrackingExecutorServiceFactory;
 import com.hanfak.airport.infrastructure.dataproviders.AirportPlaneInventoryService;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.HikariDatabaseConnectionPooling;
@@ -39,6 +44,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.hanfak.airport.infrastructure.logging.LoggingCategory.APPLICATION;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -53,12 +59,14 @@ public class Wiring {
   public static class Singletons {
     private final AirportStorageJdbcRepository airportStorageRepository;
     private final JDBCDatabaseConnectionManager databaseConnectionManager;
+    final TrackingExecutorServiceFactory trackingExecutorServiceFactory;
     private final Settings settings;
 
     @SuppressWarnings({"PMD.ExcessiveParameterList"})
-    public Singletons(JDBCDatabaseConnectionManager databaseConnectionManager, AirportStorageJdbcRepository airportStorageRepository, Settings settings) {
+    public Singletons(JDBCDatabaseConnectionManager databaseConnectionManager, AirportStorageJdbcRepository airportStorageRepository, TrackingExecutorServiceFactory trackingExecutorServiceFactory, Settings settings) {
       this.airportStorageRepository = airportStorageRepository;
       this.databaseConnectionManager = databaseConnectionManager;
+      this.trackingExecutorServiceFactory = trackingExecutorServiceFactory;
       this.settings = settings;
     }
   }
@@ -70,10 +78,11 @@ public class Wiring {
   public static Wiring wiring(Settings settings) {
     HikariDatabaseConnectionPooling databaseConnectionPooling = new HikariDatabaseConnectionPooling(settings);
     JDBCDatabaseConnectionManager databaseConnectionManager = new PoolingJDBCDatabasConnectionManager(APPLICATION_LOGGER, databaseConnectionPooling);
+    TrackingExecutorServiceFactory trackingExecutorServiceFactory = new TrackingExecutorServiceFactory(new LoggingUncaughtExceptionHandler(APPLICATION_LOGGER));
     Singletons singletons = new Singletons(
             databaseConnectionManager,
             new AirportStorageJdbcRepository(APPLICATION_LOGGER, databaseConnectionManager),
-            settings
+            trackingExecutorServiceFactory, settings
     );
     return new Wiring(singletons);
   }
@@ -114,7 +123,7 @@ public class Wiring {
     return new TakeOffUseCase(airportPlaneInventoryService(), APPLICATION_LOGGER);
   }
 
-  protected WeatherService weatherService() {
+  private WeatherService weatherService() {
     return new OpenWeatherMapService(new WeatherClient(new UnirestHttpClient(), settings(), APPLICATION_LOGGER));
   }
 
@@ -163,9 +172,11 @@ public class Wiring {
   }
 
   private HealthChecksUseCase healthChecksUseCase() {
+    List<HealthCheckProbe> healthCheckProbes = Arrays.asList(new DatabaseHealthCheck(databaseConnectionManager(), settings(), APPLICATION_LOGGER),
+            new WeatherApiHealthCheck(settings(), new UnirestHttpClient()));
     return new HealthChecksUseCase(
-            Arrays.asList(new DatabaseHealthCheck(databaseConnectionManager(), settings(), APPLICATION_LOGGER),
-            new WeatherApiHealthCheck(settings(), new UnirestHttpClient()))
-    );
+            healthCheckProbes,
+            new GuavaSupplierCaching(),
+            new ExecutorServiceConcurrently(singletons.trackingExecutorServiceFactory, healthCheckProbes.size()));
   }
 }
