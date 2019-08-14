@@ -21,6 +21,8 @@ import static java.util.Optional.empty;
 
 // TODO Split for each operation
 // TODO interface
+// TODO make this more agnositic, should not know about plane??? sql as properties?
+// The methods can be agnostic and delegated??
 // TooManyStaticImports - Acceptable for this class, only using domain objects (static factories and enums)
 // PrematureDeclaration - Acceptable for this class, due to iterator pattern of ResultSet
 @SuppressWarnings({"PMD.TooManyStaticImports", "PMD.PrematureDeclaration"})

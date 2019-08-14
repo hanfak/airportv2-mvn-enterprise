@@ -7,7 +7,6 @@ import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnecti
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
 import com.hanfak.airport.infrastructure.dataproviders.weather.OpenWeatherMapService;
-import com.hanfak.airport.infrastructure.dataproviders.weather.UnirestHttpClient;
 import com.hanfak.airport.infrastructure.dataproviders.weather.WeatherClient;
 import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneRequestUnmarshaller;
@@ -26,6 +25,7 @@ import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOf
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffWebservice;
 import com.hanfak.airport.infrastructure.healthchecks.DatabaseHealthCheck;
 import com.hanfak.airport.infrastructure.healthchecks.WeatherApiHealthCheck;
+import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyServletBuilder;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;

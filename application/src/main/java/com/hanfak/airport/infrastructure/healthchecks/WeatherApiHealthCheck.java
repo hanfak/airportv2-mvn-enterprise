@@ -2,7 +2,7 @@ package com.hanfak.airport.infrastructure.healthchecks;
 
 import com.hanfak.airport.domain.monitoring.HealthCheckProbe;
 import com.hanfak.airport.domain.monitoring.ProbeResult;
-import com.hanfak.airport.infrastructure.dataproviders.weather.UnirestHttpClient;
+import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;

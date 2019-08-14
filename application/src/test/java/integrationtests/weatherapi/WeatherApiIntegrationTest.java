@@ -1,7 +1,7 @@
 package integrationtests.weatherapi;
 
-import com.hanfak.airport.infrastructure.dataproviders.weather.UnirestHttpClient;
 import com.hanfak.airport.infrastructure.dataproviders.weather.WeatherClient;
+import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.wiring.Application;
 import org.junit.Ignore;

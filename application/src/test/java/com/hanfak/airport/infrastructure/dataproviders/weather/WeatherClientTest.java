@@ -1,5 +1,6 @@
 package com.hanfak.airport.infrastructure.dataproviders.weather;
 
+import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;

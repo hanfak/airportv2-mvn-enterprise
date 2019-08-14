@@ -1,4 +1,4 @@
-package com.hanfak.airport.infrastructure.dataproviders.weather;
+package com.hanfak.airport.infrastructure.httpclient;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
