@@ -26,7 +26,7 @@ public class PlaneTakeOffTest extends YatspecAcceptanceIntegrationTest {
 
   private void givenALandedPlane() {
     plane = plane(planeId("A199234"), LANDED);
-    wiring.airportPlaneInventoryService().addPlane(plane);
+    airportPlaneInventoryService.addPlane(plane);
   }
 
   private void whenUserInstructsPlaneToTakeOff() throws UnirestException {

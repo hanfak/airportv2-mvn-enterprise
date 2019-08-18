@@ -4,9 +4,12 @@
     - ~~use wiremock to return actual response from weather service, for integration test~~
     - ~~implement client to get weather from service~~
     - ~~health check for endpoint~~
-    - Probes run concurrently
-    - Deal with bad response from api
+    - ~~Probes run concurrently~~
+    - ~~Deal with bad response from api~~
+    - sequence diagrams for exteranl calls
+    - use captured inputs, instead of fields for assertions
     - sequence diagram for yatspec include internal api calls
+        - use wiremock
 - Handle jsonprocessing exception as runtime, what to do?
 - Split learning into seperate module
 - Use story 5 and 6

@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSettings;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class WeatherApiIntegrationTest {
@@ -26,8 +25,10 @@ public class WeatherApiIntegrationTest {
     TestLogger testLogger = new TestLogger();
     UnirestHttpClient unirestHttpClient = new UnirestHttpClient();
     WeatherClient weatherClient = new WeatherClient(unirestHttpClient, settings, testLogger);
-    int weatherId = weatherClient.getWeatherId();
+//    int weatherId = weatherClient.getWeatherId();
+//
+//    assertThat(weatherId).isGreaterThan(0);
 
-    assertThat(weatherId).isGreaterThan(0);
+    System.out.println(weatherClient.getWeatherId());
   }
 }

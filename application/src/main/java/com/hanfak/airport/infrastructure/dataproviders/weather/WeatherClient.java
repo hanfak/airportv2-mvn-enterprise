@@ -45,7 +45,7 @@ public class WeatherClient {
   private Map<String, Object> createQueryDetails() {
     return Stream.of(
             new AbstractMap.SimpleEntry<>("lat", settings.locationLatitude()),
-            new AbstractMap.SimpleEntry<>("long", settings.locationLongitude()),
+            new AbstractMap.SimpleEntry<>("lon", settings.locationLongitude()),
             new AbstractMap.SimpleEntry<>("appid", settings.appId()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
