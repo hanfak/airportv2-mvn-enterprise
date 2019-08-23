@@ -3,9 +3,15 @@ package testinfrastructure.yatspec;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.Response;
+import com.mashape.unirest.http.Headers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
+import static java.lang.System.lineSeparator;
+import static java.util.stream.Collectors.joining;
 
 public class YatspecFormatters {
 
@@ -20,6 +26,21 @@ public class YatspecFormatters {
         return String.format("%s %s%n%s%n%n%s", "HTTP/1.1", wiremockResponse.getStatus(),
                 fixWiremockListenerProblem(adaptHeaders(wiremockResponse.getHeaders())),
                 adaptBody(wiremockResponse.getBodyAsString()));
+    }
+
+    public static String requestOutput(String uri, Map<String, String> headers, String body) {
+        return format("%s %s HTTP/1.1%s", "POST", uri, "\n") + headersFormatter(headers) + "\r\n\r\n" + body;
+    }
+
+    private static String headersFormatter(Map<String, String> headers) {
+        return headers.entrySet().stream()
+                .map(s -> format("%s: %s", s.getKey(), s.getValue()))
+                .collect(joining(lineSeparator()));
+    }
+
+    // TODO format headers
+    public static String responseOutput(int responseStatus, Headers responseHeaders, String responseBody) {
+        return format("%s %s%n%s%n%n%s", "HTTP", responseStatus, responseHeaders, responseBody);
     }
 
     private static String adaptBody(String wiremockBody) {

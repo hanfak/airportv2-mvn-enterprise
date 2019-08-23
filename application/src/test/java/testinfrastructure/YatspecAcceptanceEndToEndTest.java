@@ -36,7 +36,7 @@ import static testinfrastructure.yatspec.YatspecFormatters.toYatspecString;
 @RunWith(SpecRunner.class)
 public abstract class YatspecAcceptanceEndToEndTest extends TestState implements WithCustomResultListeners {
 
-  protected static final int WIREMOCK_PORT = 8888;
+  public static final int WIREMOCK_PORT = 8888;
   protected static final String APPLICATION_NAME = "Airport Application";
   private static final String THIRD_PARTY_NAME = "Weather API";
 
@@ -59,7 +59,7 @@ public abstract class YatspecAcceptanceEndToEndTest extends TestState implements
   @After
   public void teardown() {
     application.stopWebServer();
-    capturedInputAndOutputs.add("Sequence Diagram", generateSequenceDiagram()); // TODO Not printing out seq diagram
+    capturedInputAndOutputs.add("Sequence Diagram", generateSequenceDiagram());
     wireMockServer.stop();
   }
 
