@@ -44,6 +44,7 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     "org.zalando.logbook",
                     "io.prometheus.client",
                     "com.mashape.unirest.http",
+                    "com.mashape.unirest.request",
                     FINDBUGS,
                     "java");
     assertThat(violations).describedAs("Violations").isEmpty();

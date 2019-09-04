@@ -6,13 +6,15 @@
     - ~~health check for endpoint~~
     - ~~Probes run concurrently~~
     - ~~Deal with bad response from api~~
-    - sequence diagrams for exteranl calls
+    - ~~sequence diagrams for exteranl calls~~
     - use captured inputs, instead of fields for assertions
-    - sequence diagram for yatspec include internal api calls
-        - use wiremock
-- Handle jsonprocessing exception as runtime, what to do?
-- Split learning into seperate module
+    - ~~sequence diagram for yatspec include internal api calls~~
+        - ~~use wiremock~~
+- audit logs for internal calls
+- user story 3        
 - Use story 5 and 6
+- Handle jsonprocessing exception as runtime, what to do?
+- Split learning into separate module
 - Call another probe, to monitor airport is full
 - Find a way to add a scheduled job(quartz) into the app
     - Schedule job for accessing airport is full

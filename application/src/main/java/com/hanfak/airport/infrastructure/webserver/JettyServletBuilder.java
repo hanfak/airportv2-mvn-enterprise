@@ -86,6 +86,7 @@ public class JettyServletBuilder {
 
   private void addLoggingFilter() {
     Logbook logbook = Logbook.builder()
+            // TODO ignore ready page
             .writer(new DefaultHttpLogWriter(getLogger(AUDIT.name()), INFO))
             .build();
     FilterHolder filterHolder = new FilterHolder(new LogbookFilter(logbook));

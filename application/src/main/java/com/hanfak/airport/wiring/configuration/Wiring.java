@@ -30,6 +30,8 @@ import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOf
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffWebservice;
 import com.hanfak.airport.infrastructure.healthchecks.DatabaseHealthCheck;
 import com.hanfak.airport.infrastructure.healthchecks.WeatherApiHealthCheck;
+import com.hanfak.airport.infrastructure.httpclient.LoggingHttpClient;
+import com.hanfak.airport.infrastructure.httpclient.TimerFactory;
 import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyServletBuilder;
@@ -52,8 +54,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.CouplingBetweenObjects"})
 public class Wiring {
 
-  protected
-  final static Logger APPLICATION_LOGGER = getLogger(APPLICATION.name()); // add to singletons
+  protected final static Logger APPLICATION_LOGGER = getLogger(APPLICATION.name()); // add to singletons
   private final Singletons singletons;
 
   public static class Singletons {
@@ -124,7 +125,7 @@ public class Wiring {
   }
 
   private WeatherService weatherService() {
-    return new OpenWeatherMapService(new WeatherClient(new UnirestHttpClient(), settings(), APPLICATION_LOGGER));
+    return new OpenWeatherMapService(new WeatherClient(new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(), new TimerFactory()), settings(), APPLICATION_LOGGER));
   }
 
   public AirportPlaneInventoryService airportPlaneInventoryService() {
@@ -173,7 +174,7 @@ public class Wiring {
 
   private HealthChecksUseCase healthChecksUseCase() {
     List<HealthCheckProbe> healthCheckProbes = Arrays.asList(new DatabaseHealthCheck(databaseConnectionManager(), settings(), APPLICATION_LOGGER),
-            new WeatherApiHealthCheck(settings(), new UnirestHttpClient()));
+            new WeatherApiHealthCheck(settings(), new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(), new TimerFactory())));
     return new HealthChecksUseCase(
             healthCheckProbes,
             new GuavaSupplierCaching(),

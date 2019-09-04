@@ -1,6 +1,9 @@
 package integrationtests.weatherapi;
 
 import com.hanfak.airport.infrastructure.dataproviders.weather.WeatherClient;
+import com.hanfak.airport.infrastructure.httpclient.HttpClient;
+import com.hanfak.airport.infrastructure.httpclient.LoggingHttpClient;
+import com.hanfak.airport.infrastructure.httpclient.TimerFactory;
 import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.wiring.Application;
@@ -23,8 +26,8 @@ public class WeatherApiIntegrationTest {
     Path secretsProperties = Paths.get("unused");
     Settings settings = loadSettings(getLogger(Application.class), appProperties, secretsProperties);
     TestLogger testLogger = new TestLogger();
-    UnirestHttpClient unirestHttpClient = new UnirestHttpClient();
-    WeatherClient weatherClient = new WeatherClient(unirestHttpClient, settings, testLogger);
+    HttpClient httpClient = new LoggingHttpClient(testLogger, new UnirestHttpClient(), new TimerFactory());
+    WeatherClient weatherClient = new WeatherClient(httpClient, settings, testLogger);
 //    int weatherId = weatherClient.getWeatherId();
 //
 //    assertThat(weatherId).isGreaterThan(0);

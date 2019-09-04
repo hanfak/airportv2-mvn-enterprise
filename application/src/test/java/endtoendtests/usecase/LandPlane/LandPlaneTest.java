@@ -1,4 +1,4 @@
-package endtoendtests.LandPlane;
+package endtoendtests.usecase.LandPlane;
 
 import com.googlecode.yatspec.state.givenwhenthen.ActionUnderTest;
 import com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs;

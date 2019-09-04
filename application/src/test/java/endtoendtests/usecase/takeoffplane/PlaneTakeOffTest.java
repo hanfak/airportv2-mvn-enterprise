@@ -1,4 +1,4 @@
-package endtoendtests.takeoffplane;
+package endtoendtests.usecase.takeoffplane;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.mashape.unirest.http.HttpResponse;

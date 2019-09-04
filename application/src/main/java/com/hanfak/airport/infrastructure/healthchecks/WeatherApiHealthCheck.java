@@ -2,7 +2,7 @@ package com.hanfak.airport.infrastructure.healthchecks;
 
 import com.hanfak.airport.domain.monitoring.HealthCheckProbe;
 import com.hanfak.airport.domain.monitoring.ProbeResult;
-import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
+import com.hanfak.airport.infrastructure.httpclient.HttpClient;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -18,10 +18,11 @@ import static com.hanfak.airport.domain.monitoring.ProbeResult.success;
 import static java.lang.String.format;
 
 public class WeatherApiHealthCheck implements HealthCheckProbe {
-  private final Settings settings;
-  private final UnirestHttpClient client;
 
-  public WeatherApiHealthCheck(Settings settings, UnirestHttpClient client) {
+  private final Settings settings;
+  private final HttpClient client;
+
+  public WeatherApiHealthCheck(Settings settings, HttpClient client) {
     this.settings = settings;
     this.client = client;
   }
@@ -29,8 +30,7 @@ public class WeatherApiHealthCheck implements HealthCheckProbe {
   @Override
   public ProbeResult probe() {
     try {
-      HttpResponse<JsonNode> jsonNodeHttpResponse = client.submitGetRequest(settings.weatherUrl(),
-              createQueryDetails());
+      HttpResponse<JsonNode> jsonNodeHttpResponse = client.submitGetRequest(settings.weatherUrl(), createQueryDetails());
       if (jsonNodeHttpResponse.getStatus() == 200) {
         return success(name(), "Call to Weather Api was successful");
       } else {

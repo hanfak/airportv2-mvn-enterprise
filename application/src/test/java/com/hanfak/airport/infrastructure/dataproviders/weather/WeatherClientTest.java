@@ -1,6 +1,6 @@
 package com.hanfak.airport.infrastructure.dataproviders.weather;
 
-import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
+import com.hanfak.airport.infrastructure.httpclient.HttpClient;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -21,8 +21,7 @@ public class WeatherClientTest {
     when(settings.appId()).thenReturn("blahSettings");
     when(settings.locationLongitude()).thenReturn("blahSettings");
     when(settings.locationLatitude()).thenReturn("blahSettings");
-    when(unirestHttpClient.submitGetRequest(any(), any()))
-            .thenThrow(cause);
+    when(httpClient.submitGetRequest(any(), any())).thenThrow(cause);
 
     assertThatThrownBy(weatherClient::getWeatherId)
             .isInstanceOf(IllegalStateException.class)
@@ -38,19 +37,16 @@ public class WeatherClientTest {
     when(settings.locationLongitude()).thenReturn("blahSettings");
     when(settings.locationLatitude()).thenReturn("blahSettings");
     when(response.getStatus()).thenReturn(404);
-    when(unirestHttpClient.submitGetRequest(any(), any()))
-            .thenReturn(response);
+    when(httpClient.submitGetRequest(any(), any())).thenReturn(response);
 
     assertThatThrownBy(weatherClient::getWeatherId)
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("Unexpected HTTP status '404' received when getting weather from api");
   }
 
-
   private final HttpResponse response = mock(HttpResponse.class);
-  private final UnirestHttpClient unirestHttpClient = mock(UnirestHttpClient.class);
+  private final HttpClient httpClient = mock(HttpClient.class);
   private final TestLogger logger = new TestLogger();
   private final Settings settings = mock(Settings.class);
-  private final WeatherClient weatherClient = new WeatherClient(unirestHttpClient, settings, logger);
-
+  private final WeatherClient weatherClient = new WeatherClient(httpClient, settings, logger);
 }

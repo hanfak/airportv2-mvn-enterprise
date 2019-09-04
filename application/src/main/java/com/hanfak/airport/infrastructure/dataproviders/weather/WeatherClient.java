@@ -1,6 +1,6 @@
 package com.hanfak.airport.infrastructure.dataproviders.weather;
 
-import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
+import com.hanfak.airport.infrastructure.httpclient.HttpClient;
 import com.hanfak.airport.infrastructure.properties.WeatherApiSettings;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -17,28 +17,30 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 
 public class WeatherClient {
-  private final UnirestHttpClient unirestHttpClient;   // Use interface
+
+  private final HttpClient httpClient;
   private final WeatherApiSettings settings;
   private final Logger logger;
 
-  public WeatherClient(UnirestHttpClient unirestHttpClient, WeatherApiSettings settings, Logger logger) {
-    this.unirestHttpClient = unirestHttpClient;
+  public WeatherClient(HttpClient httpClient, WeatherApiSettings settings, Logger logger) {
+    this.httpClient = httpClient;
     this.settings = settings;
     this.logger = logger;
   }
 
   public int getWeatherId() {
     try {
-      HttpResponse<JsonNode> response =
-              unirestHttpClient.submitGetRequest(settings.weatherUrl(), createQueryDetails());
+      HttpResponse<JsonNode> response = httpClient.submitGetRequest(settings.weatherUrl(), createQueryDetails());
       if (response.getStatus() == 200) {
         return unmarshallResponse(response);
       } else {
+        // TODO: log error?? Although logged at error handler
         throw new IllegalStateException(format("Unexpected HTTP status '%s' received when getting weather from api", response.getStatus()));
       }
     } catch (UnirestException e) {
-      logger.error("Unexpected exception when getting weather from api", e); // This is not needed as logs are caught by error handler stage
-      throw new IllegalStateException("Unexpected exception when getting weather from api", e);
+      String message = "Unexpected exception when getting weather from api";
+      logger.error(message, e); // This is not needed as logs are caught by error handler stage
+      throw new IllegalStateException(message, e);
     }
   }
 
