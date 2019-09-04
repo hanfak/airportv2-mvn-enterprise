@@ -55,8 +55,6 @@ public class HealthChecksEndToEndTest extends YatspecAcceptanceIntegrationTest {
                             .withStatus(404)));
   }
 
-  // TODO one probe is warning = overall status is warning
-
   private void givenAllStatusProbesAreSuccessful() {
     theWeatherApiRespondsSuccessfully();
   }

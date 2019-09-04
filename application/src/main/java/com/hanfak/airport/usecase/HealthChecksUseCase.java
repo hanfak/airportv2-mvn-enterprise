@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.function.Supplier;
 
-// TODO scheduled job to run this usecase/servlet regularly
 public class HealthChecksUseCase {
 
   private final List<HealthCheckProbe> healthCheckProbes;

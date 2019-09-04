@@ -1,4 +1,4 @@
-package com.hanfak.airport.infrastructure.entrypoints.planetakeoff;
+package com.hanfak.airport.infrastructure.entrypoints;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.plane.PlaneId;
@@ -10,14 +10,13 @@ import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 
-// TODO refactor, duplication
-public class AirplaneTakeOffRequestUnmarshaller {
-
+public class RequestUnmarshaller {
   public Plane unmarshal(String request) {
     PlaneId planeId = planeId(new JSONObject(request).getString("PlaneId"));
     String planeStatusUnmarshalled = new JSONObject(request).getString("PlaneStatus");
     PlaneStatus planeStatus = "flying".equalsIgnoreCase(planeStatusUnmarshalled) ?
             FLYING : LANDED;
 
-    return plane(planeId, planeStatus);  }
+    return plane(planeId, planeStatus);
+  }
 }

@@ -10,7 +10,7 @@
     - use captured inputs, instead of fields for assertions
     - ~~sequence diagram for yatspec include internal api calls~~
         - ~~use wiremock~~
-- audit logs for internal calls
+- ~~audit logs for internal calls~~
 - user story 3        
 - Use story 5 and 6
 - Handle jsonprocessing exception as runtime, what to do?

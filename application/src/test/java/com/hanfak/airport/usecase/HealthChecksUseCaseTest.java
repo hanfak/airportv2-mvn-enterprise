@@ -20,24 +20,24 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-// TODO move to integration test
 public class HealthChecksUseCaseTest {
 
   @Test
   public void returnProbeResults() {
     when(probeOne.call()).thenReturn(success);
-    when(probeTwo.call()).thenReturn(failure);
+    when(probeTwo.call()).thenReturn(warn);
 
     HealthCheckResult result = healthChecksUseCase.getStatus();
 
-    assertThat(result.getProbeResults()).containsExactly(success, failure);
-    assertThat(result.getOverallStatus()).isEqualTo(ProbeStatus.FAIL);
+    assertThat(result.getProbeResults()).containsExactly(success, warn);
+    assertThat(result.getOverallStatus()).isEqualTo(ProbeStatus.WARN);
   }
 
   private final HealthCheckProbe probeOne = mock(HealthCheckProbe.class);
   private final HealthCheckProbe probeTwo = mock(HealthCheckProbe.class);
   private final ProbeResult success = success("name", "description");
   private final ProbeResult failure = failure("name", "description");
+  private final ProbeResult warn = ProbeResult.warn("name", "description");
   private final List<HealthCheckProbe> probes = Arrays.asList(probeOne, probeTwo);
 
   private final HealthChecksUseCase healthChecksUseCase = new HealthChecksUseCase(probes, new GuavaSupplierCaching(), new ExecutorServiceConcurrently(new TrackingExecutorServiceFactory(new LoggingUncaughtExceptionHandler(null)), probes.size()));

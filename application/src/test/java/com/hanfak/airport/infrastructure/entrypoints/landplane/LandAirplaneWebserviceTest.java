@@ -5,6 +5,7 @@ import com.hanfak.airport.domain.plane.IllegalCharacterException;
 import com.hanfak.airport.domain.plane.IllegalLengthException;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
 import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
+import com.hanfak.airport.infrastructure.entrypoints.RequestUnmarshaller;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import org.junit.Test;
@@ -144,7 +145,7 @@ public class LandAirplaneWebserviceTest {
   private final RenderedContent expectedFailedResponse = new RenderedContent(expectedFailedResponseBody, "application/json", 404);
 
   private final LandPlaneUseCase usecase = mock(LandPlaneUseCase.class);
-  private final LandAirplaneRequestUnmarshaller unmarshaller = mock(LandAirplaneRequestUnmarshaller.class);
+  private final RequestUnmarshaller unmarshaller = mock(RequestUnmarshaller.class);
   private final LandAirplaneResponseMarshaller marshaller = mock(LandAirplaneResponseMarshaller.class);
   private final Logger logger = mock(Logger.class);
   private final JsonValidator jsonValidator = mock(JsonValidator.class);

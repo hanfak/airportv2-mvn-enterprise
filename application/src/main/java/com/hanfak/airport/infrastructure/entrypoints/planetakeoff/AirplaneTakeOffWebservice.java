@@ -3,16 +3,17 @@ package com.hanfak.airport.infrastructure.entrypoints.planetakeoff;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
+import com.hanfak.airport.infrastructure.entrypoints.RequestUnmarshaller;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.TakeOffUseCase;
 
 public class AirplaneTakeOffWebservice {
 
   private final TakeOffUseCase useCase;
-  private final AirplaneTakeOffRequestUnmarshaller unmarshaller;
+  private final RequestUnmarshaller unmarshaller;
   private final AirplaneTakeOffResponseMarshaller marshaller;
 
-  public AirplaneTakeOffWebservice(TakeOffUseCase useCase, AirplaneTakeOffRequestUnmarshaller unmarshaller, AirplaneTakeOffResponseMarshaller marshaller) {
+  public AirplaneTakeOffWebservice(TakeOffUseCase useCase, RequestUnmarshaller unmarshaller, AirplaneTakeOffResponseMarshaller marshaller) {
     this.useCase = useCase;
     this.unmarshaller = unmarshaller;
     this.marshaller = marshaller;

@@ -1,31 +1,29 @@
-package com.hanfak.airport.infrastructure.entrypoints.planetakeoff;
+package com.hanfak.airport.infrastructure.entrypoints;
 
 import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.domain.plane.PlaneStatus;
 import org.junit.Test;
 
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
-import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
-import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AirplaneTakeOffRequestUnmarshallerTest {
-
+public class RequestUnmarshallerTest {
   @Test
-  public void unmarshallAirplaneTakeOffWherePlaneIsLandedRequest() {
+  public void unmarshallLandAirplaneWherePlaneIsLandedRequest() {
     Plane unmarshalledRequest = unmarshaller.unmarshal(request1);
 
-    assertThat(unmarshalledRequest).isEqualTo(plane(planeId("A0001"), LANDED));
+    assertThat(unmarshalledRequest).isEqualTo(plane(planeId("A0001"), PlaneStatus.LANDED));
   }
 
   @Test
-  public void unmarshallAirplaneTakeOffWherePlaneIsFlyingRequest() {
+  public void unmarshallLandAirplaneWherePlaneIsFlyingRequest() {
     Plane unmarshalledRequest = unmarshaller.unmarshal(request2);
 
-    assertThat(unmarshalledRequest).isEqualTo(plane(planeId("A0001"), FLYING));
+    assertThat(unmarshalledRequest).isEqualTo(plane(planeId("A0001"), PlaneStatus.FLYING));
   }
 
-  private final AirplaneTakeOffRequestUnmarshaller unmarshaller = new AirplaneTakeOffRequestUnmarshaller();
+  private final RequestUnmarshaller unmarshaller = new RequestUnmarshaller();
 
   private final String request1 =
           "{\n" +

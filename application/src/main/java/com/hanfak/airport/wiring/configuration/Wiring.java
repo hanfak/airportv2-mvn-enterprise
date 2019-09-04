@@ -14,7 +14,7 @@ import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStor
 import com.hanfak.airport.infrastructure.dataproviders.weather.OpenWeatherMapService;
 import com.hanfak.airport.infrastructure.dataproviders.weather.WeatherClient;
 import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
-import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneRequestUnmarshaller;
+import com.hanfak.airport.infrastructure.entrypoints.RequestUnmarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneResponseMarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneWebservice;
@@ -24,7 +24,6 @@ import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.Heal
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.healthcheck.HealthCheckWebService;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.metrics.RegisterMetrics;
 import com.hanfak.airport.infrastructure.entrypoints.monitoring.ready.ReadyServlet;
-import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffRequestUnmarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffResponseMarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffServlet;
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffWebservice;
@@ -101,7 +100,7 @@ public class Wiring {
   }
 
   private LandAirplaneWebservice landAirplaneWebservice() {
-    return new LandAirplaneWebservice(landPlaneUseCase(), landAirplaneUnmarshaller(), landAirplaneMarshaller(), jsonValidator(), APPLICATION_LOGGER);
+    return new LandAirplaneWebservice(landPlaneUseCase(), new RequestUnmarshaller(), landAirplaneMarshaller(), jsonValidator(), APPLICATION_LOGGER);
   }
 
   private JsonValidator jsonValidator() {
@@ -110,10 +109,6 @@ public class Wiring {
 
   private LandAirplaneResponseMarshaller landAirplaneMarshaller() {
     return new LandAirplaneResponseMarshaller();
-  }
-
-  private LandAirplaneRequestUnmarshaller landAirplaneUnmarshaller() {
-    return new LandAirplaneRequestUnmarshaller();
   }
 
   private LandPlaneUseCase landPlaneUseCase() {
@@ -149,7 +144,7 @@ public class Wiring {
   }
 
   public AirplaneTakeOffServlet airplaneTakeOffServlet() {
-    return new AirplaneTakeOffServlet(new AirplaneTakeOffWebservice(takeOffUseCase(), new AirplaneTakeOffRequestUnmarshaller(), new AirplaneTakeOffResponseMarshaller()));
+    return new AirplaneTakeOffServlet(new AirplaneTakeOffWebservice(takeOffUseCase(), new RequestUnmarshaller(), new AirplaneTakeOffResponseMarshaller()));
   }
 
   public CollectorRegistry registerMetrics() {

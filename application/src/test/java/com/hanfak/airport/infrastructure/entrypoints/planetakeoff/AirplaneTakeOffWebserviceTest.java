@@ -2,6 +2,7 @@ package com.hanfak.airport.infrastructure.entrypoints.planetakeoff;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
+import com.hanfak.airport.infrastructure.entrypoints.RequestUnmarshaller;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.TakeOffUseCase;
 import org.junit.Test;
@@ -54,7 +55,7 @@ public class AirplaneTakeOffWebserviceTest {
   private final RenderedContent expectedFailedResponse = new RenderedContent(expectedFailedResponseBody, "application/json", 404);
 
   private TakeOffUseCase usecase = mock(TakeOffUseCase.class);
-  private AirplaneTakeOffRequestUnmarshaller unmarshaller = mock(AirplaneTakeOffRequestUnmarshaller.class);
+  private RequestUnmarshaller unmarshaller = mock(RequestUnmarshaller.class);
   private AirplaneTakeOffResponseMarshaller marshaller = mock(AirplaneTakeOffResponseMarshaller.class);
   private final AirplaneTakeOffWebservice webservice = new AirplaneTakeOffWebservice(usecase, unmarshaller, marshaller);
 }

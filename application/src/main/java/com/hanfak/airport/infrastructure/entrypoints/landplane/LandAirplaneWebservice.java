@@ -6,6 +6,7 @@ import com.hanfak.airport.domain.plane.IllegalLengthException;
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
 import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
+import com.hanfak.airport.infrastructure.entrypoints.RequestUnmarshaller;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import org.slf4j.Logger;
@@ -15,12 +16,12 @@ import static java.lang.String.format;
 public class LandAirplaneWebservice {
 
   private final LandPlaneUseCase useCase;
-  private final LandAirplaneRequestUnmarshaller unmarshaller;
+  private final RequestUnmarshaller unmarshaller;
   private final LandAirplaneResponseMarshaller marshaller;
   private final JsonValidator jsonValidator;
   private final Logger logger;
 
-  public LandAirplaneWebservice(LandPlaneUseCase useCase, LandAirplaneRequestUnmarshaller unmarshaller, LandAirplaneResponseMarshaller marshaller, JsonValidator jsonValidator, Logger logger) {
+  public LandAirplaneWebservice(LandPlaneUseCase useCase, RequestUnmarshaller unmarshaller, LandAirplaneResponseMarshaller marshaller, JsonValidator jsonValidator, Logger logger) {
     this.useCase = useCase;
     this.unmarshaller = unmarshaller;
     this.marshaller = marshaller;
