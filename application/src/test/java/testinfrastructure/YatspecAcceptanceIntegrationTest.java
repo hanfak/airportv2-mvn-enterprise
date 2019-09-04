@@ -34,7 +34,7 @@ public abstract class YatspecAcceptanceIntegrationTest implements WithTestState,
     private Settings settings = loadSettings(getLogger(Application.class), appProperties, secretsProperties);
     private final TestState testState = new TestState();
     public final TestWiring wiring = TestWiring.testWiring(settings);
-    public final AirportPlaneInventoryService airportPlaneInventoryService = wiring.airportPlaneInventoryService();
+    protected final AirportPlaneInventoryService airportPlaneInventoryService = wiring.airportPlaneInventoryService();
 
     protected final Application application = new Application(wiring);
 

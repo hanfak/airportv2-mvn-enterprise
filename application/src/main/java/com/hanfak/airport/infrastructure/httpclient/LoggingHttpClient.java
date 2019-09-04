@@ -49,7 +49,7 @@ public class LoggingHttpClient implements HttpClient {
       return response;
     } catch (RuntimeException exception) {
       Duration elapsedTime = timer.elapsedTime();
-      logger.error(obfuscateLogs((format("Failed to execute request from Application to %s after %dms\n%s", requestUrl, elapsedTime.toMillis(), httpRequest))), exception);
+      logger.error(obfuscateLogs(format("Failed to execute request from Application to %s after %dms\n%s", requestUrl, elapsedTime.toMillis(), httpRequest)), exception);
       throw exception;
     }
   }

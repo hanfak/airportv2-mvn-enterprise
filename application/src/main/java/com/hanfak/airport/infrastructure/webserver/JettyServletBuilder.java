@@ -24,6 +24,8 @@ import static javax.servlet.DispatcherType.ASYNC;
 import static javax.servlet.DispatcherType.ERROR;
 import static javax.servlet.DispatcherType.REQUEST;
 import static org.slf4j.LoggerFactory.getLogger;
+import static org.zalando.logbook.Conditions.exclude;
+import static org.zalando.logbook.Conditions.requestTo;
 import static org.zalando.logbook.DefaultHttpLogWriter.Level.INFO;
 
 @SuppressWarnings("PMD.TooManyStaticImports") // This does not affect readability of code
@@ -86,7 +88,7 @@ public class JettyServletBuilder {
 
   private void addLoggingFilter() {
     Logbook logbook = Logbook.builder()
-            // TODO ignore ready page
+            .condition(exclude(requestTo("/ready")))
             .writer(new DefaultHttpLogWriter(getLogger(AUDIT.name()), INFO))
             .build();
     FilterHolder filterHolder = new FilterHolder(new LogbookFilter(logbook));
