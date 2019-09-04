@@ -137,7 +137,7 @@ public class Wiring {
   }
 
   public JettyWebServer jettyWebServer(int port) {
-    return new JettyWebServer(port);
+    return new JettyWebServer(port, APPLICATION_LOGGER);
   }
 
   public JettyServletBuilder jettyWebServerBuilder() {
