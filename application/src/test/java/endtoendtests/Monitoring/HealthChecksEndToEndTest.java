@@ -22,8 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SuppressWarnings("SameParameterValue") // For readability
 public class HealthChecksEndToEndTest extends YatspecAcceptanceIntegrationTest {
 
-  private final WireMockServer wireMockServer = new WireMockServer(8888);
-
   @Test
   public void healthChecksPageChecksAllProbes() throws UnirestException {
     givenAllStatusProbesAreSuccessful();
@@ -33,11 +31,31 @@ public class HealthChecksEndToEndTest extends YatspecAcceptanceIntegrationTest {
     thenTheHealthCheckIsSuccessful();
     andTheHealthCheckResponseHasProbe(withName("Database Connection to 'jdbc:postgresql://.*'"), withStatus("OK"), withDescription("Database test query 'SELECT count(*);' was successful"));
     andTheHealthCheckResponseHasProbe(withName("Weather Api Connection to 'http://localhost:8888/data/2.5/weather?.*'"), withStatus("OK"), withDescription("Call to Weather Api was successful"));
+    andHasOverallStatus("OK");
   }
 
-  // TODO one probe is failing = overal status is failing
+  @Test
+  public void healthChecksPageChecksAllProbesReturnsFailing() throws UnirestException {
+    givenOneStatusProbeIsFailing();
 
-  // TODO one probe is warning = overal status is warning
+    whenUserChecksHealthOfApplication();
+
+    thenTheHealthCheckIsSuccessful();
+    andTheHealthCheckResponseHasProbe(withName("Database Connection to 'jdbc:postgresql://.*'"), withStatus("OK"), withDescription("Database test query 'SELECT count(*);' was successful"));
+    andTheHealthCheckResponseHasProbe(withName("Weather Api Connection to 'http://localhost:8888/data/2.5/weather?.*'"), withStatus("FAIL"), withDescription("Call to Weather Api returned unexpected status code '404'"));
+    andHasOverallStatus("FAIL");
+  }
+
+  private void givenOneStatusProbeIsFailing() {
+    wireMockServer.start();
+    new WireMock(8888)
+            .register(WireMock.any(new UrlPattern(new AnythingPattern(), true))
+                    .willReturn(new ResponseDefinitionBuilder()
+                            .withBody("")
+                            .withStatus(404)));
+  }
+
+  // TODO one probe is warning = overall status is warning
 
   private void givenAllStatusProbesAreSuccessful() {
     theWeatherApiRespondsSuccessfully();
@@ -107,14 +125,29 @@ public class HealthChecksEndToEndTest extends YatspecAcceptanceIntegrationTest {
     return probe.toString();
   }
 
+  private void andHasOverallStatus(String expectedOverallStatus) {
+    OverallProbeStatus overallStatus = new OverallProbeStatus(new JSONObject(responseBody).getString("overallStatus"));
+    Assertions.assertThat(overallStatus.overallStatus).isEqualTo(expectedOverallStatus);
+  }
+
   @After
   public void teardown() {
     application.stopWebServer();
     wireMockServer.stop();
   }
 
+  private final WireMockServer wireMockServer = new WireMockServer(8888);
+
   private int responseStatus;
   private String responseBody;
   private final String apiPath = "/health";
   private final String apiUrl = format("http://localhost:5555%s", apiPath);
+
+  private class OverallProbeStatus {
+    private final String overallStatus;
+
+    OverallProbeStatus(String overallStatus) {
+      this.overallStatus = overallStatus;
+    }
+  }
 }
