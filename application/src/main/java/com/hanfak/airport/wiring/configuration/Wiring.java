@@ -29,6 +29,7 @@ import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOf
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffWebservice;
 import com.hanfak.airport.infrastructure.healthchecks.DatabaseHealthCheck;
 import com.hanfak.airport.infrastructure.healthchecks.WeatherApiHealthCheck;
+import com.hanfak.airport.infrastructure.httpclient.LogObfuscator;
 import com.hanfak.airport.infrastructure.httpclient.LoggingHttpClient;
 import com.hanfak.airport.infrastructure.httpclient.TimerFactory;
 import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
@@ -120,7 +121,8 @@ public class Wiring {
   }
 
   private WeatherService weatherService() {
-    return new OpenWeatherMapService(new WeatherClient(new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(), new TimerFactory()), settings(), APPLICATION_LOGGER));
+    return new OpenWeatherMapService(new WeatherClient(new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(), new TimerFactory(), new LogObfuscator()
+    ), settings(), APPLICATION_LOGGER));
   }
 
   public AirportPlaneInventoryService airportPlaneInventoryService() {
@@ -169,7 +171,7 @@ public class Wiring {
 
   private HealthChecksUseCase healthChecksUseCase() {
     List<HealthCheckProbe> healthCheckProbes = Arrays.asList(new DatabaseHealthCheck(databaseConnectionManager(), settings(), APPLICATION_LOGGER),
-            new WeatherApiHealthCheck(settings(), new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(), new TimerFactory())));
+            new WeatherApiHealthCheck(settings(), new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(), new TimerFactory(), new LogObfuscator())));
     return new HealthChecksUseCase(
             healthCheckProbes,
             new GuavaSupplierCaching(),

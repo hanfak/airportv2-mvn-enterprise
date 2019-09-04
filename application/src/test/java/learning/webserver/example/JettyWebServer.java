@@ -16,7 +16,6 @@ public class JettyWebServer {
     public void startServer() {
         try {
             server.start();
-            //  System.out.println(server.getURI().toString()); // TODO add logger, instead of sout, and test
         } catch (Exception e) {
             throw new IllegalStateException(format("Could not startServer server on port '%d'", server.getURI().getPort()), e);
         }

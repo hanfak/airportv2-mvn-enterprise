@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-// TODO Happy path is tested via integration test, but can be tested via unit test
+// Happy path is tested via integration test, but can be tested via unit test
 public class ExecutorServiceConcurrently implements Concurrently {
 
     private final ExecutorService executorService;

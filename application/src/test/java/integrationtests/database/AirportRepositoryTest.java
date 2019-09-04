@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 // This is redundent with end to end tests testing the database is working
 // Here to show how an end to end test might work
 // TODO fix when running in build
-// TODO Use yatspec and BDD language
 @Ignore
 public class AirportRepositoryTest extends YatspecAcceptanceDatabaseTest {
 
@@ -26,7 +25,6 @@ public class AirportRepositoryTest extends YatspecAcceptanceDatabaseTest {
 
     List<Plane> allPlanesFromAirport = repository.getAllPlanesFromAirport();
     assertThat(allPlanesFromAirport).contains(plane1);
-    // TODO: use extracting functionality of assertj
   }
 
   @Test

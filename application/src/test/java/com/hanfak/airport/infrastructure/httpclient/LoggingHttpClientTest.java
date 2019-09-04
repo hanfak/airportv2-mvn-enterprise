@@ -13,14 +13,21 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class LoggingHttpClientTest {
 
+  private final LogObfuscator logObfuscator = mock(LogObfuscator.class);
+
   @Test
   public void shouldLogSuccessfulRequestWithTime() throws Exception {
-    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory);
+    when(logObfuscator.obfuscateLogs(anyString()))
+            .thenReturn("Request from Application to request url\nRequest String")
+            .thenReturn("Response from request url to Application received after 0ms\nResponse String");
+
+    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory, logObfuscator);
 
     HttpResponse<JsonNode> actualResponse = httpClient.submitGetRequest(URL, queryParameters);
 
@@ -31,11 +38,14 @@ public class LoggingHttpClientTest {
 
   @Test
   public void shouldLogFailedRequestWithTime() throws Exception {
+    when(logObfuscator.obfuscateLogs(anyString()))
+            .thenReturn("Request from Application to request url\nRequest String")
+            .thenReturn("Failed to execute request from Application to request url after 100ms\nRequest String");
     RuntimeException delegateException = new RuntimeException("Some exception");
     when(delegate.submitGetRequest(URL, queryParameters)).thenThrow(delegateException);
     when(timer.elapsedTime()).thenReturn(Duration.ofMillis(ELAPSED_MILLISECONDS));
 
-    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory);
+    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory, logObfuscator);
 
     try {
       httpClient.submitGetRequest(URL, queryParameters);
@@ -49,9 +59,13 @@ public class LoggingHttpClientTest {
 
   @Test
   public void shouldObfuscateUsernamesAndPasswords() throws Exception {
+    when(logObfuscator.obfuscateLogs(anyString()))
+            .thenReturn("Request from Application to http://api.openweathermap.org/data/2.5/weather?&appid=******&lon=-0.454296&lat=51.470020\nRequest String")
+            .thenReturn("Response from http://api.openweathermap.org/data/2.5/weather?&appid=******&lon=-0.454296&lat=51.470020 to Application received after 0ms\nResponse String");
+
     when(request.getUrl()).thenReturn("http://api.openweathermap.org/data/2.5/weather?&appid=a_secret1234&lon=-0.454296&lat=51.470020");
 
-    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory);
+    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory, logObfuscator);
 
     HttpResponse<JsonNode> actualResponse = httpClient.submitGetRequest(URL, queryParameters);
 
