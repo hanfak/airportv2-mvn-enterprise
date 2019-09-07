@@ -11,6 +11,7 @@
     - ~~sequence diagram for yatspec include internal api calls~~
         - ~~use wiremock~~
 - ~~audit logs for internal calls~~
+- TraceyId logs, and adding to headers in req/resp via servlet filter and http client
 - user story 3        
 - Use story 5 and 6
 - Handle jsonprocessing exception as runtime, what to do?
@@ -20,6 +21,7 @@
     - Schedule job for accessing airport is full
 - Find a way to do batching multiple to do later jobs
 - Find a way to use a message broker/ queue
+- pact tests when splitting weather service into separate app
 
 
 - organise wiring, split out jdbc, more singletons, set up for test

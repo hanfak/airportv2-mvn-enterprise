@@ -1,5 +1,6 @@
 package com.hanfak.airport.infrastructure.webserver;
 
+import org.eclipse.jetty.server.CustomRequestLog;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -16,11 +17,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class JettyWebServerTest {
-
-  private final Server server = mock(Server.class);
-  private final Logger logger = mock(Logger.class);
-  private final JettyWebServer webServer = new JettyWebServer(server, logger);
-  private final URI uri = mock(URI.class);
 
   @Test
   public void shouldStartJettyServer() throws Exception {
@@ -82,4 +78,19 @@ public class JettyWebServerTest {
     assertThat(jettyWebServer).isInstanceOf(JettyWebServer.class);
     verify(server).addBean(errorHandler);
   }
+
+  @Test
+  public void shouldSetRequestLogToJettyServer() {
+    CustomRequestLog requestLog = mock(CustomRequestLog.class);
+
+    JettyWebServer jettyWebServer = webServer.withRequestLog(requestLog);
+
+    assertThat(jettyWebServer).isInstanceOf(JettyWebServer.class);
+    verify(server).setRequestLog(requestLog);
+  }
+
+  private final Server server = mock(Server.class);
+  private final Logger logger = mock(Logger.class);
+  private final JettyWebServer webServer = new JettyWebServer(server, logger);
+  private final URI uri = mock(URI.class);
 }

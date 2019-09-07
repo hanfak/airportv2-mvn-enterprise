@@ -43,5 +43,5 @@ public class NotFoundPageTest extends YatspecAcceptanceIntegrationTest {
   private String responseBody;
   private final String apiPath = "/blah";
   @SuppressWarnings("FieldCanBeLocal") // readability
-  private final String apiUrl = "http://localhost:5555" + apiPath;
+  private final String apiUrl = "http://localhost:5555/airport" + apiPath;
 }

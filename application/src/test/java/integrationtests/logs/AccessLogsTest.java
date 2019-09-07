@@ -1,17 +1,18 @@
-package integrationtests.rest.uncaughterrorpage;
+package integrationtests.logs;
 
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
+import com.hanfak.airport.infrastructure.webserver.RequestLogFactory;
 import com.hanfak.airport.infrastructure.webserver.UncaughtErrorHandler;
 import com.hanfak.airport.wiring.Application;
 import com.hanfak.airport.wiring.configuration.Wiring;
-import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.After;
 import org.junit.Test;
+import testinfrastructure.ConsoleOutputCapturer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,31 +26,28 @@ import static com.hanfak.airport.infrastructure.properties.SettingsLoader.loadSe
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
-//https://www.journaldev.com/1973/servlet-exception-and-error-handling-example-tutorial
-public class UncaughtErrorPageTest {
-  // Do this as a security prevention. To avoid displaying classes and sensitive details in the response
+public class AccessLogsTest {
   @Test
   public void returnsStandardMessageForUncaughtErrors() throws UnirestException {
+    ConsoleOutputCapturer consoleOutputCapturer = new ConsoleOutputCapturer();
+    consoleOutputCapturer.start();
     startWebServer();
 
     whenAnEndpointIsRequestedThatCausesAnError();
 
-    assertThat(responseBody).isEqualTo("Technical Failure. Please contact the system administrator.");
-    assertThat(responseStatus).isEqualTo(500);
+    String logs = consoleOutputCapturer.stop();
+    assertThat(logs).contains("[LOG_TYPE=ACCESS] 127.0.0.1");
   }
 
   private void whenAnEndpointIsRequestedThatCausesAnError() throws UnirestException {
-    HttpResponse<String> httpResponse = Unirest.get(apiUrl)
-            .asString();
-
-    responseStatus = httpResponse.getStatus();
-    responseBody = httpResponse.getBody();
+    Unirest.get(apiUrl).asString();
   }
 
   private void startWebServer() {
     servletContextHandler.addServlet(new ServletHolder(errorServlet), "/errorendpoint");
     jettyWebServer.withBean(new UncaughtErrorHandler(getLogger(APPLICATION.name())))
-            .withContext(servletContextHandler);
+            .withContext(servletContextHandler)
+            .withRequestLog(RequestLogFactory.createRequestLog());
     jettyWebServer.startServer();
   }
 
@@ -58,8 +56,6 @@ public class UncaughtErrorPageTest {
     jettyWebServer.stopServer();
   }
 
-  private int responseStatus;
-  private String responseBody;
   private final String apiPath = "/errorendpoint";
   @SuppressWarnings("FieldCanBeLocal") // readability
   private final String apiUrl = "http://localhost:5555" + apiPath;
@@ -73,7 +69,7 @@ public class UncaughtErrorPageTest {
   private final ErrorServlet errorServlet = new ErrorServlet();
   private final JettyWebServer jettyWebServer = wiring.jettyWebServer(5555);
 
-  public static class ErrorServlet extends HttpServlet {
+  private class ErrorServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException {
       throw new ServletException("GET method is not supported.");

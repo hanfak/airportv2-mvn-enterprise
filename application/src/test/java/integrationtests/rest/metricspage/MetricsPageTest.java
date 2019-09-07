@@ -60,5 +60,5 @@ public class MetricsPageTest extends YatspecAcceptanceIntegrationTest {
   private String responseBody;
   private final String apiPath = "/metrics";
   @SuppressWarnings("FieldCanBeLocal") // readability
-  private final String apiUrl = "http://localhost:5555" + apiPath;
+  private final String apiUrl = "http://localhost:5555/airport" + apiPath;
 }

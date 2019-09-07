@@ -446,8 +446,8 @@
                                         <exclude>**/com/hanfak/airport/infrastructure/logging/*</exclude>
                                         <exclude>**/com/hanfak/airport/infrastructure/properties/SettingsLoader.*
                                         </exclude> <!-- Properties Object is not a dependency -->
-                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/JettyWebServer.*
-                                        </exclude> <!--unit tests are covering this, but not picked up by jacoco -->
+                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/JettyWebServer.*</exclude> <!--unit tests are covering this, but not picked up by jacoco -->
+                                        <exclude>**/com/hanfak/airport/infrastructure/webserver/RequestLogFactory.*</exclude> <!--unit tests are covering this, but not picked up by jacoco -->
                                         <exclude>
                                             **/com/hanfak/airport/infrastructure/dataproviders/database/databaseconnection/HikariDatabaseConnectionPooling.*
                                         </exclude> <!-- create db pool config-->

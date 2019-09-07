@@ -12,6 +12,12 @@
         </encoder>
     </appender>
 
+    <appender name="ACCESS" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[LOG_START] [LOG_TYPE=ACCESS] %msg [LOG_END]%n</pattern>
+        </encoder>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="APPLICATION"/>
     </root>
@@ -24,6 +30,10 @@
 
     <logger name="AUDIT" level="INFO" additivity="false">
         <appender-ref ref="AUDIT"/>
+    </logger>
+
+    <logger name="ACCESS" level="INFO" additivity="false">
+        <appender-ref ref="ACCESS"/>
     </logger>
 
 </configuration>

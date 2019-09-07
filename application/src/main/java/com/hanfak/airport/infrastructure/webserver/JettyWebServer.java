@@ -1,6 +1,7 @@
 package com.hanfak.airport.infrastructure.webserver;
 
 import com.google.common.annotations.VisibleForTesting;
+import org.eclipse.jetty.server.CustomRequestLog;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ErrorHandler;
@@ -61,6 +62,11 @@ public class JettyWebServer  {
 
     JettyWebServer withHandler(Handler handler) {
         server.setHandler(handler);
+        return this;
+    }
+
+    public JettyWebServer withRequestLog(CustomRequestLog requestLog) {
+        server.setRequestLog(requestLog);
         return this;
     }
 }

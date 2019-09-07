@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import java.util.EnumSet;
 
 import static com.hanfak.airport.infrastructure.logging.LoggingCategory.AUDIT;
+import static com.hanfak.airport.infrastructure.webserver.RequestLogFactory.createRequestLog;
 import static javax.servlet.DispatcherType.ASYNC;
 import static javax.servlet.DispatcherType.ERROR;
 import static javax.servlet.DispatcherType.REQUEST;
@@ -45,7 +46,9 @@ public class JettyServletBuilder {
     addLoggingFilter();
     addServlet(new NotFoundServlet(), "/");
     addErrorHandler(new UncaughtErrorHandler(logger));
+    servletContextHandler.setContextPath("/airport");
     statisticsHandler.setHandler(servletContextHandler);
+    webServer.withRequestLog(createRequestLog());
     return webServer.withHandler(statisticsHandler);
   }
 

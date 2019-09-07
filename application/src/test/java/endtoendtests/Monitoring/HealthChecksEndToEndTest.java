@@ -138,7 +138,7 @@ public class HealthChecksEndToEndTest extends YatspecAcceptanceIntegrationTest {
 
   private int responseStatus;
   private String responseBody;
-  private final String apiPath = "/health";
+  private final String apiPath = "/airport/health";
   private final String apiUrl = format("http://localhost:5555%s", apiPath);
 
   private class OverallProbeStatus {

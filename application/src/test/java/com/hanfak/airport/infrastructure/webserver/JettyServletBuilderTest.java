@@ -2,6 +2,7 @@ package com.hanfak.airport.infrastructure.webserver;
 
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
 import org.assertj.core.api.WithAssertions;
+import org.eclipse.jetty.server.CustomRequestLog;
 import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -19,8 +20,10 @@ public class JettyServletBuilderTest implements WithAssertions {
 
   @Test
   public void shouldAddServletHandlerToServerWhenBuilt() {
-    ArgumentCaptor<UncaughtErrorHandler> parameterCaptor = ArgumentCaptor
+    ArgumentCaptor<UncaughtErrorHandler> uncaughtErrorHandlerArgumentCaptor = ArgumentCaptor
             .forClass(UncaughtErrorHandler.class);
+    ArgumentCaptor<CustomRequestLog> customRequestLogArgumentCaptor = ArgumentCaptor
+            .forClass(CustomRequestLog.class);
 
     when(webServer.withHandler(any())).thenReturn(webServer);
     JettyServletBuilder.registerLandAirplaneEndPoint(EndPoint.get("/path"), servlet);
@@ -28,7 +31,8 @@ public class JettyServletBuilderTest implements WithAssertions {
 
     verify(handler).setHandler(servletHandler);
     verify(webServer).withHandler(handler);
-    verify(webServer).withBean(parameterCaptor.capture());
+    verify(webServer).withBean(uncaughtErrorHandlerArgumentCaptor.capture());
+    verify(webServer).withRequestLog(customRequestLogArgumentCaptor.capture());
   }
 
   @Test

@@ -54,5 +54,5 @@ public class PlaneTakeOffTest extends YatspecAcceptanceIntegrationTest {
   private String responseBody;
   private Plane plane;
   private final String apiPath = "/takeOffAirplane";
-  private final String apiUrl = "http://localhost:5555" + apiPath;
+  private final String apiUrl = "http://localhost:5555/airport" + apiPath;
 }

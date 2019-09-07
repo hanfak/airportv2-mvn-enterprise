@@ -98,5 +98,5 @@ public class LandPlaneTest extends YatspecAcceptanceEndToEndTest {
 
   private final WeatherSeviceServerStub weatherServiceStub = new WeatherSeviceServerStub();
   private final String API_PATH = "/landAirplane";
-  private final String APP_URL = "http://localhost:5555" + API_PATH;
+  private final String APP_URL = "http://localhost:5555/airport" + API_PATH;
 }
