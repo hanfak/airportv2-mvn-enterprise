@@ -18,53 +18,74 @@ import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_FLYING;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_NOT_AT_THE_AIRPORT;
 import static java.lang.String.format;
+
 @SuppressWarnings("PMD.TooManyStaticImports") // These all refer to domain objects
 public class TakeOffUseCase {
 
-    private final PlaneInventoryService planeInventoryService;
-    private final Logger logger;
+  private final PlaneInventoryService planeInventoryService;
+  private final Logger logger;
 
-    public TakeOffUseCase(PlaneInventoryService hangerService, Logger logger) {
-        this.planeInventoryService = hangerService;
-        this.logger = logger;
+  public TakeOffUseCase(PlaneInventoryService hangerService, Logger logger) {
+    this.planeInventoryService = hangerService;
+    this.logger = logger;
+  }
+
+  // return tuple with new types SuccessfulPlaneTakeOffStatus &
+  // FailurePlaneTakeOffStatus (includes reason for failure) ??
+  // Or Throw exception for failure case?? but information will get lost
+  // Or Use a map
+  // Or Can think about using railway programming??
+  public PlaneTakeOffStatus instructPlaneToTakeOff(Plane plane) {
+    if (FLYING.equals(plane.planeStatus)) {
+      return planeFlyingFailureStatus(plane);
     }
 
-    // return tuple with new types SuccessfulPlaneTakeOffStatus &
-    // FailurePlaneTakeOffStatus (includes reason for failure) ??
-    // Or Throw exception for failure case?? but information will get lost
-    // Or Use a map
-    // Or Can think about using railway programming??
-    public PlaneTakeOffStatus instructPlaneToTakeOff(Plane plane) {
-        if (FLYING.equals(plane.planeStatus)) {
-            logger.info(format("Plane, '%s', cannot take off, status is '%s', it is not at the airport", plane.planeId, plane.planeStatus.name()));
-            return createPlaneTakeOffStatus(null,
-                    getFailedPlaneTakeOffStatus(plane, PLANE_IS_FLYING, NOT_IN_AIRPORT));
+    // TODO try catch on this
+    try {
+      if (planeInventoryService.planeIsPresentInAirport(plane)) {
+        try {
+          planeInventoryService.removePlane(plane);
+        } catch (IllegalStateException e) {
+          return systemFailureStatus(plane, e);
         }
-
-        // TODO try catch on this
-        if (planeInventoryService.planeIsPresentInAirport(plane)) {
-            try {
-                planeInventoryService.removePlane(plane);
-            } catch (IllegalStateException e) {
-                logger.error(format("Something went wrong removing the Plane, '%s', at the airport", plane.planeId), e);
-                return createPlaneTakeOffStatus(null, getFailedPlaneTakeOffStatus(plane, PLANE_COULD_NOT_TAKE_OFF, IN_AIRPORT));
-            }
-            Plane flyingPlane = plane.fly();
-            logger.info(format("Plane, '%s', has successfully left the airport", plane.planeId));
-            return createPlaneTakeOffStatus(getSuccessfulPlaneTakeOffStatus(flyingPlane), null);
-        } else {
-            logger.info(format("Plane, '%s', cannot take off, it is not at the airport", plane.planeId));
-            return createPlaneTakeOffStatus(null, getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT, NOT_IN_AIRPORT));
-        }
+        Plane flyingPlane = plane.fly();
+        return takeOffSuccessStatus(plane, flyingPlane);
+      } else {
+        return planeNotAtAirportFailureStatus(plane);
+      }
+    } catch (IllegalStateException e) {
+      return systemFailureStatus(plane, e);
     }
+  }
 
-    // TODO better name
-    private SuccessfulPlaneTakeOffStatus getSuccessfulPlaneTakeOffStatus(Plane flyingPlane) {
-        return successfulPlaneTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, NOT_IN_AIRPORT);
-    }
+  private PlaneTakeOffStatus planeNotAtAirportFailureStatus(Plane plane) {
+    logger.info(format("Plane, '%s', cannot take off, it is not at the airport", plane.planeId));
+    return createPlaneTakeOffStatus(null, getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT, NOT_IN_AIRPORT));
+  }
 
-    // TODO better name
-    private FailedPlaneTakeOffStatus getFailedPlaneTakeOffStatus(Plane plane, TakeOffFailureReason reason, AirportStatus airportStatus) {
-        return failedPlaneTakeOffStatus(plane.planeId, plane.planeStatus, airportStatus, reason);
-    }
+  private PlaneTakeOffStatus takeOffSuccessStatus(Plane plane, Plane flyingPlane) {
+    logger.info(format("Plane, '%s', has successfully left the airport", plane.planeId));
+    return createPlaneTakeOffStatus(getSuccessfulPlaneTakeOffStatus(flyingPlane), null);
+  }
+
+  private PlaneTakeOffStatus systemFailureStatus(Plane plane, IllegalStateException exception) {
+    logger.error(format("Something went wrong removing the Plane, '%s', at the airport", plane.planeId), exception);
+    return createPlaneTakeOffStatus(null, getFailedPlaneTakeOffStatus(plane, PLANE_COULD_NOT_TAKE_OFF, IN_AIRPORT));
+  }
+
+  private PlaneTakeOffStatus planeFlyingFailureStatus(Plane plane) {
+    logger.info(format("Plane, '%s', cannot take off, status is '%s', it is not at the airport", plane.planeId, plane.planeStatus.name()));
+    return createPlaneTakeOffStatus(null,
+            getFailedPlaneTakeOffStatus(plane, PLANE_IS_FLYING, NOT_IN_AIRPORT));
+  }
+
+  // TODO better name
+  private SuccessfulPlaneTakeOffStatus getSuccessfulPlaneTakeOffStatus(Plane flyingPlane) {
+    return successfulPlaneTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, NOT_IN_AIRPORT);
+  }
+
+  // TODO better name
+  private FailedPlaneTakeOffStatus getFailedPlaneTakeOffStatus(Plane plane, TakeOffFailureReason reason, AirportStatus airportStatus) {
+    return failedPlaneTakeOffStatus(plane.planeId, plane.planeStatus, airportStatus, reason);
+  }
 }

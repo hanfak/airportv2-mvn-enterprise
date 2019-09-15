@@ -11,6 +11,9 @@ import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import org.slf4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static java.lang.String.format;
 
 public class LandAirplaneWebservice {
@@ -48,20 +51,26 @@ public class LandAirplaneWebservice {
   }
 
   private RenderedContent createRenderedContentForRequestContent(String body, String request, IllegalArgumentException exception) {
-    logger.error(format("Request body is %s", request), exception);
-    return new RenderedContent(body, "text/plain", 500);
+    logger.error(format("Error Message: '%s'\nRequest body is '%s'", body, request), exception);
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Retriable", "true");
+    return new RenderedContent(body, "text/plain", 500, headers); // TODO set retry header
   }
 
   private RenderedContent createRenderedContentForInvalidJson(String request) {
-    logger.error(format("Request body is %s", request)); // The logging can be placed in the JsonValidator class
-    logger.error("Exception", jsonValidator.checkForInvalidJson(request).get());
-    return new RenderedContent("Error with JSON Body in request", "text/plain", 500);
+    logger.error(format("Request body is '%s'", request), jsonValidator.checkForInvalidJson(request).get());
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Retriable", "true");
+    return new RenderedContent("Error with JSON Body in request", "text/plain", 500, headers);
   }
 
   private RenderedContent marshallLandedPlaneStatus(PlaneLandStatus planeLandStatus) throws JsonProcessingException {
     if (planeLandStatus.failedPlaneLandStatus == null) {
       return marshaller.marshall(planeLandStatus.successfulPlaneLandStatus);
     } else {
+      // TODO retriable error status code (503) and header for system error
+      //https://stackoverflow.com/questions/17862015/http-statuscode-to-retry-same-request
+      //https://stackoverflow.com/questions/9794696/how-do-i-choose-a-http-status-code-in-rest-api-for-not-ready-yet-try-again-lat?noredirect=1&lq=1
       return marshaller.marshall(planeLandStatus.failedPlaneLandStatus);
     }
   }

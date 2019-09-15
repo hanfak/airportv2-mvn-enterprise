@@ -6,7 +6,6 @@ import com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus;
 import com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.slf4j.Logger;
 
 import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
@@ -20,10 +19,7 @@ import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOf
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_COULD_NOT_TAKE_OFF;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_FLYING;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TakeOffUseCaseTest implements WithAssertions {
 
@@ -50,7 +46,17 @@ public class TakeOffUseCaseTest implements WithAssertions {
     public void planeCannotTakeOffWhenErrorWithSystem() {
         when(hangerService.planeIsPresentInAirport(plane)).thenReturn(true);
         IllegalStateException cause = new IllegalStateException("Blah");
-        Mockito.doThrow(cause).when(hangerService).removePlane(plane);
+        doThrow(cause).when(hangerService).removePlane(plane);
+        PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
+
+        verify(logger).error("Something went wrong removing the Plane, 'A0001', at the airport", cause);
+        assertThat(actionUnderTest.failedPlaneTakeOffStatus).isEqualTo(expectedFailedPlaneTakeOffStatusForErrorInSystem);
+    }
+
+    @Test
+    public void cannotTakeOffWhenSystemErrorForCheckingPlaneInAirport() {
+        IllegalStateException cause = new IllegalStateException("Blah");
+        doThrow(cause).when(hangerService).planeIsPresentInAirport(plane);
         PlaneTakeOffStatus actionUnderTest = takeOffUseCase.instructPlaneToTakeOff(plane);
 
         verify(logger).error("Something went wrong removing the Plane, 'A0001', at the airport", cause);

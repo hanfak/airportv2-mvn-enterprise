@@ -1,5 +1,6 @@
 package integrationtests.rest.uncaughterrorpage;
 
+import com.googlecode.yatspec.junit.SpecRunner;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
 import com.hanfak.airport.infrastructure.webserver.UncaughtErrorHandler;
@@ -8,10 +9,12 @@ import com.hanfak.airport.wiring.configuration.Wiring;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.assertj.core.api.AbstractIntegerAssert;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,16 +29,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
 //https://www.journaldev.com/1973/servlet-exception-and-error-handling-example-tutorial
+@RunWith(SpecRunner.class)
 public class UncaughtErrorPageTest {
   // Do this as a security prevention. To avoid displaying classes and sensitive details in the response
   @Test
   public void returnsStandardMessageForUncaughtErrors() throws UnirestException {
-    startWebServer();
+    givenAWebServerIsRunning();
 
     whenAnEndpointIsRequestedThatCausesAnError();
 
-    assertThat(responseBody).isEqualTo("Technical Failure. Please contact the system administrator.");
-    assertThat(responseStatus).isEqualTo(500);
+    thenResponseBodyIs("Technical Failure. Please contact the system administrator.");
+    andTheResponseStatuseIs(500);
+  }
+
+  private AbstractIntegerAssert<?> andTheResponseStatuseIs(int expectedStatus) {
+    return assertThat(responseStatus).isEqualTo(expectedStatus);
+  }
+
+  private void thenResponseBodyIs(String expectedBody) {
+    assertThat(responseBody).isEqualTo(expectedBody);
   }
 
   private void whenAnEndpointIsRequestedThatCausesAnError() throws UnirestException {
@@ -46,7 +58,7 @@ public class UncaughtErrorPageTest {
     responseBody = httpResponse.getBody();
   }
 
-  private void startWebServer() {
+  private void givenAWebServerIsRunning() {
     servletContextHandler.addServlet(new ServletHolder(errorServlet), "/errorendpoint");
     jettyWebServer.withBean(new UncaughtErrorHandler(getLogger(APPLICATION.name())))
             .withContext(servletContextHandler);

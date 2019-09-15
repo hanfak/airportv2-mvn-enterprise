@@ -11,7 +11,8 @@
     - ~~sequence diagram for yatspec include internal api calls~~
         - ~~use wiremock~~
 - ~~audit logs for internal calls~~
-- refactor landusecase
+- ~~refactor landusecase~~
+- Yatspec output index page
 - improve maven pom
     - profiles
         - activations
