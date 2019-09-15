@@ -20,7 +20,7 @@ import static java.lang.String.format;
 import static java.util.Optional.empty;
 
 // TODO Split for each operation
-// TODO interface
+// TODO P1 interface
 // TODO make this more agnositic, should not know about plane??? sql as properties?
 // The methods can be agnostic and delegated??
 // TooManyStaticImports - Acceptable for this class, only using domain objects (static factories and enums)

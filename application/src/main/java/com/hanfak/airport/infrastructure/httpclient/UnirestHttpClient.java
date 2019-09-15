@@ -8,7 +8,7 @@ import com.mashape.unirest.request.HttpRequest;
 
 import java.util.Map;
 
-// TODO this class test with a wire mock server up, as a intergration/module test
+// TODO P1 this class test with a wire mock server up, as a intergration/module test
 public class UnirestHttpClient implements HttpClient {
 
   public HttpResponse<JsonNode> submitGetRequest(String url, Map<String, Object> queryParameters) throws UnirestException {
@@ -16,7 +16,7 @@ public class UnirestHttpClient implements HttpClient {
   }
 
   public HttpRequest getHttpRequest(String url, Map<String, Object> queryParameters) {
-    // TODO set timeouts Unirest.setTimeouts(60000, 30000);
+    // TODO P1 set timeouts Unirest.setTimeouts(60000, 30000);
     return Unirest.get(url).queryString(queryParameters);
   }
 }

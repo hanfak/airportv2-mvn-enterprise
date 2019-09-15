@@ -7,7 +7,7 @@ import com.googlecode.yatspec.rendering.Renderer;
 import com.googlecode.yatspec.rendering.html.HtmlResultRenderer;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
-import com.hanfak.airport.infrastructure.dataproviders.AirportPlaneInventoryService;
+import com.hanfak.airport.infrastructure.dataproviders.database.AirportPlaneInventoryService;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.wiring.Application;
 import org.junit.After;

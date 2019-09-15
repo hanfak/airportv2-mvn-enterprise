@@ -41,7 +41,7 @@ public class LandPlaneUseCase {
       return weatherSystemFailureStatus(plane, e);
     }
 
-    // TODO need to check plane is in airport
+    // TODO P1 need to check plane is in airport
     if (LANDED.equals(plane.planeStatus)) {
       return planeAlreadyLandedFailureStatus(plane);
     }

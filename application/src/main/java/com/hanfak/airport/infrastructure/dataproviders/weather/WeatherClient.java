@@ -34,7 +34,6 @@ public class WeatherClient {
       if (response.getStatus() == 200) {
         return unmarshallResponse(response);
       } else {
-        // TODO: log error?? Although logged at error handler
         throw new IllegalStateException(format("Unexpected HTTP status '%s' received when getting weather from api", response.getStatus()));
       }
     } catch (UnirestException e) {
@@ -52,7 +51,7 @@ public class WeatherClient {
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
-  // TODO: extract out unmarshaller
+  // TODO P1: extract out unmarshaller
   private int unmarshallResponse(HttpResponse<JsonNode> response) {
     JSONObject body = response.getBody().getObject();
     JSONArray jArray = body.getJSONArray("weather");

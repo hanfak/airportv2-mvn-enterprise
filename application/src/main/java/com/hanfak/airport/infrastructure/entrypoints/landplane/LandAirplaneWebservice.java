@@ -54,7 +54,7 @@ public class LandAirplaneWebservice {
     logger.error(format("Error Message: '%s'\nRequest body is '%s'", body, request), exception);
     Map<String, String> headers = new HashMap<>();
     headers.put("Retriable", "true");
-    return new RenderedContent(body, "text/plain", 500, headers); // TODO set retry header
+    return new RenderedContent(body, "text/plain", 500, headers);
   }
 
   private RenderedContent createRenderedContentForInvalidJson(String request) {
@@ -68,7 +68,7 @@ public class LandAirplaneWebservice {
     if (planeLandStatus.failedPlaneLandStatus == null) {
       return marshaller.marshall(planeLandStatus.successfulPlaneLandStatus);
     } else {
-      // TODO retriable error status code (503) and header for system error
+      // TODO P1 retriable error status code (503) and header for system error
       //https://stackoverflow.com/questions/17862015/http-statuscode-to-retry-same-request
       //https://stackoverflow.com/questions/9794696/how-do-i-choose-a-http-status-code-in-rest-api-for-not-ready-yet-try-again-lat?noredirect=1&lq=1
       return marshaller.marshall(planeLandStatus.failedPlaneLandStatus);

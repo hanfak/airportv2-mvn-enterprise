@@ -30,7 +30,7 @@ public class LoggingHttpClient implements HttpClient {
     return tryToExecuteRequest(url, queryParameters);
   }
 
-  // TODO: Tostring static methods for request and response pretty format in logs, check YatspecFormatters, extract to prod package
+  // TODO P1 : Tostring static methods for request and response pretty format in logs, check YatspecFormatters, extract to prod package
   @Override
   public HttpRequest getHttpRequest(String url, Map<String, Object> queryParameters) {
     return delegate.getHttpRequest(url, queryParameters);

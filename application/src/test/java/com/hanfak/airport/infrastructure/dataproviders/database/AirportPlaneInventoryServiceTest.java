@@ -1,4 +1,4 @@
-package com.hanfak.airport.infrastructure.dataproviders;
+package com.hanfak.airport.infrastructure.dataproviders.database;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;

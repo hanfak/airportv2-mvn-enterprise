@@ -29,7 +29,7 @@ public class DatabaseHealthCheck implements HealthCheckProbe {
 
   @Override
   public ProbeResult probe() {
-    String query = "SELECT count(*);"; // TODO: put in properties???
+    String query = "SELECT count(*);"; // TODO P1 : put in properties???
     logger.info("Check database connection");
     logger.debug(format("Using SQL:%n%s", query));
 

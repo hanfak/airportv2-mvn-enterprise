@@ -40,7 +40,6 @@ public class TakeOffUseCase {
       return planeFlyingFailureStatus(plane);
     }
 
-    // TODO try catch on this
     try {
       if (planeInventoryService.planeIsPresentInAirport(plane)) {
         try {

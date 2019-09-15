@@ -39,3 +39,6 @@ Useful
 - mvn findbugs:findbugs
 - mvn org.apache.maven.plugins:maven-pmd-plugin:3.6:pmd
 - view code coverage application/target/site/jacoco/index.html
+
+Set the jvm options for maven as 
+export MAVEN_OPTS=-noverify -XX:TieredStopAtLevel=1

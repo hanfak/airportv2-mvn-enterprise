@@ -20,11 +20,17 @@ public class TestAirportPlaneInventoryService implements PlaneInventoryService {
 
   @Override
   public void addPlane(Plane plane) {
+    if (plane.planeId.equals(PlaneId.planeId("A1111"))) {
+      throw new IllegalStateException("Blah");
+    }
     planesInventory.add(plane);
   }
 
   @Override
   public void removePlane(Plane plane) {
+    if (plane.planeId.equals(PlaneId.planeId("A11111"))) {
+      throw new IllegalStateException("Blah");
+    }
     planesInventory.remove(plane);
   }
 

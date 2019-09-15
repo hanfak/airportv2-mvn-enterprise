@@ -1,10 +1,9 @@
-package com.hanfak.airport.infrastructure.dataproviders;
+package com.hanfak.airport.infrastructure.dataproviders.database;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
 import com.hanfak.airport.usecase.PlaneInventoryService;
 
-// TODO move to dtabase package
 public class AirportPlaneInventoryService implements PlaneInventoryService {
 
   private final AirportStorageJdbcRepository airportStorageRepository;
@@ -13,13 +12,6 @@ public class AirportPlaneInventoryService implements PlaneInventoryService {
     this.airportStorageRepository = airportStorageRepository;
   }
 
-  /**
-   * TODO:
-   * from business prospective,
-   * if a plane trying to land is in airport, thus plane is using wrong id or fake
-   * or user of app passed in wrong input
-   * thus exceptionally
-   */
   @Override
   public void addPlane(Plane plane) {
     airportStorageRepository.write(plane);

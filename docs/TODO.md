@@ -12,7 +12,7 @@
         - ~~use wiremock~~
 - ~~audit logs for internal calls~~
 - ~~refactor landusecase~~
-- Yatspec output index page
+- TODO
 - improve maven pom
     - profiles
         - activations
@@ -23,6 +23,7 @@
     - profile for local dev to speed up build
 - user story 3        
 - Use story 5 and 6
+- Yatspec output index page
 - Handle jsonprocessing exception as runtime, what to do?
 - Split learning into separate module
 - Call another probe, to monitor airport is full
