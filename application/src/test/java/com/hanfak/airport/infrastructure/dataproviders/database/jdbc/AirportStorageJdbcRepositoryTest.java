@@ -167,7 +167,7 @@ public class AirportStorageJdbcRepositoryTest implements WithAssertions {
 
     assertThatThrownBy(() -> repository.write(plane1))
             .isInstanceOf(IllegalStateException.class)
-            .hasMessage("Failed to store plane, 'Plane[planeId=A0001,planeStatus=FLYING]', to airport")
+            .hasMessage("Failed to write plane, 'Plane[planeId=A0001,planeStatus=FLYING]', to airport")
             .hasCause(new SQLException("blah"));
   }
 

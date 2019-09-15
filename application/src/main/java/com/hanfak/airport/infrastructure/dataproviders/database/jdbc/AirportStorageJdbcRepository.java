@@ -91,7 +91,7 @@ public class AirportStorageJdbcRepository {
       connection.commit();
       logger.info(format("Successfully persisted '%s'", plane));
     } catch (SQLException e) {
-      throw new IllegalStateException(format("Failed to store plane, '%s', to airport", plane), e);
+      throw new IllegalStateException(format("Failed to write plane, '%s', to airport", plane), e);
     }
   }
 

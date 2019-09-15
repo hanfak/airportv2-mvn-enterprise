@@ -11,9 +11,9 @@ import com.hanfak.airport.usecase.WeatherService;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import testinfrastructure.TestAirportPlaneInventoryService;
-import testinfrastructure.TestLogger;
-import testinfrastructure.WeatherServiceStub;
+import testinfrastructure.stubs.TestAirportPlaneInventoryService;
+import testinfrastructure.stubs.TestLogger;
+import testinfrastructure.stubs.WeatherServiceStub;
 
 import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
 import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
@@ -62,6 +62,8 @@ public class LandPlaneTest extends TestState implements WithAssertions {
     andThereIsAFailureInstructingThePlaneToLand();
   }
 
+  // TODO plane cannot be stored problem
+
   private void andThereIsAFailureInstructingThePlaneToLand() {
     assertThat(logger.infoLogs()).contains("Plane, 'A0001', could not land at the airport as it is stormy");
     assertThat(planeLandStatus.failedPlaneLandStatus).isEqualTo(expectedFailedPlaneLandStatusForStormyWeather);
@@ -101,8 +103,7 @@ public class LandPlaneTest extends TestState implements WithAssertions {
   }
 
   private void thenThereIsAFailureInstructingThePlaneToLand() {
-//    verify(logger).error(eq("Plane, 'A0001', is at airport"), any(IllegalStateException.class)); // test in unit test for exception
-    assertThat(logger.errorLogs()).contains("Plane, 'A0001', is at airport");
+    assertThat(logger.infoLogs()).contains("Plane, 'A0001', cannot land, it is at the airport");
     assertThat(planeLandStatus.failedPlaneLandStatus).isEqualTo(expectedFailedPlaneLandStatusForPresentPlane);
   }
 

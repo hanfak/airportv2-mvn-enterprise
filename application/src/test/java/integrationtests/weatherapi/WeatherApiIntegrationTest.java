@@ -6,7 +6,7 @@ import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.wiring.Application;
 import org.junit.Ignore;
 import org.junit.Test;
-import testinfrastructure.TestLogger;
+import testinfrastructure.stubs.TestLogger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

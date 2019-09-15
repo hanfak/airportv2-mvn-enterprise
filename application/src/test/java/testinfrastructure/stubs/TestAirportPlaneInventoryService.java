@@ -1,4 +1,4 @@
-package testinfrastructure;
+package testinfrastructure.stubs;
 
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.plane.PlaneId;
@@ -20,22 +20,17 @@ public class TestAirportPlaneInventoryService implements PlaneInventoryService {
 
   @Override
   public void addPlane(Plane plane) {
-    if (!checkPlaneIsAtAirport(plane.planeId)) {
-      planesInventory.add(plane);
-    } else {
-      // Use custom one
-      throw new IllegalStateException(String.format("Plane, '%s', in airport, cannot store plane in airport", plane.planeId));
-    }
+    planesInventory.add(plane);
   }
 
   @Override
-  public void removePlane(Plane plane) { // Should param be plane or planeId?
-    if (checkPlaneIsAtAirport(plane.planeId)) {
-      planesInventory.remove(plane);
-    } else {
-      // Use custom one
-      throw new IllegalStateException(String.format("Plane, '%s', not in airport, cannot remove plane", plane.planeId));
-    }
+  public void removePlane(Plane plane) {
+    planesInventory.remove(plane);
+  }
+
+  @Override
+  public boolean planeIsPresentInAirport(Plane plane) {
+    return checkPlaneIsAtAirport(plane.planeId);
   }
 
   public Boolean checkPlaneIsAtAirport(PlaneId planeId) {

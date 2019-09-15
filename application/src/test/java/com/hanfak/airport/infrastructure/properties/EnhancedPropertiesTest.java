@@ -2,7 +2,7 @@ package com.hanfak.airport.infrastructure.properties;
 
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
-import testinfrastructure.TestLogger;
+import testinfrastructure.stubs.TestLogger;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

@@ -4,7 +4,7 @@ import com.hanfak.airport.domain.monitoring.ProbeResult;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import org.junit.Test;
-import testinfrastructure.TestLogger;
+import testinfrastructure.stubs.TestLogger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -11,9 +11,9 @@ import com.hanfak.airport.usecase.TakeOffUseCase;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import testinfrastructure.TestAirportPlaneInventoryService;
-import testinfrastructure.TestLogger;
-import testinfrastructure.WeatherServiceStub;
+import testinfrastructure.stubs.TestAirportPlaneInventoryService;
+import testinfrastructure.stubs.TestLogger;
+import testinfrastructure.stubs.WeatherServiceStub;
 
 import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
@@ -32,7 +32,6 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   public void aPlaneCanTakeOff() {
     givenAPlaneHasLanded();
     andPlaneIsInTheAirport();
-    andTheWeatherIsNotStormy();
 
     whenAPlaneIsInstructedToTakeOff();
 
@@ -44,21 +43,18 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   @Test
   public void aPlaneCannotTakeOffIfNotAtAirport() {
     givenAPlaneHasLandedSomewhereOutsideTheAirport();
-    andTheWeatherIsNotStormy();
 
     whenAPlaneNotInTheAirportIsInstructedToTakeOff();
 
     thenThereIsAFailureInstructingThePlaneToTakeOff();
   }
 
+  // TODO plane cannot be stored problem
+
   private void givenAPlaneHasLandedSomewhereOutsideTheAirport() {
     takeOffUseCase = new TakeOffUseCase(testHangerService, logger);
     plane = plane(planeId("A0001"), LANDED);
     interestingGivens.add("plane", plane);
-  }
-
-  private void andTheWeatherIsNotStormy() {
-
   }
 
   private void givenAPlaneHasLanded() {
@@ -80,8 +76,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
   }
 
   private void thenThereIsAFailureInstructingThePlaneToTakeOff() {
-//    verify(logger).info(eq("Plane not at airport"), any(IllegalStateException.class)); // test in unit test
-    assertThat(logger.errorLogs()).contains("Plane, 'A0001', is not at airport");
+    assertThat(logger.infoLogs()).contains("Plane, 'A0001', cannot take off, it is not at the airport");
     assertThat(planeTakeOffStatus.failedPlaneTakeOffStatus).isEqualTo(expectedFailedPlaneTakeOffStatusForNotPresentPlane);
   }
 
@@ -96,7 +91,7 @@ public class PlaneTakeOffTest extends TestState implements WithAssertions {
 
   private final TestLogger logger = new TestLogger();
   private final TestAirportPlaneInventoryService testHangerService = new TestAirportPlaneInventoryService();
-  private WeatherServiceStub notStormyWeatherService = new WeatherServiceStub(false);
+  private final WeatherServiceStub notStormyWeatherService = new WeatherServiceStub(false);
 
   private final LandPlaneUseCase landPlaneUseCase = new LandPlaneUseCase(testHangerService, logger, notStormyWeatherService);
   private final SuccessfulPlaneTakeOffStatus expectedSuccessfulPlaneTakeOffStatus = successfulPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT);

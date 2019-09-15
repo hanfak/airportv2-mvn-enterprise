@@ -5,4 +5,5 @@ import com.hanfak.airport.domain.plane.Plane;
 public interface PlaneInventoryService {
   void addPlane(Plane plane);
   void removePlane(Plane plane);
+  boolean planeIsPresentInAirport(Plane plane);
 }

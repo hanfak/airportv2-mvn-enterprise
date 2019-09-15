@@ -1,4 +1,4 @@
-package testinfrastructure;
+package testinfrastructure.stubs;
 
 import com.hanfak.airport.usecase.WeatherService;
 

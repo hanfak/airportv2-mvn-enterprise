@@ -8,6 +8,7 @@ import com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 
 import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
@@ -17,6 +18,7 @@ import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.failedPlaneLandStatus;
+import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_COULD_NOT_LAND;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_LANDED;
 import static com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus.successfulPlaneLandStatus;
 import static org.mockito.ArgumentMatchers.eq;
@@ -41,8 +43,21 @@ public class LandPlaneUseCaseTest implements WithAssertions {
     PlaneLandStatus actionUnderTest = airport.instructPlaneToLand(landedPlane);
 
     verify(planeInventoryService, never()).addPlane(landedPlane);
-    verify(logger).info("Plane, 'A0001', cannot land, status is 'LANDED'");
+    verify(logger).info("Plane, 'A0001', could not land at the airport as it's status is 'LANDED'");
     assertThat(actionUnderTest.failedPlaneLandStatus).isEqualTo(expectedFailedPlaneLandStatusForLandedPlane);
+  }
+
+  // TODO Cannot land when stormy weather
+
+  @Test
+  public void cannotLandWhenIssueWithSystem() {
+    IllegalStateException cause = new IllegalStateException("Blah");
+    Mockito.doThrow(cause).when(planeInventoryService).addPlane(landedPlane);
+
+    PlaneLandStatus actionUnderTest = airport.instructPlaneToLand(flyingPlane);
+
+    verify(logger).error("Something went wrong storing the Plane, 'A0001', at the airport", cause);
+    assertThat(actionUnderTest.failedPlaneLandStatus).isEqualTo(expectedFailedPlaneLandStatusForSystemError);
   }
 
   @Before
@@ -54,6 +69,7 @@ public class LandPlaneUseCaseTest implements WithAssertions {
 
   private final SuccessfulPlaneLandStatus expectedSuccessfulPlaneLandStatus = successfulPlaneLandStatus(planeId("A0001"), LANDED, IN_AIRPORT);
   private final FailedPlaneLandStatus expectedFailedPlaneLandStatusForLandedPlane = failedPlaneLandStatus(planeId("A0001"), LANDED, NOT_IN_AIRPORT, PLANE_IS_LANDED);
+  private final FailedPlaneLandStatus expectedFailedPlaneLandStatusForSystemError = failedPlaneLandStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT, PLANE_COULD_NOT_LAND);
 
   private final PlaneInventoryService planeInventoryService = mock(PlaneInventoryService.class);
   private final Logger logger = mock(Logger.class);

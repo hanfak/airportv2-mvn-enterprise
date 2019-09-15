@@ -31,7 +31,7 @@ public class TrackingExecutorServiceFactoryTest {
 
     executorServiceFactory.shutdown();
 
-    Thread.sleep(10);
+    Thread.sleep(30);
 
     verify(loggingUncaughtExceptionHandler).uncaughtException(any(), eq(UNCAUGHT_EXCEPTION));
   }

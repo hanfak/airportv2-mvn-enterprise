@@ -1,7 +1,7 @@
 package com.hanfak.airport.infrastructure.webserver;
 
 import org.junit.Test;
-import testinfrastructure.TestLogger;
+import testinfrastructure.stubs.TestLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Writer;

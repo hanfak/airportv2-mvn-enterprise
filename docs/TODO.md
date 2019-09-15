@@ -11,17 +11,30 @@
     - ~~sequence diagram for yatspec include internal api calls~~
         - ~~use wiremock~~
 - ~~audit logs for internal calls~~
-- TraceyId logs, and adding to headers in req/resp via servlet filter and http client
+- refactor landusecase
+- improve maven pom
+    - profiles
+        - activations
+    - skip tests 
+    - depenednecy management
+        - organise in groups for test and prod scope
+    - multiple excutions for test packages in surefire and failsafe
+    - profile for local dev to speed up build
 - user story 3        
 - Use story 5 and 6
 - Handle jsonprocessing exception as runtime, what to do?
 - Split learning into separate module
 - Call another probe, to monitor airport is full
+- Add a lock to the plane (When splitting up)
+    - add to readme 
+        - Can only do synchronous calls
+        - issues with making multiple calls at same time or during processesing on the same plane 
 - Find a way to add a scheduled job(quartz) into the app
     - Schedule job for accessing airport is full
 - Find a way to do batching multiple to do later jobs
 - Find a way to use a message broker/ queue
-- pact tests when splitting weather service into separate app
+- pact tests & tracey id when splitting weather service into separate app
+    - TraceyId logs, and adding to headers in req/resp via servlet filter and http client
 
 
 - organise wiring, split out jdbc, more singletons, set up for test

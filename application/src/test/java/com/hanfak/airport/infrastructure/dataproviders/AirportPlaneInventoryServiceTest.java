@@ -9,47 +9,25 @@ import java.util.Optional;
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
-import static java.util.Optional.empty;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 // Better test names
 public class AirportPlaneInventoryServiceTest {
-  private final AirportStorageJdbcRepository airportStorageRepository = mock(AirportStorageJdbcRepository.class);
 
   @Test
   public void canAddAPlaneToAHanger() {
-    Plane plane = plane(planeId("A0001"), LANDED);
-    when(airportStorageRepository.read(planeId("A0001"))).thenReturn(empty());
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
-
     service.addPlane(plane);
 
     verify(airportStorageRepository).write(plane);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Test
-  public void canOnlyHaveOneUniquePlaneInTheHanger() {
-    Plane plane = plane(planeId("A0001"), LANDED);
-    when(airportStorageRepository.read(planeId("A0001"))).thenReturn(empty(), Optional.of(plane));
-
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
-    service.addPlane(plane);
-
-    verify(airportStorageRepository).write(plane);
-    assertThatThrownBy(() -> service.addPlane(plane))
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessage("Plane, 'A0001', in airport, cannot store plane in airport");
   }
 
   @Test
   public void removesPlaneFromHanger() {
-    Plane plane = plane(planeId("A0001"), LANDED);
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
-    when(airportStorageRepository.read(planeId("A0001"))).thenReturn(Optional.of(plane));
+    service.addPlane(plane);
 
     service.removePlane(plane);
 
@@ -57,14 +35,26 @@ public class AirportPlaneInventoryServiceTest {
   }
 
   @Test
-  public void cannotRemovePlaneFromAirportWhenPlaneNotInTheAirport() {
-    AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
-    Plane plane = plane(planeId("A0001"), LANDED);
-    when(airportStorageRepository.read(planeId("A0001"))).thenReturn(empty());
+  public void checksThatAPlaneIsInTheAirport() {
+    when(airportStorageRepository.read(plane.planeId)).thenReturn(Optional.of(plane));
 
+    boolean airportLocationOfPlane = service.planeIsPresentInAirport(plane);
 
-    assertThatThrownBy(() -> service.removePlane(plane))
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessage("Plane, 'A0001', not in airport, cannot remove plane");
+    verify(airportStorageRepository).read(plane.planeId);
+    assertTrue(airportLocationOfPlane);
   }
+
+  @Test
+  public void checksThatAPlaneIsNotInTheAirport() {
+    when(airportStorageRepository.read(plane.planeId)).thenReturn(Optional.empty());
+
+    boolean airportLocationOfPlane = service.planeIsPresentInAirport(plane);
+
+    verify(airportStorageRepository).read(plane.planeId);
+    assertFalse(airportLocationOfPlane);
+  }
+
+  private final AirportStorageJdbcRepository airportStorageRepository = mock(AirportStorageJdbcRepository.class);
+  private final Plane plane = plane(planeId("A0001"), LANDED);
+  private final AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
 }

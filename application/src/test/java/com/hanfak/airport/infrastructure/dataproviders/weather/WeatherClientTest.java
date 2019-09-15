@@ -5,7 +5,7 @@ import com.hanfak.airport.infrastructure.properties.Settings;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.junit.Test;
-import testinfrastructure.TestLogger;
+import testinfrastructure.stubs.TestLogger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

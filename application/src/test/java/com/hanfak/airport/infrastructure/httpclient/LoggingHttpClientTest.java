@@ -5,7 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.request.HttpRequest;
 import org.junit.Before;
 import org.junit.Test;
-import testinfrastructure.TestLogger;
+import testinfrastructure.stubs.TestLogger;
 
 import java.time.Duration;
 import java.util.HashMap;
