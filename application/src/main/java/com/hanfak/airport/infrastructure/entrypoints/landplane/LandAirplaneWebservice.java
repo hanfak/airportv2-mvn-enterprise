@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_COULD_NOT_LAND;
 import static java.lang.String.format;
 
 public class LandAirplaneWebservice {
@@ -68,9 +69,9 @@ public class LandAirplaneWebservice {
     if (planeLandStatus.failedPlaneLandStatus == null) {
       return marshaller.marshall(planeLandStatus.successfulPlaneLandStatus);
     } else {
-      // TODO P1 retriable error status code (503) and header for system error
-      //https://stackoverflow.com/questions/17862015/http-statuscode-to-retry-same-request
-      //https://stackoverflow.com/questions/9794696/how-do-i-choose-a-http-status-code-in-rest-api-for-not-ready-yet-try-again-lat?noredirect=1&lq=1
+      if (PLANE_COULD_NOT_LAND.equals(planeLandStatus.failedPlaneLandStatus.failureMessage)) {
+        return marshaller.marshallRetriableFailure(planeLandStatus.failedPlaneLandStatus);
+      }
       return marshaller.marshall(planeLandStatus.failedPlaneLandStatus);
     }
   }

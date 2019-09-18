@@ -18,7 +18,7 @@ public class JsonValidator {
     this.mapper = mapper;
   }
 
-  @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes") // TODO P1 fix by using custom exception
+  @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes") // TODO fix by using custom exception
   public Optional<JsonProcessingException> checkForInvalidJson(final String json) {
     try {
       mapper.enable(FAIL_ON_TRAILING_TOKENS);

@@ -16,11 +16,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
+import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.failedPlaneLandStatus;
+import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_COULD_NOT_LAND;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
 import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPlaneLandStatus;
 import static com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus.successfulPlaneLandStatus;
@@ -69,6 +71,30 @@ public class LandAirplaneWebserviceTest {
     verify(unmarshaller).unmarshal(request2);
     verify(marshaller).marshall(failedPlaneLandStatus(planeId("A0001"),
             LANDED, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT));
+  }
+
+  @Test
+  public void createRetriabledResponse() throws JsonProcessingException {
+    PlaneLandStatus statusOfPlane = createPlaneLandStatus(null,
+            failedPlaneLandStatus(planeId("A0001"),
+                    FLYING, NOT_IN_AIRPORT, PLANE_COULD_NOT_LAND));
+    when(usecase.instructPlaneToLand(plane(planeId("A0001"), FLYING))).thenReturn(statusOfPlane);
+    when(unmarshaller.unmarshal(request)).thenReturn(plane(planeId("A0001"), FLYING));
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Retriable", "true");
+    RenderedContent expectedRetriableResponse = new RenderedContent(expectedFailedResponseBody, "application/json", 503, headers);
+
+    when(marshaller.marshallRetriableFailure(failedPlaneLandStatus(planeId("A0001"),
+            FLYING, NOT_IN_AIRPORT, PLANE_COULD_NOT_LAND))).thenReturn(expectedRetriableResponse);
+    when(jsonValidator.checkForInvalidJson(request)).thenReturn(Optional.empty());
+
+    RenderedContent failedResponse = webservice.execute(request);
+
+    assertThat(failedResponse).isEqualTo(expectedRetriableResponse);
+    verify(usecase).instructPlaneToLand(plane(planeId("A0001"), FLYING));
+    verify(unmarshaller).unmarshal(request);
+    verify(marshaller).marshallRetriableFailure(failedPlaneLandStatus(planeId("A0001"),
+            FLYING, NOT_IN_AIRPORT, PLANE_COULD_NOT_LAND));
   }
 
   @Test

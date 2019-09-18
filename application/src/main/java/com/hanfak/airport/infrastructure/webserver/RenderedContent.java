@@ -11,8 +11,8 @@ public class RenderedContent extends ValueType {
 
     public final String body;
     private final String contentType;
-    private final int statusCode;
-    private final Map<String, String> headers;
+    public final int statusCode;
+    public final Map<String, String> headers;
 
     public RenderedContent(String body, String contentType, int statusCode, Map<String, String> headers) {
         this.body = body;

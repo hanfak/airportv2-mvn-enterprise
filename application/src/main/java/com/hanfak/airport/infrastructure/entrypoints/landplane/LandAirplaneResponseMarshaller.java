@@ -7,17 +7,24 @@ import com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus;
 import com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LandAirplaneResponseMarshaller {
 
-  public RenderedContent marshall(SuccessfulPlaneLandStatus successfulPlaneLandStatus) throws JsonProcessingException {
+  RenderedContent marshall(SuccessfulPlaneLandStatus successfulPlaneLandStatus) throws JsonProcessingException {
     return new RenderedContent(createSuccesfulResponseBodyJson(successfulPlaneLandStatus), "application/json", 200);
   }
 
-  public RenderedContent marshall(FailedPlaneLandStatus failedPlaneLandStatus) throws JsonProcessingException {
+  RenderedContent marshall(FailedPlaneLandStatus failedPlaneLandStatus) throws JsonProcessingException {
     return new RenderedContent(createFailedResponseBodyJson(failedPlaneLandStatus), "application/json", 404);
+  }
+
+  RenderedContent marshallRetriableFailure(FailedPlaneLandStatus failedPlaneLandStatus) throws JsonProcessingException {
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Retriable", "true");
+    return new RenderedContent(createFailedResponseBodyJson(failedPlaneLandStatus), "application/json", 503, headers);
   }
 
   private String createSuccesfulResponseBodyJson(SuccessfulPlaneLandStatus successfulPlaneLandStatus) throws JsonProcessingException {
