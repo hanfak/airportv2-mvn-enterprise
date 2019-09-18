@@ -8,6 +8,7 @@ import com.hanfak.airport.infrastructure.crosscutting.GuavaSupplierCaching;
 import com.hanfak.airport.infrastructure.crosscutting.TrackingExecutorServiceFactory;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.AirportPlaneInventoryService;
+import com.hanfak.airport.infrastructure.dataproviders.database.JdbcRepository;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.HikariDatabaseConnectionPooling;
 import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnection.PoolingJDBCDatabasConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
@@ -58,13 +59,13 @@ public class Wiring {
   private final Singletons singletons;
 
   public static class Singletons {
-    private final AirportStorageJdbcRepository airportStorageRepository;
+    private final JdbcRepository airportStorageRepository;
     private final JDBCDatabaseConnectionManager databaseConnectionManager;
     final TrackingExecutorServiceFactory trackingExecutorServiceFactory;
     private final Settings settings;
 
     @SuppressWarnings({"PMD.ExcessiveParameterList"})
-    public Singletons(JDBCDatabaseConnectionManager databaseConnectionManager, AirportStorageJdbcRepository airportStorageRepository, TrackingExecutorServiceFactory trackingExecutorServiceFactory, Settings settings) {
+    public Singletons(JDBCDatabaseConnectionManager databaseConnectionManager, JdbcRepository airportStorageRepository, TrackingExecutorServiceFactory trackingExecutorServiceFactory, Settings settings) {
       this.airportStorageRepository = airportStorageRepository;
       this.databaseConnectionManager = databaseConnectionManager;
       this.trackingExecutorServiceFactory = trackingExecutorServiceFactory;
@@ -121,7 +122,7 @@ public class Wiring {
   }
 
   private WeatherService weatherService() {
-    return new OpenWeatherMapService(new WeatherClient(new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(), new TimerFactory(), new LogObfuscator()
+    return new OpenWeatherMapService(new WeatherClient(new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(settings()), new TimerFactory(), new LogObfuscator()
     ), settings(), APPLICATION_LOGGER));
   }
 
@@ -171,10 +172,10 @@ public class Wiring {
 
   private HealthChecksUseCase healthChecksUseCase() {
     List<HealthCheckProbe> healthCheckProbes = Arrays.asList(new DatabaseHealthCheck(databaseConnectionManager(), settings(), APPLICATION_LOGGER),
-            new WeatherApiHealthCheck(settings(), new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(), new TimerFactory(), new LogObfuscator())));
+            new WeatherApiHealthCheck(settings(), new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(settings()), new TimerFactory(), new LogObfuscator())));
     return new HealthChecksUseCase(
             healthCheckProbes,
             new GuavaSupplierCaching(),
-            new ExecutorServiceConcurrently(singletons.trackingExecutorServiceFactory, healthCheckProbes.size()));
+            new ExecutorServiceConcurrently(singletons.trackingExecutorServiceFactory, healthCheckProbes.size()), settings());
   }
 }

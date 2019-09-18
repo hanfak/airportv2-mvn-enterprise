@@ -3,7 +3,8 @@ package com.hanfak.airport.infrastructure.healthchecks;
 import com.hanfak.airport.domain.monitoring.HealthCheckProbe;
 import com.hanfak.airport.domain.monitoring.ProbeResult;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
-import com.hanfak.airport.infrastructure.properties.DatabaseSettings;
+import com.hanfak.airport.infrastructure.properties.Settings;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
@@ -15,13 +16,14 @@ import static com.hanfak.airport.domain.monitoring.ProbeResult.failure;
 import static com.hanfak.airport.domain.monitoring.ProbeResult.success;
 import static java.lang.String.format;
 
+@SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING", justification = "This is a hardcoded setting")
 public class DatabaseHealthCheck implements HealthCheckProbe {
 
-  private final DatabaseSettings settings;
+  private final Settings settings;
   private final JDBCDatabaseConnectionManager databaseConnectionManager;
   private final Logger logger;
 
-  public DatabaseHealthCheck(JDBCDatabaseConnectionManager databaseConnectionManager, DatabaseSettings settings, Logger logger) {
+  public DatabaseHealthCheck(JDBCDatabaseConnectionManager databaseConnectionManager, Settings settings, Logger logger) {
     this.settings = settings;
     this.databaseConnectionManager = databaseConnectionManager;
     this.logger = logger;
@@ -29,7 +31,7 @@ public class DatabaseHealthCheck implements HealthCheckProbe {
 
   @Override
   public ProbeResult probe() {
-    String query = "SELECT count(*);"; // TODO P1 : put in properties???
+    String query = settings.databaseProbeQuery();
     logger.info("Check database connection");
     logger.debug(format("Using SQL:%n%s", query));
 

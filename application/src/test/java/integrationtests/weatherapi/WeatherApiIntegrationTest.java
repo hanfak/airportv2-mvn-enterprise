@@ -23,7 +23,7 @@ public class WeatherApiIntegrationTest {
     Path secretsProperties = Paths.get("unused");
     Settings settings = loadSettings(getLogger(Application.class), appProperties, secretsProperties);
     TestLogger testLogger = new TestLogger();
-    HttpClient httpClient = new LoggingHttpClient(testLogger, new UnirestHttpClient(), new TimerFactory(), new LogObfuscator());
+    HttpClient httpClient = new LoggingHttpClient(testLogger, new UnirestHttpClient(settings), new TimerFactory(), new LogObfuscator());
     WeatherClient weatherClient = new WeatherClient(httpClient, settings, testLogger);
 //    int weatherId = weatherClient.getWeatherId();
 //

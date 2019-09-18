@@ -5,26 +5,25 @@ import com.hanfak.airport.domain.helper.SingleValueType;
 import static java.lang.String.format;
 
 public class PlaneId extends SingleValueType<String> {
-  // TODO remove logic from constructor???
+
   private PlaneId(String planeId) {
-    super(validate(planeId));
+    super(planeId);
+    validate();
   }
 
   public static PlaneId planeId(String planeId) {
     return new PlaneId(planeId);
   }
-  // TODO change to return planeID, and no args, use current object
-  private static String validate(String planeId) {
-    boolean planeIdContainsRequiredCharacters = planeId.matches("[a-zA-Z0-9]+");
+
+  private void validate() {
+    boolean planeIdContainsRequiredCharacters = value.matches("[a-zA-Z0-9]+");
     if (!planeIdContainsRequiredCharacters) {
-      throw new IllegalCharacterException(format("planeId, '%s', is not valid: Illegal characters", planeId));
+      throw new IllegalCharacterException(format("planeId, '%s', is not valid: Illegal characters", value));
     }
 
-    boolean planeIdIsRequiredLength = planeId.length() < 11 && planeId.length() > 4;
+    boolean planeIdIsRequiredLength = value.length() < 11 && value.length() > 4;
     if (!planeIdIsRequiredLength) {
-      throw new IllegalLengthException(format("planeId, '%s', is not valid: Not required length", planeId));
+      throw new IllegalLengthException(format("planeId, '%s', is not valid: Not required length", value));
     }
-
-    return planeId;
   }
 }

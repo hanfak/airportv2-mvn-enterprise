@@ -16,9 +16,9 @@ public class HealthChecksUseCase {
   private final Supplier<HealthCheckResult> healthCheckResult;
   private final Concurrently concurrently;
 
-  public HealthChecksUseCase(List<HealthCheckProbe> healthCheckProbes, SupplierCaching supplierCaching, Concurrently concurrently) {
+  public HealthChecksUseCase(List<HealthCheckProbe> healthCheckProbes, SupplierCaching supplierCaching, Concurrently concurrently, StatusProbesSettings settings) {
     this.healthCheckProbes = healthCheckProbes;
-    this.healthCheckResult = supplierCaching.cacheForDuration(this::doGetStatus, Duration.ofSeconds(0)); // TODO P1 should be a property
+    this.healthCheckResult = supplierCaching.cacheForDuration(this::doGetStatus, Duration.ofSeconds(settings.cacheDuration()));
     this.concurrently = concurrently;
   }
 

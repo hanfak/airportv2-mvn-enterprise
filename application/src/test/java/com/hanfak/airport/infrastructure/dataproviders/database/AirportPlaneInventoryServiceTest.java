@@ -1,7 +1,6 @@
 package com.hanfak.airport.infrastructure.dataproviders.database;
 
 import com.hanfak.airport.domain.plane.Plane;
-import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -54,7 +53,7 @@ public class AirportPlaneInventoryServiceTest {
     assertFalse(airportLocationOfPlane);
   }
 
-  private final AirportStorageJdbcRepository airportStorageRepository = mock(AirportStorageJdbcRepository.class);
+  private final JdbcRepository airportStorageRepository = mock(JdbcRepository.class);
   private final Plane plane = plane(planeId("A0001"), LANDED);
   private final AirportPlaneInventoryService service = new AirportPlaneInventoryService(airportStorageRepository);
 }

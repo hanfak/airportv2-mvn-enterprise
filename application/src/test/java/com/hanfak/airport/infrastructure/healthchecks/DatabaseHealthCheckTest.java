@@ -77,6 +77,7 @@ public class DatabaseHealthCheckTest {
   private Settings settings() {
     Settings settings = mock(Settings.class);
     when(settings.databaseUrl()).thenReturn(DATABASE_URL);
+    when(settings.databaseProbeQuery()).thenReturn(HEALTH_CHECK_QUERY);
     return settings;
   }
 

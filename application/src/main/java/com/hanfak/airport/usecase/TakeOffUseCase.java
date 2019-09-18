@@ -78,12 +78,10 @@ public class TakeOffUseCase {
             getFailedPlaneTakeOffStatus(plane, PLANE_IS_FLYING, NOT_IN_AIRPORT));
   }
 
-  // TODO better name
   private SuccessfulPlaneTakeOffStatus getSuccessfulPlaneTakeOffStatus(Plane flyingPlane) {
     return successfulPlaneTakeOffStatus(flyingPlane.planeId, flyingPlane.planeStatus, NOT_IN_AIRPORT);
   }
 
-  // TODO better name
   private FailedPlaneTakeOffStatus getFailedPlaneTakeOffStatus(Plane plane, TakeOffFailureReason reason, AirportStatus airportStatus) {
     return failedPlaneTakeOffStatus(plane.planeId, plane.planeStatus, airportStatus, reason);
   }

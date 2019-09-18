@@ -4,6 +4,7 @@ import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.domain.plane.PlaneId;
 import com.hanfak.airport.domain.plane.PlaneStatus;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
+import com.hanfak.airport.infrastructure.dataproviders.database.JdbcRepository;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
@@ -20,13 +21,12 @@ import static java.lang.String.format;
 import static java.util.Optional.empty;
 
 // TODO Split for each operation
-// TODO P1 interface
 // TODO make this more agnositic, should not know about plane??? sql as properties?
 // The methods can be agnostic and delegated??
 // TooManyStaticImports - Acceptable for this class, only using domain objects (static factories and enums)
 // PrematureDeclaration - Acceptable for this class, due to iterator pattern of ResultSet
 @SuppressWarnings({"PMD.TooManyStaticImports", "PMD.PrematureDeclaration"})
-public class AirportStorageJdbcRepository {
+public class AirportStorageJdbcRepository implements JdbcRepository {
 
   private static final String PLANE_BY_PLANE_ID = "SELECT PLANE_STATUS, PLANE_ID FROM airport WHERE PLANE_ID=?";
   private static final String INSERT_A_PLANE = "INSERT INTO airport (PLANE_ID, PLANE_STATUS) VALUES (?,?)";
@@ -40,6 +40,7 @@ public class AirportStorageJdbcRepository {
     this.databaseConnectionManager = databaseConnectionManager;
   }
 
+  @Override
   public Optional<Plane> read(PlaneId lookupId) {
     logger.info(format("Reading Airport for '%s'", lookupId));
     logger.debug(format("Using sql:%n%s", PLANE_BY_PLANE_ID));
@@ -74,6 +75,7 @@ public class AirportStorageJdbcRepository {
     }
   }
 
+  @Override
   public void write(final Plane plane) {
     logger.info(format("Persisting '%s'", plane));
     logger.debug(format("Using sql:%n%s", INSERT_A_PLANE));
@@ -95,6 +97,7 @@ public class AirportStorageJdbcRepository {
     }
   }
 
+  @Override
   public void delete(String lookupId) {
     logger.info(format("Deleting row with plane id '%s'", lookupId));
     logger.debug(format("Using sql:%n%s", DELETE_PLANE_FROM_AIRPORT));

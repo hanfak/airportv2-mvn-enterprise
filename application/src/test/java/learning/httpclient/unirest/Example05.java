@@ -13,7 +13,6 @@ public class Example05 {
   public static void main(String... args) {
     try {
       String url = "http://api.openweathermap.org/data/2.5/weather?";
-      // Todo P1 what timeouts to use
       Unirest.setTimeouts(10000, 20000);
       HttpResponse<JsonNode> response = Unirest.get(url)
               .queryString("lat", "51.470020" )
