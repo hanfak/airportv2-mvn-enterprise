@@ -10,7 +10,6 @@ import java.util.Optional;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_TRAILING_TOKENS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,7 +18,7 @@ public class JsonValidatorTest {
 
   @Test
   public void validJson() throws Exception {
-    Optional<JsonProcessingException> actualResult = jsonValidator.checkForInvalidJson(someJson);
+    Optional<IOException> actualResult = jsonValidator.checkForInvalidJson(someJson);
 
     verify(mapper).enable(FAIL_ON_TRAILING_TOKENS);
     verify(mapper).enable(FAIL_ON_READING_DUP_TREE_KEY);
@@ -31,18 +30,9 @@ public class JsonValidatorTest {
   public void invalidJson() throws Exception {
     ExceptionMock exception = new ExceptionMock("blah");
     when(mapper.readTree(invalidJson)).thenThrow(exception);
-    Optional<JsonProcessingException> actualResult = jsonValidator.checkForInvalidJson(invalidJson);
+    Optional<IOException> actualResult = jsonValidator.checkForInvalidJson(invalidJson);
 
     assertThat(actualResult).contains(exception);
-  }
-
-  @Test
-  public void ioexception() throws Exception {
-    IOException exception = new IOException("blah");
-    when(mapper.readTree(invalidJson)).thenThrow(exception);
-    assertThatThrownBy(() -> jsonValidator.checkForInvalidJson(invalidJson))
-            .isInstanceOf(RuntimeException.class)
-            .hasCause(exception);
   }
 
   private static final String someJson = "{\"field\" : \"Some json\"}";

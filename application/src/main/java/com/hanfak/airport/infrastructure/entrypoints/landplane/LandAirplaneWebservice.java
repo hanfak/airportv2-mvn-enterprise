@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hanfak.airport.domain.plane.IllegalCharacterException;
 import com.hanfak.airport.domain.plane.IllegalLengthException;
 import com.hanfak.airport.domain.plane.Plane;
+import com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
 import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
 import com.hanfak.airport.infrastructure.entrypoints.RequestUnmarshaller;
@@ -11,8 +12,10 @@ import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
 import org.slf4j.Logger;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_COULD_NOT_LAND;
 import static java.lang.String.format;
@@ -34,8 +37,9 @@ public class LandAirplaneWebservice {
   }
 
   public RenderedContent execute(String request) throws JsonProcessingException {
-    if (jsonValidator.checkForInvalidJson(request).isPresent()) {
-      return createRenderedContentForInvalidJson(request);
+    Optional<IOException> invalidJsonException = jsonValidator.checkForInvalidJson(request);
+    if (invalidJsonException.isPresent()) {
+      return createRenderedContentForInvalidJson(request, invalidJsonException.get());
     }
 
     try {
@@ -51,6 +55,13 @@ public class LandAirplaneWebservice {
     } // Catch runtime and set as technical failure
   }
 
+  private RenderedContent createRenderedContentForInvalidJson(String request, IOException exception) {
+    logger.error(format("Request body is '%s'", request), exception);
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Retriable", "true");
+    return new RenderedContent("Error with JSON Body in request", "text/plain", 500, headers);
+  }
+
   private RenderedContent createRenderedContentForRequestContent(String body, String request, IllegalArgumentException exception) {
     logger.error(format("Error Message: '%s'\nRequest body is '%s'", body, request), exception);
     Map<String, String> headers = new HashMap<>();
@@ -58,21 +69,15 @@ public class LandAirplaneWebservice {
     return new RenderedContent(body, "text/plain", 500, headers);
   }
 
-  private RenderedContent createRenderedContentForInvalidJson(String request) {
-    logger.error(format("Request body is '%s'", request), jsonValidator.checkForInvalidJson(request).get());
-    Map<String, String> headers = new HashMap<>();
-    headers.put("Retriable", "true");
-    return new RenderedContent("Error with JSON Body in request", "text/plain", 500, headers);
-  }
-
   private RenderedContent marshallLandedPlaneStatus(PlaneLandStatus planeLandStatus) throws JsonProcessingException {
-    if (planeLandStatus.failedPlaneLandStatus == null) {
+    FailedPlaneLandStatus failedPlaneLandStatus = planeLandStatus.failedPlaneLandStatus;
+    if (failedPlaneLandStatus == null) {
       return marshaller.marshall(planeLandStatus.successfulPlaneLandStatus);
     } else {
-      if (PLANE_COULD_NOT_LAND.equals(planeLandStatus.failedPlaneLandStatus.failureMessage)) {
-        return marshaller.marshallRetriableFailure(planeLandStatus.failedPlaneLandStatus);
+      if (PLANE_COULD_NOT_LAND.equals(failedPlaneLandStatus.failureMessage)) {
+        return marshaller.marshallRetriableFailure(failedPlaneLandStatus);
       }
-      return marshaller.marshall(planeLandStatus.failedPlaneLandStatus);
+      return marshaller.marshall(failedPlaneLandStatus);
     }
   }
 }
