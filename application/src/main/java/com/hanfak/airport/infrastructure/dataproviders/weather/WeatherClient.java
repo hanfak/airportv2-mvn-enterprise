@@ -5,8 +5,6 @@ import com.hanfak.airport.infrastructure.properties.WeatherApiSettings;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 
 import java.util.AbstractMap;
@@ -21,18 +19,20 @@ public class WeatherClient {
   private final HttpClient httpClient;
   private final WeatherApiSettings settings;
   private final Logger logger;
+  private final WeatherClientUnmarshaller unmarshaller;
 
-  public WeatherClient(HttpClient httpClient, WeatherApiSettings settings, Logger logger) {
+  public WeatherClient(HttpClient httpClient, WeatherApiSettings settings, Logger logger, WeatherClientUnmarshaller unmarshaller) {
     this.httpClient = httpClient;
     this.settings = settings;
     this.logger = logger;
+    this.unmarshaller = unmarshaller;
   }
 
   public int getWeatherId() {
     try {
       HttpResponse<JsonNode> response = httpClient.submitGetRequest(settings.weatherUrl(), createQueryDetails());
       if (response.getStatus() == 200) {
-        return unmarshallResponse(response);
+        return unmarshaller.unmarshallWeatherCode(response);
       } else {
         throw new IllegalStateException(format("Unexpected HTTP status '%s' received when getting weather from api", response.getStatus()));
       }
@@ -49,13 +49,5 @@ public class WeatherClient {
             new AbstractMap.SimpleEntry<>("lon", settings.locationLongitude()),
             new AbstractMap.SimpleEntry<>("appid", settings.appId()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-  }
-
-  // TODO P1: extract out unmarshaller
-  private int unmarshallResponse(HttpResponse<JsonNode> response) {
-    JSONObject body = response.getBody().getObject();
-    JSONArray jArray = body.getJSONArray("weather");
-    JSONObject jsonObject = jArray.getJSONObject(0);
-    return jsonObject.getInt("id");
   }
 }

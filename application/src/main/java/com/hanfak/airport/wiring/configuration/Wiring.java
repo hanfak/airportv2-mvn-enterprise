@@ -14,6 +14,7 @@ import com.hanfak.airport.infrastructure.dataproviders.database.databaseconnecti
 import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStorageJdbcRepository;
 import com.hanfak.airport.infrastructure.dataproviders.weather.OpenWeatherMapService;
 import com.hanfak.airport.infrastructure.dataproviders.weather.WeatherClient;
+import com.hanfak.airport.infrastructure.dataproviders.weather.WeatherClientUnmarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
 import com.hanfak.airport.infrastructure.entrypoints.RequestUnmarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneResponseMarshaller;
@@ -50,6 +51,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.hanfak.airport.infrastructure.logging.LoggingCategory.APPLICATION;
+import static com.hanfak.airport.infrastructure.logging.LoggingCategory.AUDIT;
 import static org.slf4j.LoggerFactory.getLogger;
 // Expected for this class
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.CouplingBetweenObjects"})
@@ -122,8 +124,8 @@ public class Wiring {
   }
 
   private WeatherService weatherService() {
-    return new OpenWeatherMapService(new WeatherClient(new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(settings()), new TimerFactory(), new LogObfuscator()
-    ), settings(), APPLICATION_LOGGER));
+    return new OpenWeatherMapService(new WeatherClient(new LoggingHttpClient(getLogger(AUDIT.name()), new UnirestHttpClient(settings()), new TimerFactory(), new LogObfuscator()
+    ), settings(), APPLICATION_LOGGER, new WeatherClientUnmarshaller()));
   }
 
   public AirportPlaneInventoryService airportPlaneInventoryService() {

@@ -48,5 +48,6 @@ public class WeatherClientTest {
   private final HttpClient httpClient = mock(HttpClient.class);
   private final TestLogger logger = new TestLogger();
   private final Settings settings = mock(Settings.class);
-  private final WeatherClient weatherClient = new WeatherClient(httpClient, settings, logger);
+  private final WeatherClientUnmarshaller unmarshaller = mock(WeatherClientUnmarshaller.class);
+  private final WeatherClient weatherClient = new WeatherClient(httpClient, settings, logger, unmarshaller);
 }
