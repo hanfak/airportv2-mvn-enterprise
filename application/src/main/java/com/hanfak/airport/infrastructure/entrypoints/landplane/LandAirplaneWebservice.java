@@ -32,7 +32,7 @@ public class LandAirplaneWebservice {
     this.useCase = useCase;
     this.unmarshaller = unmarshaller;
     this.marshaller = marshaller;
-    this.jsonValidator = jsonValidator;
+    this.jsonValidator = jsonValidator; // TODO P1: should happen in unmarshaller
     this.logger = logger;
   }
 
@@ -74,6 +74,7 @@ public class LandAirplaneWebservice {
     if (failedPlaneLandStatus == null) {
       return marshaller.marshall(planeLandStatus.successfulPlaneLandStatus);
     } else {
+      // TODO P1: also retriale for weather retrievable
       if (PLANE_COULD_NOT_LAND.equals(failedPlaneLandStatus.failureMessage)) {
         return marshaller.marshallRetriableFailure(failedPlaneLandStatus);
       }

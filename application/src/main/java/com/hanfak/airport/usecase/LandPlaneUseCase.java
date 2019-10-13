@@ -61,7 +61,8 @@ public class LandPlaneUseCase {
       return systemFailureStatus(plane, e);
     }
   }
-
+  // tODO p1: remove nulls, create better output models and mappings
+  // https://www.techiedelight.com/return-multiple-values-method-java/
   private PlaneLandStatus weatherSystemFailureStatus(Plane plane, IllegalStateException exception) {
     logger.error("Something went wrong retrieving the weather at the airport", exception);
     return getFailurePlaneLandStatus(plane, NOT_IN_AIRPORT, WEATHER_NOT_AVAILABLE);

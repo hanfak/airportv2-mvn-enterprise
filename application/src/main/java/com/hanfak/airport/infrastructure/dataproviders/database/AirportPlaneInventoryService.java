@@ -3,6 +3,7 @@ package com.hanfak.airport.infrastructure.dataproviders.database;
 import com.hanfak.airport.domain.plane.Plane;
 import com.hanfak.airport.usecase.PlaneInventoryService;
 
+// TODO p1: implement an interface for each action
 public class AirportPlaneInventoryService implements PlaneInventoryService {
 
   private final JdbcRepository airportStorageRepository;

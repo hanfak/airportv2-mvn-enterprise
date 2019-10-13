@@ -13,6 +13,11 @@
 - ~~audit logs for internal calls~~
 - ~~refactor landusecase~~
 - TODO
+- domain objects used in outer layers, should be different
+    - better mapping
+- input to usecase, validate via interface inner class which is implemeted by use case
+    = not null validation on usecase input object fields
+- Split use case into ports
 - improve maven pom
     - profiles
         - activations
@@ -21,6 +26,7 @@
         - organise in groups for test and prod scope
     - multiple excutions for test packages in surefire and failsafe
     - profile for local dev to speed up build
+    - modules for ports, infrastructure etc
 - user story 3        
 - Use story 5 and 6
 - Yatspec output index page
