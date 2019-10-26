@@ -1,17 +1,12 @@
 package com.hanfak.airport.infrastructure.httpclient;
 
-import com.mashape.unirest.http.Headers;
-import com.mashape.unirest.http.HttpMethod;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.request.HttpRequest;
-import com.mashape.unirest.request.body.Body;
-import org.apache.http.HttpEntity;
 import org.junit.Test;
 import testinfrastructure.stubs.TestLogger;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,32 +16,22 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-// TODO refactor, put in before block
+@SuppressWarnings("unchecked") // For test
 public class LoggingHttpClientTest {
 
   @Test
   public void shouldLogSuccessfulRequestWithTime() throws Exception {
     when(delegate.getHttpRequest(URL, queryParameters)).thenReturn(request);
-    when(request.getUrl()).thenReturn("request url").thenReturn("request url");
-    when(request.getHttpMethod()).thenReturn(httpMethod);
-    when(httpMethod.toString()).thenReturn("GET");
-    when(request.getHeaders()).thenReturn(headers);
-    when(headers.entrySet()).thenReturn(Collections.emptySet());
-    when(request.getBody()).thenReturn(body);
-    when(body.getEntity()).thenReturn(entity);
-    when(entity.toString()).thenReturn("Request Body");
+    when(httpLoggingFormatter.requestOutput(request)).thenReturn("Request String");
     when(timerFactory.startTimer()).thenReturn(timer);
     when(delegate.submitGetRequest(URL, queryParameters)).thenReturn(response);
+    when(httpLoggingFormatter.responseOutput(response)).thenReturn("Response String");
     when(timer.elapsedTime()).thenReturn(Duration.ofSeconds(10));
-    when(response.getBody()).thenReturn("Response Body"); //??
-    when(response.getStatus()).thenReturn(200);
-    when(response.getHeaders()).thenReturn(headers);
-    when(headers.entrySet()).thenReturn(Collections.emptySet());
     when(logObfuscator.obfuscateLogs(anyString()))
             .thenReturn("Request from Application to request url\nRequest String")
             .thenReturn("Response from request url to Application received after 0ms\nResponse String");
 
-    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory, logObfuscator);
+    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory, logObfuscator, httpLoggingFormatter);
 
     HttpResponse<JsonNode> actualResponse = httpClient.submitGetRequest(URL, queryParameters);
 
@@ -62,19 +47,12 @@ public class LoggingHttpClientTest {
             .thenReturn("Failed to execute request from Application to request url after 100ms\nRequest String");
     RuntimeException delegateException = new RuntimeException("Some exception");
     when(delegate.getHttpRequest(URL, queryParameters)).thenReturn(request);
-    when(request.getUrl()).thenReturn("request url").thenReturn("request url");
-    when(request.getHttpMethod()).thenReturn(httpMethod);
-    when(httpMethod.toString()).thenReturn("GET");
-    when(request.getHeaders()).thenReturn(headers);
-    when(headers.entrySet()).thenReturn(Collections.emptySet());
-    when(request.getBody()).thenReturn(body);
-    when(body.getEntity()).thenReturn(entity);
-    when(entity.toString()).thenReturn("Request Body");
+    when(httpLoggingFormatter.requestOutput(request)).thenReturn("Request String");
     when(timerFactory.startTimer()).thenReturn(timer);
     when(delegate.submitGetRequest(URL, queryParameters)).thenThrow(delegateException);
     when(timer.elapsedTime()).thenReturn(Duration.ofMillis(ELAPSED_MILLISECONDS));
 
-    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory, logObfuscator);
+    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory, logObfuscator, httpLoggingFormatter);
 
     try {
       httpClient.submitGetRequest(URL, queryParameters);
@@ -93,22 +71,13 @@ public class LoggingHttpClientTest {
             .thenReturn("Response from http://api.openweathermap.org/data/2.5/weather?&appid=******&lon=-0.454296&lat=51.470020 to Application received after 0ms\nResponse String");
 
     when(delegate.getHttpRequest(URL, queryParameters)).thenReturn(request);
+    when(httpLoggingFormatter.requestOutput(request)).thenReturn("Request String");
     when(request.getUrl()).thenReturn("http://api.openweathermap.org/data/2.5/weather?&appid=a_secret1234&lon=-0.454296&lat=51.470020");
-    when(request.getHttpMethod()).thenReturn(httpMethod);
-    when(httpMethod.toString()).thenReturn("GET");
-    when(request.getHeaders()).thenReturn(headers);
-    when(headers.entrySet()).thenReturn(Collections.emptySet());
-    when(request.getBody()).thenReturn(body);
-    when(body.getEntity()).thenReturn(entity);
-    when(entity.toString()).thenReturn("Request Body");
     when(timerFactory.startTimer()).thenReturn(timer);
     when(delegate.submitGetRequest(URL, queryParameters)).thenReturn(response);
+    when(httpLoggingFormatter.responseOutput(response)).thenReturn("Response String");
     when(timer.elapsedTime()).thenReturn(Duration.ofSeconds(10));
-    when(response.getBody()).thenReturn("Response Body"); //??
-    when(response.getStatus()).thenReturn(200);
-    when(response.getHeaders()).thenReturn(headers);
-    when(headers.entrySet()).thenReturn(Collections.emptySet());
-    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory, logObfuscator);
+    HttpClient httpClient = new LoggingHttpClient(logger, delegate, timerFactory, logObfuscator, httpLoggingFormatter);
 
     HttpResponse<JsonNode> actualResponse = httpClient.submitGetRequest(URL, queryParameters);
 
@@ -127,9 +96,6 @@ public class LoggingHttpClientTest {
   private final HttpResponse response = mock(HttpResponse.class);
   private final TimerFactory timerFactory = mock(TimerFactory.class);
   private final Timer timer = mock(Timer.class);
-  private final Headers headers = mock(Headers.class);
-  private final HttpMethod httpMethod = mock(HttpMethod.class);
   private final LogObfuscator logObfuscator = mock(LogObfuscator.class);
-  private final Body body = mock(Body.class);
-  private final HttpEntity entity = mock(HttpEntity.class);
+  private final HttpLoggingFormatter httpLoggingFormatter = mock(HttpLoggingFormatter.class);
 }

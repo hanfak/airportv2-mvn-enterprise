@@ -26,7 +26,7 @@ public class DependenciesMakeSenseTest implements WithAssertions {
     assertThat(violations).describedAs("Violations").isEmpty();
   }
 
-  //TODO fix so can talk to everything except for wiring
+  // This is here to keep an eye out on external dependencies being used
   @Test
   public void infrastructureShouldOnlyTalkToItselfAndUsecaseAndDomainAndJava() {
     List<String> violations = domainEnforcer.checkThatPackageOnlyTalksToItself("com.hanfak.airport.infrastructure")
@@ -49,8 +49,8 @@ public class DependenciesMakeSenseTest implements WithAssertions {
                     "java");
     assertThat(violations).describedAs("Violations").isEmpty();
   }
-  // TODO: This is not needed as wiring should talk to everything
-  @Test
+
+  @Test // This is not needed as wiring should talk to everything
   public void wiringShouldOnlyTalkToItselfAndInfrastructureAndUsecaseAndDomainAndJava() {
     List<String> violations = domainEnforcer.checkThatPackageOnlyTalksToItself("com.hanfak.airport.wiring")
             .apartFrom("com.hanfak.airport.domain",

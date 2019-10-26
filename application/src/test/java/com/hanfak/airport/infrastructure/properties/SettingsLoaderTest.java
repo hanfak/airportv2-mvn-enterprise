@@ -48,8 +48,6 @@ public class SettingsLoaderTest implements WithAssertions {
             .hasMessage("Could not find application properties at '/doesNotExist'");
   }
 
-  // TODO test for line 28
-
   private Path propertiesPath;
   private Path secretPropertiesPath;
   private final Logger logger = mock(Logger.class);

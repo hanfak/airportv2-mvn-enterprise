@@ -1,7 +1,6 @@
 package com.hanfak.airport.domain.planelandstatus;
 
 public enum LandFailureReason {
-  // TODO P1 add error code
   PLANE_IS_LANDED("Plane could not land as it is still on land"),
   PLANE_IS_AT_THE_AIRPORT("Plane could not land as it is in the airport"),
   PLANE_COULD_NOT_LAND("Plane could not land at airport, something went wrong with the system"),

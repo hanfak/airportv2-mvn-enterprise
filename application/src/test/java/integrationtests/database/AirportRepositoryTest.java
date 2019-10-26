@@ -15,8 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 // This is redundent with end to end tests testing the database is working
 // Here to show how an end to end test might work
-// TODO fix when running in build
-@Ignore
+@Ignore // Cannot work in build, should use on own
 public class AirportRepositoryTest extends YatspecAcceptanceDatabaseTest {
 
   @Test

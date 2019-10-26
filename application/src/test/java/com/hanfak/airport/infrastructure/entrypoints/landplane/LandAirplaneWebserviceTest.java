@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hanfak.airport.domain.plane.IllegalCharacterException;
 import com.hanfak.airport.domain.plane.IllegalLengthException;
 import com.hanfak.airport.domain.planelandstatus.PlaneLandStatus;
-import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
+import com.hanfak.airport.infrastructure.crosscutting.JsonValidator;
 import com.hanfak.airport.infrastructure.entrypoints.RequestUnmarshaller;
 import com.hanfak.airport.infrastructure.webserver.RenderedContent;
 import com.hanfak.airport.usecase.LandPlaneUseCase;
@@ -24,7 +24,8 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.failedPlaneLandStatus;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_COULD_NOT_LAND;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
-import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPlaneLandStatus;
+import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.planeFailedToLand;
+import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.planeLandedSuccessfully;
 import static com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus.successfulPlaneLandStatus;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,8 +37,7 @@ public class LandAirplaneWebserviceTest {
 
   @Test
   public void createSuccessfulResponse() throws JsonProcessingException {
-    PlaneLandStatus statusOfPlane = createPlaneLandStatus(successfulPlaneLandStatus(planeId("A0001"), FLYING, IN_AIRPORT)
-            , null);
+    PlaneLandStatus statusOfPlane = planeLandedSuccessfully(successfulPlaneLandStatus(planeId("A0001"), FLYING, IN_AIRPORT));
     when(usecase.instructPlaneToLand(plane(planeId("A0001"), FLYING))).thenReturn(statusOfPlane);
     when(unmarshaller.unmarshal(request)).thenReturn(plane(planeId("A0001"), FLYING));
     when(marshaller.marshall(successfulPlaneLandStatus(planeId("A0001"),
@@ -55,7 +55,7 @@ public class LandAirplaneWebserviceTest {
 
   @Test
   public void createFailedResponse() throws JsonProcessingException {
-    PlaneLandStatus statusOfPlane = createPlaneLandStatus(null,
+    PlaneLandStatus statusOfPlane = planeFailedToLand(
             failedPlaneLandStatus(planeId("A0001"),
                     LANDED, IN_AIRPORT, PLANE_IS_AT_THE_AIRPORT));
     when(usecase.instructPlaneToLand(plane(planeId("A0001"), LANDED))).thenReturn(statusOfPlane);
@@ -75,7 +75,7 @@ public class LandAirplaneWebserviceTest {
 
   @Test
   public void createRetriabledResponse() throws JsonProcessingException {
-    PlaneLandStatus statusOfPlane = createPlaneLandStatus(null,
+    PlaneLandStatus statusOfPlane = planeFailedToLand(
             failedPlaneLandStatus(planeId("A0001"),
                     FLYING, NOT_IN_AIRPORT, PLANE_COULD_NOT_LAND));
     when(usecase.instructPlaneToLand(plane(planeId("A0001"), FLYING))).thenReturn(statusOfPlane);

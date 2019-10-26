@@ -12,7 +12,7 @@ import static com.hanfak.airport.domain.plane.Plane.plane;
 import static com.hanfak.airport.domain.plane.PlaneId.planeId;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
-import static com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus.createPlaneTakeOffStatus;
+import static com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus.planeFailedToTakeOff;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_NOT_AT_THE_AIRPORT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -37,8 +37,7 @@ public class AirplaneTakeOffWebserviceTest {
             FLYING, NOT_IN_AIRPORT, PLANE_IS_NOT_AT_THE_AIRPORT));
   }
 
-  private final PlaneTakeOffStatus statusOfPlane = createPlaneTakeOffStatus(null,
-          failedPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT, PLANE_IS_NOT_AT_THE_AIRPORT));
+  private final PlaneTakeOffStatus statusOfPlane = planeFailedToTakeOff(failedPlaneTakeOffStatus(planeId("A0001"), FLYING, NOT_IN_AIRPORT, PLANE_IS_NOT_AT_THE_AIRPORT));
 
   private final String request2 =
           "{\n" +

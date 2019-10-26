@@ -4,6 +4,7 @@ import com.hanfak.airport.infrastructure.httpclient.HttpClient;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONException;
 import org.junit.Test;
 import testinfrastructure.stubs.TestLogger;
 
@@ -18,6 +19,22 @@ public class WeatherClientTest {
   @Test
   public void throwExceptionWithNetworkProblem() throws Exception {
     UnirestException cause = new UnirestException("blah");
+    when(settings.appId()).thenReturn("blahSettings");
+    when(settings.locationLongitude()).thenReturn("blahSettings");
+    when(settings.locationLatitude()).thenReturn("blahSettings");
+    when(httpClient.submitGetRequest(any(), any())).thenThrow(cause);
+
+    assertThatThrownBy(weatherClient::getWeatherId)
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("Unexpected exception when getting weather from api")
+            .hasCause(cause);
+    assertThat(logger.errorCauses()).contains(cause);
+    assertThat(logger.errorLogs()).contains("Unexpected exception when getting weather from api");
+  }
+
+  @Test
+  public void throwExceptionWitInvalidJson() throws Exception {
+    JSONException cause = new JSONException("blah");
     when(settings.appId()).thenReturn("blahSettings");
     when(settings.locationLongitude()).thenReturn("blahSettings");
     when(settings.locationLatitude()).thenReturn("blahSettings");

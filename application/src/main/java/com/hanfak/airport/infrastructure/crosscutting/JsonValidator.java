@@ -1,4 +1,4 @@
-package com.hanfak.airport.infrastructure.entrypoints;
+package com.hanfak.airport.infrastructure.crosscutting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

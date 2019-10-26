@@ -12,7 +12,8 @@ import static com.hanfak.airport.domain.AirportStatus.IN_AIRPORT;
 import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.PlaneStatus.FLYING;
 import static com.hanfak.airport.domain.planetakeoffstatus.FailedPlaneTakeOffStatus.failedPlaneTakeOffStatus;
-import static com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus.createPlaneTakeOffStatus;
+import static com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus.planeFailedToTakeOff;
+import static com.hanfak.airport.domain.planetakeoffstatus.PlaneTakeOffStatus.planeTakeOffSuccess;
 import static com.hanfak.airport.domain.planetakeoffstatus.SuccessfulPlaneTakeOffStatus.successfulPlaneTakeOffStatus;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_COULD_NOT_TAKE_OFF;
 import static com.hanfak.airport.domain.planetakeoffstatus.TakeOffFailureReason.PLANE_IS_FLYING;
@@ -57,26 +58,25 @@ public class TakeOffUseCase {
     }
   }
 
-  // tODO p1: remove nulls, create better output models and mappings
+  // tODO p1: create better output models and mappings
   private PlaneTakeOffStatus planeNotAtAirportFailureStatus(Plane plane) {
     logger.info(format("Plane, '%s', cannot take off, it is not at the airport", plane.planeId));
-    return createPlaneTakeOffStatus(null, getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT, NOT_IN_AIRPORT));
+    return planeFailedToTakeOff(getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT, NOT_IN_AIRPORT));
   }
 
   private PlaneTakeOffStatus takeOffSuccessStatus(Plane plane, Plane flyingPlane) {
     logger.info(format("Plane, '%s', has successfully left the airport", plane.planeId));
-    return createPlaneTakeOffStatus(getSuccessfulPlaneTakeOffStatus(flyingPlane), null);
+    return planeTakeOffSuccess(getSuccessfulPlaneTakeOffStatus(flyingPlane));
   }
 
   private PlaneTakeOffStatus systemFailureStatus(Plane plane, IllegalStateException exception) {
     logger.error(format("Something went wrong removing the Plane, '%s', at the airport", plane.planeId), exception);
-    return createPlaneTakeOffStatus(null, getFailedPlaneTakeOffStatus(plane, PLANE_COULD_NOT_TAKE_OFF, IN_AIRPORT));
+    return planeFailedToTakeOff(getFailedPlaneTakeOffStatus(plane, PLANE_COULD_NOT_TAKE_OFF, IN_AIRPORT));
   }
 
   private PlaneTakeOffStatus planeFlyingFailureStatus(Plane plane) {
     logger.info(format("Plane, '%s', cannot take off, status is '%s', it is not at the airport", plane.planeId, plane.planeStatus.name()));
-    return createPlaneTakeOffStatus(null,
-            getFailedPlaneTakeOffStatus(plane, PLANE_IS_FLYING, NOT_IN_AIRPORT));
+    return planeFailedToTakeOff(getFailedPlaneTakeOffStatus(plane, PLANE_IS_FLYING, NOT_IN_AIRPORT));
   }
 
   private SuccessfulPlaneTakeOffStatus getSuccessfulPlaneTakeOffStatus(Plane flyingPlane) {

@@ -10,7 +10,7 @@ import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 
 public class HealthCheckResultJsonBuilder {
-    // TODO display application version
+
     public JSONObject build(HealthCheckResult healthCheckResult) {
         JSONObject expectedJson = new JSONObject();
         expectedJson.accumulate("overallStatus", healthCheckResult.getOverallStatus());

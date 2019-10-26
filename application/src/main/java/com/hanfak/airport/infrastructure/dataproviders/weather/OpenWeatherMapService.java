@@ -11,6 +11,7 @@ public class OpenWeatherMapService implements WeatherService {
 
   @Override
   public boolean isStormy() {
-    return weatherClient.getWeatherId() < 700; // TODO Choose better code or more logic to use https://openweathermap.org/weather-conditions
+    // This is very arbitary, this can have a complex algorithm depending on several codes etc
+    return weatherClient.getWeatherId() < 700;
   }
 }

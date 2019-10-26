@@ -7,13 +7,9 @@ import com.mashape.unirest.request.HttpRequest;
 import org.slf4j.Logger;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.lang.System.lineSeparator;
-import static java.util.stream.Collectors.joining;
 
 public class LoggingHttpClient implements HttpClient {
 
@@ -21,12 +17,14 @@ public class LoggingHttpClient implements HttpClient {
   private final HttpClient delegate;
   private final TimerFactory timerFactory;
   private final LogObfuscator logObfuscator;
+  private final HttpLoggingFormatter httpLoggingFormatter;
 
-  public LoggingHttpClient(Logger logger, HttpClient delegate, TimerFactory timerFactory, LogObfuscator logObfuscator) {
+  public LoggingHttpClient(Logger logger, HttpClient delegate, TimerFactory timerFactory, LogObfuscator logObfuscator, HttpLoggingFormatter httpLoggingFormatter) {
     this.logger = logger;
     this.delegate = delegate;
     this.timerFactory = timerFactory;
     this.logObfuscator = logObfuscator;
+    this.httpLoggingFormatter = httpLoggingFormatter;
   }
 
   @Override
@@ -55,43 +53,14 @@ public class LoggingHttpClient implements HttpClient {
   }
 
   private void logRequest(HttpRequest httpRequest, String requestUrl) {
-    String formattedRequest = requestOutput(httpRequest);
+    String formattedRequest = httpLoggingFormatter.requestOutput(httpRequest);
     logger.info(logObfuscator.obfuscateLogs(format("Request from Application to %s\n%s", requestUrl, formattedRequest)));
   }
 
   private void logResponse(String requestUrl, Timer timer, HttpResponse<JsonNode> response) {
     Duration elapsedTime = timer.elapsedTime();
-    String formattedResponse = responseOutput(response);
+    String formattedResponse = httpLoggingFormatter.responseOutput(response);
     logger.info(logObfuscator.obfuscateLogs(format("Response from %s to Application received after %dms\n%s", requestUrl, elapsedTime.toMillis(), formattedResponse)));
-  }
-// TODO P1 extract to delegate
-  private String requestOutput(HttpRequest httpRequest) {
-    return format("%s %s HTTP/1.1%s", httpRequest.getHttpMethod(), httpRequest.getUrl(), "\n")
-            + headersFormatter(httpRequest.getHeaders())
-            + "\r\n\r\n"
-            + requestBody(httpRequest);
-  }
-
-  private String requestBody(HttpRequest httpRequest) {
-    return Optional.ofNullable( httpRequest.getBody())
-            .map(Object::toString)
-            .orElse("");
-  }
-
-  private String responseOutput(HttpResponse response) {
-    return format("%s %s%n%s%n%n%s", "HTTP", response.getStatus(), headersFormatter(response.getHeaders()), responseBody(response));
-  }
-
-  private String responseBody(HttpResponse httpRequest) {
-    return Optional.ofNullable( httpRequest.getBody())
-            .map(Object::toString)
-            .orElse("");
-  }
-
-  private String headersFormatter(Map<String, List<String>> headers) {
-    return headers.entrySet().stream()
-            .map(header -> format("%s: %s", header.getKey(), String.join(",", header.getValue())))
-            .collect(joining(lineSeparator()));
   }
 
   private void logError(HttpRequest httpRequest, String requestUrl, Timer timer, RuntimeException exception) {

@@ -32,15 +32,20 @@ public class YatspecFormatters {
         return format("%s %s HTTP/1.1%s", "POST", uri, "\n") + headersFormatter(headers) + "\r\n\r\n" + body;
     }
 
+    public static String responseOutput(int responseStatus, Headers responseHeaders, String responseBody) {
+        return format("%s %s%n%s%n%n%s", "HTTP", responseStatus, headersFormatter(responseHeaders), responseBody);
+    }
+
     private static String headersFormatter(Map<String, String> headers) {
         return headers.entrySet().stream()
                 .map(s -> format("%s: %s", s.getKey(), s.getValue()))
                 .collect(joining(lineSeparator()));
     }
 
-    // TODO format headers
-    public static String responseOutput(int responseStatus, Headers responseHeaders, String responseBody) {
-        return format("%s %s%n%s%n%n%s", "HTTP", responseStatus, responseHeaders, responseBody);
+    private static String headersFormatter(Headers headers) {
+        return headers.entrySet().stream()
+                .map(s -> format("%s: %s", s.getKey(), s.getValue()))
+                .collect(joining(lineSeparator()));
     }
 
     private static String adaptBody(String wiremockBody) {

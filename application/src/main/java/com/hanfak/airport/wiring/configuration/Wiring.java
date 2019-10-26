@@ -5,6 +5,7 @@ import com.hanfak.airport.domain.crosscutting.logging.LoggingUncaughtExceptionHa
 import com.hanfak.airport.domain.monitoring.HealthCheckProbe;
 import com.hanfak.airport.infrastructure.crosscutting.ExecutorServiceConcurrently;
 import com.hanfak.airport.infrastructure.crosscutting.GuavaSupplierCaching;
+import com.hanfak.airport.infrastructure.crosscutting.JsonValidator;
 import com.hanfak.airport.infrastructure.crosscutting.TrackingExecutorServiceFactory;
 import com.hanfak.airport.infrastructure.dataproviders.JDBCDatabaseConnectionManager;
 import com.hanfak.airport.infrastructure.dataproviders.database.AirportPlaneInventoryService;
@@ -15,7 +16,6 @@ import com.hanfak.airport.infrastructure.dataproviders.database.jdbc.AirportStor
 import com.hanfak.airport.infrastructure.dataproviders.weather.OpenWeatherMapService;
 import com.hanfak.airport.infrastructure.dataproviders.weather.WeatherClient;
 import com.hanfak.airport.infrastructure.dataproviders.weather.WeatherClientUnmarshaller;
-import com.hanfak.airport.infrastructure.entrypoints.JsonValidator;
 import com.hanfak.airport.infrastructure.entrypoints.RequestUnmarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneResponseMarshaller;
 import com.hanfak.airport.infrastructure.entrypoints.landplane.LandAirplaneServlet;
@@ -31,10 +31,7 @@ import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOf
 import com.hanfak.airport.infrastructure.entrypoints.planetakeoff.AirplaneTakeOffWebservice;
 import com.hanfak.airport.infrastructure.healthchecks.DatabaseHealthCheck;
 import com.hanfak.airport.infrastructure.healthchecks.WeatherApiHealthCheck;
-import com.hanfak.airport.infrastructure.httpclient.LogObfuscator;
-import com.hanfak.airport.infrastructure.httpclient.LoggingHttpClient;
-import com.hanfak.airport.infrastructure.httpclient.TimerFactory;
-import com.hanfak.airport.infrastructure.httpclient.UnirestHttpClient;
+import com.hanfak.airport.infrastructure.httpclient.*;
 import com.hanfak.airport.infrastructure.properties.Settings;
 import com.hanfak.airport.infrastructure.webserver.JettyServletBuilder;
 import com.hanfak.airport.infrastructure.webserver.JettyWebServer;
@@ -124,8 +121,12 @@ public class Wiring {
   }
 
   private WeatherService weatherService() {
-    return new OpenWeatherMapService(new WeatherClient(new LoggingHttpClient(getLogger(AUDIT.name()), new UnirestHttpClient(settings()), new TimerFactory(), new LogObfuscator()
-    ), settings(), APPLICATION_LOGGER, new WeatherClientUnmarshaller()));
+    return new OpenWeatherMapService(new WeatherClient(new LoggingHttpClient(getLogger(AUDIT.name()), new UnirestHttpClient(settings()), new TimerFactory(), new LogObfuscator(),
+            httpLoggingFormatter()), settings(), APPLICATION_LOGGER, new WeatherClientUnmarshaller()));
+  }
+
+  private HttpLoggingFormatter httpLoggingFormatter() {
+    return new HttpLoggingFormatter();
   }
 
   public AirportPlaneInventoryService airportPlaneInventoryService() {
@@ -174,7 +175,7 @@ public class Wiring {
 
   private HealthChecksUseCase healthChecksUseCase() {
     List<HealthCheckProbe> healthCheckProbes = Arrays.asList(new DatabaseHealthCheck(databaseConnectionManager(), settings(), APPLICATION_LOGGER),
-            new WeatherApiHealthCheck(settings(), new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(settings()), new TimerFactory(), new LogObfuscator())));
+            new WeatherApiHealthCheck(settings(), new LoggingHttpClient(APPLICATION_LOGGER, new UnirestHttpClient(settings()), new TimerFactory(), new LogObfuscator(), httpLoggingFormatter())));
     return new HealthChecksUseCase(
             healthCheckProbes,
             new GuavaSupplierCaching(),

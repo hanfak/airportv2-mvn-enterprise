@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class NotFoundServlet extends HttpServlet {
-    // TODO return available endpoints
+
     private void writeNotFoundPage(HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         response.setStatus(404);

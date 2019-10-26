@@ -51,7 +51,6 @@ public class LandPlaneTest extends YatspecAcceptanceEndToEndTest {
     return (interestingGivens, capturedInputAndOutputs) -> whenUserInstructsPlaneToLand(capturedInputAndOutputs);
   }
 
-  // TODO: extract to whens package, have to deal with fiels, need to use teststate
   private CapturedInputAndOutputs whenUserInstructsPlaneToLand(CapturedInputAndOutputs capturedInputAndOutputs) throws UnirestException {
     HttpResponse<String> response = makeLandPlaneRequest(capturedInputAndOutputs);
     responseStatus = response.getStatus();
@@ -80,7 +79,6 @@ public class LandPlaneTest extends YatspecAcceptanceEndToEndTest {
     return requestOutput(APP_URL, headers, body);
   }
 
-  //TODO: use state extractor
   private void thenPlaneHasLandedAndInTheAirport() {
     assertThat(responseStatus).isEqualTo(200);
     assertThat(responseBody).isEqualTo("{\n" +

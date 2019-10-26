@@ -2,6 +2,7 @@ package com.hanfak.airport.infrastructure.entrypoints;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hanfak.airport.infrastructure.crosscutting.JsonValidator;
 import org.junit.Test;
 
 import java.io.IOException;

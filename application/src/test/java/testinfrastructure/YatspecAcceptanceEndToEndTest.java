@@ -49,7 +49,6 @@ public abstract class YatspecAcceptanceEndToEndTest extends TestState implements
 
   private WireMockServer wireMockServer;
 
-  // TODO: bring up app if not started, use of docker
   @Before
   public void startup() {
     deleteTableContents("airport");

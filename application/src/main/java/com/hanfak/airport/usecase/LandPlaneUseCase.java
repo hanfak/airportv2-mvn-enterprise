@@ -11,7 +11,8 @@ import static com.hanfak.airport.domain.AirportStatus.NOT_IN_AIRPORT;
 import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.failedPlaneLandStatus;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.*;
-import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.createPlaneLandStatus;
+import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.planeFailedToLand;
+import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.planeLandedSuccessfully;
 import static com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus.successfulPlaneLandStatus;
 import static java.lang.String.format;
 
@@ -61,7 +62,7 @@ public class LandPlaneUseCase {
       return systemFailureStatus(plane, e);
     }
   }
-  // tODO p1: remove nulls, create better output models and mappings
+  // tODO p1: create better output models and mappings
   // https://www.techiedelight.com/return-multiple-values-method-java/
   private PlaneLandStatus weatherSystemFailureStatus(Plane plane, IllegalStateException exception) {
     logger.error("Something went wrong retrieving the weather at the airport", exception);
@@ -70,8 +71,7 @@ public class LandPlaneUseCase {
 
   private PlaneLandStatus planeLandedSuccessStatus(Plane plane, Plane landedPlane) {
     logger.info(format("Plane, '%s', has successfully landed at the airport", plane.planeId));
-    return createPlaneLandStatus(successfulPlaneLandStatus(landedPlane.planeId, landedPlane.planeStatus, IN_AIRPORT)
-            , null);
+    return planeLandedSuccessfully(successfulPlaneLandStatus(landedPlane.planeId, landedPlane.planeStatus, IN_AIRPORT));
   }
 
   private PlaneLandStatus planeAlreadyLandedFailureStatus(Plane plane) {
@@ -95,8 +95,7 @@ public class LandPlaneUseCase {
   }
 
   private PlaneLandStatus getFailurePlaneLandStatus(Plane plane, AirportStatus airportStatus, LandFailureReason landFailureReason) {
-    return createPlaneLandStatus(null,
-            failedPlaneLandStatus(plane.planeId, plane.planeStatus, airportStatus, landFailureReason));
+    return planeFailedToLand(failedPlaneLandStatus(plane.planeId, plane.planeStatus, airportStatus, landFailureReason));
   }
 
 }

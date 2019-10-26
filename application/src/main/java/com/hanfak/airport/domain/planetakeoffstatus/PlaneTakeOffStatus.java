@@ -3,7 +3,6 @@ package com.hanfak.airport.domain.planetakeoffstatus;
 import com.hanfak.airport.domain.helper.ValueType;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-// Better name
 @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD") // Later fix this issue, getters or different type
 public class PlaneTakeOffStatus extends ValueType {
 
@@ -16,9 +15,11 @@ public class PlaneTakeOffStatus extends ValueType {
     this.failedPlaneTakeOffStatus = failedPlaneTakeOffStatus;
   }
 
-  public static PlaneTakeOffStatus createPlaneTakeOffStatus(SuccessfulPlaneTakeOffStatus successfulPlaneTakeOffStatus, FailedPlaneTakeOffStatus failedPlaneTakeOffStatus) {
-    return new PlaneTakeOffStatus(successfulPlaneTakeOffStatus, failedPlaneTakeOffStatus);
+  public static PlaneTakeOffStatus planeTakeOffSuccess(SuccessfulPlaneTakeOffStatus successfulPlaneTakeOffStatus) {
+    return new PlaneTakeOffStatus(successfulPlaneTakeOffStatus, null);
   }
 
-  // TODO p1 create static factories for succes and failure, thus placing the null here
+  public static PlaneTakeOffStatus planeFailedToTakeOff(FailedPlaneTakeOffStatus failedPlaneTakeOffStatus) {
+    return new PlaneTakeOffStatus(null, failedPlaneTakeOffStatus);
+  }
 }
