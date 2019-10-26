@@ -6,6 +6,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 import org.slf4j.Logger;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class LoggingHttpClient implements HttpClient {
   }
 
   @Override
-  public HttpResponse<JsonNode> submitGetRequest(String url, Map<String, Object> queryParameters) throws UnirestException {
+  public HttpResponse<JsonNode> submitGetRequest(String url, Map<String, Object> queryParameters) throws UnirestException, IOException {
     return tryToExecuteRequest(url, queryParameters);
   }
 
@@ -37,7 +38,7 @@ public class LoggingHttpClient implements HttpClient {
     return delegate.getHttpRequest(url, queryParameters);
   }
 
-  private HttpResponse<JsonNode> tryToExecuteRequest(String url, Map<String, Object> queryParameters) throws UnirestException {
+  private HttpResponse<JsonNode> tryToExecuteRequest(String url, Map<String, Object> queryParameters) throws UnirestException, IOException {
     HttpRequest httpRequest = getHttpRequest(url, queryParameters);
     String requestUrl = httpRequest.getUrl();
     logRequest(httpRequest, requestUrl);
@@ -52,7 +53,7 @@ public class LoggingHttpClient implements HttpClient {
     }
   }
 
-  private void logRequest(HttpRequest httpRequest, String requestUrl) {
+  private void logRequest(HttpRequest httpRequest, String requestUrl) throws IOException {
     String formattedRequest = httpLoggingFormatter.requestOutput(httpRequest);
     logger.info(logObfuscator.obfuscateLogs(format("Request from Application to %s\n%s", requestUrl, formattedRequest)));
   }

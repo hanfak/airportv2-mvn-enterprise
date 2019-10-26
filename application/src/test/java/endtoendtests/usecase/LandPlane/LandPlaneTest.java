@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static testinfrastructure.yatspec.YatspecFormatters.requestOutput;
 import static testinfrastructure.yatspec.YatspecFormatters.responseOutput;
 
-
 public class LandPlaneTest extends YatspecAcceptanceEndToEndTest {
 
   @Test // Testing the servlet class too

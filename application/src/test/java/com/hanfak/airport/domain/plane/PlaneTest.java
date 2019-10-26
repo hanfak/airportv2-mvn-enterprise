@@ -27,4 +27,18 @@ public class PlaneTest implements WithAssertions {
 
     assertThat(landedPlane.planeStatus).isEqualTo(FLYING);
   }
+
+  @Test
+  public void validatePlaneIdIsNotNull() {
+    assertThatThrownBy(() -> plane(null, LANDED))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Field is null");
+  }
+
+  @Test
+  public void validatePlaneStatusIsNotNull() {
+    assertThatThrownBy(() -> plane(planeId("A0001"), null))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Field is null");
+  }
 }

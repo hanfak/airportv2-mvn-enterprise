@@ -26,4 +26,3 @@ public class UnirestHttpClient implements HttpClient {
     return Unirest.get(url).queryString(queryParameters);
   }
 }
-

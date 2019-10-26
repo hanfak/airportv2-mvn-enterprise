@@ -8,6 +8,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static com.hanfak.airport.domain.monitoring.ProbeStatus.FAIL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,6 +23,18 @@ public class WeatherApiHealthCheckTest {
     WeatherApiHealthCheck weatherApiHealthCheck = new WeatherApiHealthCheck(settings, client);
 
     assertThat(weatherApiHealthCheck.name()).isEqualTo("Weather Api Connection to 'blah'");
+  }
+
+  @Test
+  public void returnsFailureWhenIOExceptionOccursWhenLoggingRequest() throws Exception {
+    IOException cause = new IOException("Blah Error");
+    when(client.submitGetRequest(any(), any())).thenThrow(cause);
+
+    WeatherApiHealthCheck weatherApiHealthCheck = new WeatherApiHealthCheck(settings, client);
+    ProbeResult result = weatherApiHealthCheck.probe();
+
+    assertThat(result.description).isEqualTo("Call to Weather Api threw an exception, Blah Error");
+    assertThat(result.status).isEqualTo(FAIL);
   }
 
   @Test

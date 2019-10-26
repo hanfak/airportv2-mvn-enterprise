@@ -8,6 +8,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONException;
 import org.slf4j.Logger;
 
+import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class WeatherClient {
       } else {
         throw new IllegalStateException(format("Unexpected HTTP status '%s' received when getting weather from api", response.getStatus()));
       }
-    } catch (UnirestException |JSONException e) {
+    } catch (UnirestException | JSONException | IOException e) {
       String message = "Unexpected exception when getting weather from api";
       logger.error(message, e); // This is not needed as logs are caught by error handler stage
       throw new IllegalStateException(message, e);

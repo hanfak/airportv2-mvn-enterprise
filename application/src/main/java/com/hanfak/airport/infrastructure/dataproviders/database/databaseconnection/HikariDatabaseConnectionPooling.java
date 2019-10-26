@@ -29,7 +29,7 @@ public class HikariDatabaseConnectionPooling {
       config.setUsername(settings.databaseUser());
       config.setPassword(settings.databasePassword());
 
-      config.setMaximumPoolSize(10);
+      config.setMaximumPoolSize(settings.databaseMaxPoolSize());
       config.setAutoCommit(false);
       config.addDataSourceProperty("cachePrepStmts", "true");
       config.addDataSourceProperty("prepStmtCacheSize", "250");

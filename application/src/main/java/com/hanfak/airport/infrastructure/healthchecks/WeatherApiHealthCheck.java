@@ -8,6 +8,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class WeatherApiHealthCheck implements HealthCheckProbe {
       } else {
         return failure(name(), format("Call to Weather Api returned unexpected status code '%s'", jsonNodeHttpResponse.getStatus()));
       }
-    } catch (UnirestException e) {
+    } catch (UnirestException | IOException e) {
       return failure(name(), format("Call to Weather Api threw an exception, %s", e.getMessage()));
     }
   }

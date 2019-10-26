@@ -5,9 +5,10 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 
+import java.io.IOException;
 import java.util.Map;
 
 public interface HttpClient {
-  HttpResponse<JsonNode> submitGetRequest(String url, Map<String, Object> queryParameters) throws UnirestException;
+  HttpResponse<JsonNode> submitGetRequest(String url, Map<String, Object> queryParameters) throws UnirestException, IOException;
   HttpRequest getHttpRequest(String url, Map<String, Object> queryParameters);
 }

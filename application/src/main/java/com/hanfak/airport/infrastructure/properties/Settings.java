@@ -38,6 +38,11 @@ public class Settings implements DatabaseSettings, WeatherApiSettings, StatusPro
   }
 
   @Override
+  public int databaseMaxPoolSize() {
+    return Integer.parseInt(properties.getPropertyOrThrowRuntimeException("database.max.pool.size"));
+  }
+
+  @Override
   public String locationLatitude() {
     return properties.getPropertyOrThrowRuntimeException("open.weather.param.latitude");
   }

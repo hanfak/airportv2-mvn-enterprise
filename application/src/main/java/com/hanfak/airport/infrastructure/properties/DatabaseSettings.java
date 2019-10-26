@@ -5,4 +5,5 @@ public interface DatabaseSettings {
   String databaseUser();
   String databasePassword();
   String databaseConnectTimeout();
+  int databaseMaxPoolSize();
 }

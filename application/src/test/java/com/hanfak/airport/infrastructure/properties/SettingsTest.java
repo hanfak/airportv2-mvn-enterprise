@@ -43,6 +43,12 @@ public class SettingsTest implements WithAssertions {
   }
 
   @Test
+  public void databaseMaxPoolSize() {
+    properties.put("database.max.pool.size", "1");
+    assertThat(settings.databaseMaxPoolSize()).isEqualTo(1);
+  }
+
+  @Test
   public void statusProbeProperties() {
     properties.put("database.status.probe.query", "some query");
     properties.put("cache.duration.in.seconds", "1");

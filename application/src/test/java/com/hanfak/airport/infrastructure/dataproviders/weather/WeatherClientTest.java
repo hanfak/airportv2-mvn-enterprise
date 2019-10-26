@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.junit.Test;
 import testinfrastructure.stubs.TestLogger;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,6 +21,22 @@ public class WeatherClientTest {
   @Test
   public void throwExceptionWithNetworkProblem() throws Exception {
     UnirestException cause = new UnirestException("blah");
+    when(settings.appId()).thenReturn("blahSettings");
+    when(settings.locationLongitude()).thenReturn("blahSettings");
+    when(settings.locationLatitude()).thenReturn("blahSettings");
+    when(httpClient.submitGetRequest(any(), any())).thenThrow(cause);
+
+    assertThatThrownBy(weatherClient::getWeatherId)
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("Unexpected exception when getting weather from api")
+            .hasCause(cause);
+    assertThat(logger.errorCauses()).contains(cause);
+    assertThat(logger.errorLogs()).contains("Unexpected exception when getting weather from api");
+  }
+
+  @Test
+  public void throwExceptionWhenLoggingRequest() throws Exception {
+    IOException cause = new IOException("blah");
     when(settings.appId()).thenReturn("blahSettings");
     when(settings.locationLongitude()).thenReturn("blahSettings");
     when(settings.locationLatitude()).thenReturn("blahSettings");
@@ -49,7 +67,7 @@ public class WeatherClientTest {
   }
 
   @Test
-  public void throwExceptionWithWrongStatusCode() throws UnirestException {
+  public void throwExceptionWithWrongStatusCode() throws UnirestException, IOException {
     when(settings.appId()).thenReturn("blahSettings");
     when(settings.locationLongitude()).thenReturn("blahSettings");
     when(settings.locationLatitude()).thenReturn("blahSettings");
