@@ -33,7 +33,7 @@ public class LandAirplaneWebservice {
     this.useCase = useCase;
     this.unmarshaller = unmarshaller;
     this.marshaller = marshaller;
-    this.jsonValidator = jsonValidator; // TODO P1: should happen in unmarshaller
+    this.jsonValidator = jsonValidator;
     this.logger = logger;
   }
 

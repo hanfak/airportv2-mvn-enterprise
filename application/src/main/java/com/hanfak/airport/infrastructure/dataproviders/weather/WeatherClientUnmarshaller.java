@@ -5,7 +5,6 @@ import com.mashape.unirest.http.JsonNode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-// TODO deal with malformed json, through exception
 public class WeatherClientUnmarshaller {
   int unmarshallWeatherCode(HttpResponse<JsonNode> response) {
     JSONObject body = response.getBody().getObject();

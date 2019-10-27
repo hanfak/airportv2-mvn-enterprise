@@ -6,7 +6,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD") // Later fix this issue, getters or different type
 public class PlaneLandStatus extends ValueType {
 
-  // TODO P1 make optional
   public final SuccessfulPlaneLandStatus successfulPlaneLandStatus;
   public final FailedPlaneLandStatus failedPlaneLandStatus;
 
@@ -16,9 +15,9 @@ public class PlaneLandStatus extends ValueType {
   }
 
   public static PlaneLandStatus planeLandedSuccessfully(SuccessfulPlaneLandStatus successfulPlaneLandStatus) {
-    return new PlaneLandStatus(successfulPlaneLandStatus, null);
+    return new PlaneLandStatus(successfulPlaneLandStatus, null); // Can make these optional
   }
   public static PlaneLandStatus planeFailedToLand(FailedPlaneLandStatus failedPlaneLandStatus) {
-    return new PlaneLandStatus(null, failedPlaneLandStatus);
+    return new PlaneLandStatus(null, failedPlaneLandStatus); // Can make these optional
   }
 }

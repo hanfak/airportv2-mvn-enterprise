@@ -58,7 +58,6 @@ public class TakeOffUseCase {
     }
   }
 
-  // tODO p1: create better output models and mappings
   private PlaneTakeOffStatus planeNotAtAirportFailureStatus(Plane plane) {
     logger.info(format("Plane, '%s', cannot take off, it is not at the airport", plane.planeId));
     return planeFailedToTakeOff(getFailedPlaneTakeOffStatus(plane, PLANE_IS_NOT_AT_THE_AIRPORT, NOT_IN_AIRPORT));

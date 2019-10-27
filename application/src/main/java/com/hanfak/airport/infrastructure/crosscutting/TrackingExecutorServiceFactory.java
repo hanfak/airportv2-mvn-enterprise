@@ -21,7 +21,7 @@ public class TrackingExecutorServiceFactory implements ExecutorServiceFactory {
     public TrackingExecutorServiceFactory(LoggingUncaughtExceptionHandler loggingUncaughtExceptionHandler) {
         this.threadFactory = new ThreadFactoryBuilder()
                 .setUncaughtExceptionHandler(loggingUncaughtExceptionHandler)
-                .setNameFormat("hydra-executor-thread-%d") // TODO: MON-256 should this name be a constructor parameter so we can be more specific about who created the threads?
+                .setNameFormat("airport-executor-thread-%d")
                 .build();
     }
 
