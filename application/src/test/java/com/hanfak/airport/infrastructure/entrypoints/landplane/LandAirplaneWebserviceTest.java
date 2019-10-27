@@ -24,6 +24,7 @@ import static com.hanfak.airport.domain.plane.PlaneStatus.LANDED;
 import static com.hanfak.airport.domain.planelandstatus.FailedPlaneLandStatus.failedPlaneLandStatus;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_COULD_NOT_LAND;
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_IS_AT_THE_AIRPORT;
+import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.WEATHER_NOT_AVAILABLE;
 import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.planeFailedToLand;
 import static com.hanfak.airport.domain.planelandstatus.PlaneLandStatus.planeLandedSuccessfully;
 import static com.hanfak.airport.domain.planelandstatus.SuccessfulPlaneLandStatus.successfulPlaneLandStatus;
@@ -98,16 +99,38 @@ public class LandAirplaneWebserviceTest {
   }
 
   @Test
+  public void createRetriabledWhenIssueWithGettingWeatherResponse() throws JsonProcessingException {
+    PlaneLandStatus statusOfPlane = planeFailedToLand(
+            failedPlaneLandStatus(planeId("A0001"),
+                    FLYING, NOT_IN_AIRPORT, WEATHER_NOT_AVAILABLE));
+    when(usecase.instructPlaneToLand(plane(planeId("A0001"), FLYING))).thenReturn(statusOfPlane);
+    when(unmarshaller.unmarshal(request)).thenReturn(plane(planeId("A0001"), FLYING));
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Retriable", "true");
+    RenderedContent expectedRetriableResponse = new RenderedContent(expectedFailedResponseBodyForRetrievingWeather, "application/json", 503, headers);
+
+    when(marshaller.marshallRetriableFailure(failedPlaneLandStatus(planeId("A0001"),
+            FLYING, NOT_IN_AIRPORT, WEATHER_NOT_AVAILABLE))).thenReturn(expectedRetriableResponse);
+    when(jsonValidator.checkForInvalidJson(request)).thenReturn(Optional.empty());
+
+    RenderedContent failedResponse = webservice.execute(request);
+
+    assertThat(failedResponse).isEqualTo(expectedRetriableResponse);
+    verify(usecase).instructPlaneToLand(plane(planeId("A0001"), FLYING));
+    verify(unmarshaller).unmarshal(request);
+    verify(marshaller).marshallRetriableFailure(failedPlaneLandStatus(planeId("A0001"),
+            FLYING, NOT_IN_AIRPORT, WEATHER_NOT_AVAILABLE));
+  }
+
+  @Test
   public void createErrorResponseForInvalidJson() throws JsonProcessingException {
     ExceptionMock cause = new ExceptionMock("Blah");
     when(jsonValidator.checkForInvalidJson(request)).thenReturn(Optional.of(cause));
 
     RenderedContent errorResponse = webservice.execute(request);
 
-    Map<String, String> expectedHeaders = new HashMap<>();
-    expectedHeaders.put("Retriable", "true");
     verify(logger).error(format("Request body is '%s'", request), cause);
-    assertThat(errorResponse).isEqualTo(new RenderedContent("Error with JSON Body in request", "text/plain", 500, expectedHeaders));
+    assertThat(errorResponse).isEqualTo(new RenderedContent("Error with JSON Body in request", "text/plain", 500));
   }
 
   @Test
@@ -119,13 +142,11 @@ public class LandAirplaneWebserviceTest {
     RenderedContent errorResponse = webservice.execute(request);
 
     String message = "Error with content in body of request: planeId is wrong length";
-    Map<String, String> expectedHeaders = new HashMap<>();
-    expectedHeaders.put("Retriable", "true");
     verify(logger).error(format("Error Message: '%s'\nRequest body is '%s'", message, request), illegalLengthException);
     assertThat(errorResponse)
             .isEqualTo(new RenderedContent(message,
                     "text/plain",
-                    500, expectedHeaders));
+                    500));
   }
 
   @Test
@@ -137,13 +158,11 @@ public class LandAirplaneWebserviceTest {
     RenderedContent errorResponse = webservice.execute(request);
 
     String message = "Error with content in body of request: planeId contains illegal character";
-    Map<String, String> expectedHeaders = new HashMap<>();
-    expectedHeaders.put("Retriable", "true");
     verify(logger).error(format("Error Message: '%s'\nRequest body is '%s'", message, request), illegalCharacterException);
     assertThat(errorResponse)
             .isEqualTo(new RenderedContent(message,
                     "text/plain",
-                    500, expectedHeaders));
+                    500));
   }
 
   class ExceptionMock extends JsonProcessingException {
@@ -174,6 +193,13 @@ public class LandAirplaneWebserviceTest {
                   "  \"PlaneStatus\" : \"LANDED\",\n" +
                   "  \"AirportStatus\" : \"IN_AIRPORT\",\n" +
                   "  \"LandFailureReason\" : \"Plane could not land as it is in the airport\"\n" +
+                  "}";
+  private String expectedFailedResponseBodyForRetrievingWeather =
+          "{\n" +
+                  "  \"PlaneId\" : \"A0001\",\n" +
+                  "  \"PlaneStatus\" : \"FLYING\",\n" +
+                  "  \"AirportStatus\" : \"NOT_IN_AIRPORT\",\n" +
+                  "  \"LandFailureReason\" : \"Plane could not land at airport, something went wrong retrieving weather\"\n" +
                   "}";
   private final RenderedContent expectedSuccessfulResponse = new RenderedContent(expectedSuccessfulBody, "application/json", 200);
   private final RenderedContent expectedFailedResponse = new RenderedContent(expectedFailedResponseBody, "application/json", 404);

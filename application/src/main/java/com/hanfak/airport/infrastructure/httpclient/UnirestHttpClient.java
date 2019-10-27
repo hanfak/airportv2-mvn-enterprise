@@ -8,7 +8,6 @@ import com.mashape.unirest.request.HttpRequest;
 
 import java.util.Map;
 
-// TODO this class test with a wire mock server up, as a intergration/module test
 public class UnirestHttpClient implements HttpClient {
 
   private final HttpClientSettngs settings;

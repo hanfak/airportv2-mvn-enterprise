@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.PLANE_COULD_NOT_LAND;
+import static com.hanfak.airport.domain.planelandstatus.LandFailureReason.WEATHER_NOT_AVAILABLE;
 import static java.lang.String.format;
 
 public class LandAirplaneWebservice {
@@ -58,14 +59,12 @@ public class LandAirplaneWebservice {
   private RenderedContent createRenderedContentForInvalidJson(String request, IOException exception) {
     logger.error(format("Request body is '%s'", request), exception);
     Map<String, String> headers = new HashMap<>();
-    headers.put("Retriable", "true"); // TODO should not be retriable as will do same request over again, with out changing request
     return new RenderedContent("Error with JSON Body in request", "text/plain", 500, headers);
   }
 
   private RenderedContent createRenderedContentForRequestContent(String body, String request, IllegalArgumentException exception) {
     logger.error(format("Error Message: '%s'\nRequest body is '%s'", body, request), exception);
     Map<String, String> headers = new HashMap<>();
-    headers.put("Retriable", "true"); // TODO should not be retriable as will do same request over again, with out changing request
     return new RenderedContent(body, "text/plain", 500, headers);
   }
 
@@ -74,11 +73,14 @@ public class LandAirplaneWebservice {
     if (failedPlaneLandStatus == null) {
       return marshaller.marshall(planeLandStatus.successfulPlaneLandStatus);
     } else {
-      // TODO P1: also retriale for weather retrievable
-      if (PLANE_COULD_NOT_LAND.equals(failedPlaneLandStatus.failureMessage)) {
+      if (isRetriableFailedPlaneLandStatus(failedPlaneLandStatus)) {
         return marshaller.marshallRetriableFailure(failedPlaneLandStatus);
       }
       return marshaller.marshall(failedPlaneLandStatus);
     }
+  }
+
+  private boolean isRetriableFailedPlaneLandStatus(FailedPlaneLandStatus failedPlaneLandStatus) {
+    return PLANE_COULD_NOT_LAND.equals(failedPlaneLandStatus.failureMessage) || WEATHER_NOT_AVAILABLE.equals(failedPlaneLandStatus.failureMessage);
   }
 }
